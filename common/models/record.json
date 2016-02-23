@@ -1,0 +1,36 @@
+{
+  "name": "record",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "patent_input": {
+      "type": "string"
+    },
+    "patent_output": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "datetime_input": {
+      "type": "date"
+    },
+    "datetime_output": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "people": {
+      "type": "belongsTo",
+      "model": "people",
+      "foreignKey": "people_run"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

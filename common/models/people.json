@@ -1,0 +1,73 @@
+{
+  "name": "people",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "start_authorized_date": {
+      "type": "date",
+      "required": true
+    },
+    "end_authorized_date": {
+      "type": "date",
+      "required": true
+    },
+    "fullname": {
+      "type": "string",
+      "required": true
+    },
+    "cellphone": {
+      "type": "string"
+    },
+    "run": {
+      "type": "string",
+      "id": true,
+      "required": true
+    },
+    "start_authorized_hour": {
+      "type": "string",
+      "required": true
+    },
+    "end_authorized_hour": {
+      "type": "string",
+      "required": true
+    },
+    "is_permitted": {
+      "type": "boolean",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "company": {
+      "type": "belongsTo",
+      "model": "company",
+      "foreignKey": "company_rut"
+    },
+    "frequency": {
+      "type": "belongsTo",
+      "model": "frequency",
+      "foreignKey": ""
+    },
+    "nationality": {
+      "type": "belongsTo",
+      "model": "nationality",
+      "foreignKey": "nationality_code"
+    },
+    "profile": {
+      "type": "belongsTo",
+      "model": "profile",
+      "foreignKey": ""
+    },
+    "position": {
+      "type": "belongsTo",
+      "model": "position",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

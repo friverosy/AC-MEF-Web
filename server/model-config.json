@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db"
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "nationality": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "people": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "record": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "frequency": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "company": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "profile": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "position": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  }
+}
