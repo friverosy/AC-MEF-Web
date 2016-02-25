@@ -4,23 +4,43 @@ angular
       $scope.currentDate = new Date();
       $rootScope.department = 'Angular';
     }])
+
   .controller('RecordController', ['$scope', '$state', 'Record', function($scope,
       $state, Record) {
     $scope.records = [];
 
     function getRecords() {
-        ONE_DAY = 24 * 60 * 60 * 1000; // 1 day in miliseconds
-        Record.find({
-            where: {
-                input_datetime: {gt: new Date() - ONE_DAY}
-            }
-        })
+        Record.find()
         .$promise
         .then(function(results) {
-          $scope.records = results;
+            $scope.records = results;
         });
     }
     getRecords();
+
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth()+1;
+    var curr_year = d.getFullYear();
+
+    $scope.dateToday = Date.parse(curr_month + "/" + curr_date + "/" + curr_year);
+    $scope.dateRange = "";
+
+    $scope.eventDateFilter = function(column) {
+        console.log(column);
+        if(column === 'today') {
+            $scope.dateRange = $scope.dateToday;
+        } else if (column === 'pastWeek') {
+            //need logic
+        } else if (column === 'pastMonth') {
+            //need logic
+        } else if (column === 'future') {
+            //need logic
+        } else {
+            $scope.dateRange = "";
+        }
+        console.log($scope.dateRange);
+    }
 
     $scope.add = function() {
       Record

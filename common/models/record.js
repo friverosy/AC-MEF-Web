@@ -1,28 +1,33 @@
 module.exports = function(Record) {
     Record.observe('before save', function processData(ctx, next) {
-        // console.log(ctx.instance.people_run);
+        if (ctx.instance) { // if its new record
+            var count = 0;
 
-        // Record.find({where: {and: [{people_run: ctx.instance.people_run},
-        //     {intput_datetime: '2016-02-22T18:35:24.487Z'}]}},
-        //     function (err, records) {
-        //         console.log(records.id);
-        // });
+            Record.find({
+                where: {
+                    and: [
+                        {people_run: ctx.instance.people_run},
+                        {input_datetime: undefined}
+                    ]
+                }},
+                function (err, records) {
+                    records.forEach(function (record) {
+                        count = count + 1;
+                        console.log(count);
+                    });
+                }
+            );
 
-        // Record.find({where: {"id": "56cb6b2809397a5708230352"}},
-        //     function (err, records) {
-        //         console.log(records.id);
-        // });
-
-
-        // Record.find({where: {fullname: 'Cristtopher Quintana Toledo'}, limit: 3},
-        // function(err, records) {
-        //     console.log(records.id);
-        // });
-
-        if (ctx.instance) {
-            ctx.instance.input_datetime = new Date();
+            if (count > 0){
+                console.log("Entrada");
+                ctx.instance.input_datetime = new Date();
+            }else{
+                console.log("Salida");
+                ctx.instance.output_datetime = new Date();
+            }
         } else {
-            //ctx.data.output_datetime = new Date();
+            console.log("updated");
+            // ctx.data.output_datetime = new Date();
         }
         next();
     });
