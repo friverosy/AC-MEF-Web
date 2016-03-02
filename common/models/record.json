@@ -21,6 +21,9 @@
     },
     "datetime_output": {
       "type": "date"
+    },
+    "is_input": {
+      "type": "boolean"
     }
   },
   "validations": [],

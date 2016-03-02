@@ -8,6 +8,24 @@
     "port": 27017,
     "database": "AccessControl",
     "name": "mongoDS",
-    "connector": "mongodb"
+    "connector": "mongodb",
+    "allowExtendedOperators": true
+  },
+  "emailDs": {
+    "name": "emailDs",
+    "connector": "mail",
+    "transports": [{
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "ifreaking@gmail.com",
+          "pass": "s3cr3t0!!"
+        }
+      }]
   }
 }
