@@ -9,12 +9,11 @@ module.exports = function(Record) {
                 function (err, records) {
 
                     var set_input = true;
-                    var id_finded = 0;
 
                     records.forEach(function (record) {
                         if(record.output_datetime == undefined){
                             set_input = false;
-                            id_finded = record.id;
+                            ctx.instance.id_finded = record.id;
                             console.log("encontro una entrada");
                         }else{
                             set_input = true;
@@ -39,9 +38,10 @@ module.exports = function(Record) {
         if (ctx.instance) {
             console.log(ctx.instance);
             if(ctx.instance.is_input)
-                Record.updateAll({ id: ctx.instance.id }, { input_datetime: new Date() }, null);
+                Record.updateAll({ id: ctx.instance.id_finded }, { input_datetime: new Date() }, null);
             else {
-                Record.updateAll({ id: ctx.instance.id }, { output_datetime: new Date() }, null);
+                Record.updateAll({ id: ctx.instance.id_finded }, { output_datetime: new Date() }, null);
+                Record.destroyById(ctx.instance.id, null);
             }
         };
         next();

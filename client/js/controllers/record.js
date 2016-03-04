@@ -10,7 +10,9 @@ angular
     $scope.records = [];
 
     function getRecords() {
-        Record.find()
+        Record.find({
+          filter: { where: {datetime_input: {gt: new Date() - (24 * 60 * 60 * 1000)}}}
+        })
         .$promise
         .then(function(results) {
             $scope.records = results;
