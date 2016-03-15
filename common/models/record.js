@@ -38,7 +38,7 @@ module.exports = function(Record) {
         if (ctx.instance) {
             console.log(ctx.instance);
             if(ctx.instance.is_input)
-                Record.updateAll({ id: ctx.instance.id_finded }, { input_datetime: new Date() }, null);
+                Record.updateAll({ id: ctx.instance.id }, { input_datetime: new Date() }, null);
             else {
                 Record.updateAll({ id: ctx.instance.id_finded }, { output_datetime: new Date() }, null);
                 Record.destroyById(ctx.instance.id, null);

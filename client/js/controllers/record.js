@@ -10,9 +10,7 @@ angular
     $scope.records = [];
 
     function getRecords() {
-        Record.find({
-          filter: { where: {datetime_input: {gt: new Date() - (24 * 60 * 60 * 1000)}}}
-        })
+        Record.find()
         .$promise
         .then(function(results) {
             $scope.records = results;
@@ -24,7 +22,6 @@ angular
     var curr_date = d.getDate();
     var curr_month = d.getMonth()+1;
     var curr_year = d.getFullYear();
-
     $scope.dateToday = Date.parse(curr_month + "/" + curr_date + "/" + curr_year);
     $scope.dateRange = "";
 
@@ -35,8 +32,6 @@ angular
         } else if (column === 'pastWeek') {
             //need logic
         } else if (column === 'pastMonth') {
-            //need logic
-        } else if (column === 'future') {
             //need logic
         } else {
             $scope.dateRange = "";

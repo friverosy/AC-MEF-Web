@@ -50,7 +50,7 @@
 		</tr>
 		</thead>
 		<tbody>
-			<tr ng:repeat="record in records | orderBy:sortType:sortIt | filter:dateRange:expression">
+			<tr ng:repeat="record in records | orderBy:sortType:sortIt | filter:dateRange">
 				<td>{{$index + 1}}</td>
 				<td><a href="people/{{record.people_run}}">{{record.people_run}}</a></td>
 				<td>{{record.fullname}}</td>
