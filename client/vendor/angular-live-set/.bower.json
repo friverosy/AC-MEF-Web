@@ -1,0 +1,24 @@
+{
+  "author": "Ritchie Martori",
+  "name": "angular-live-set",
+  "description": "Bind to a set of data that is always kept up to date",
+  "homepage": "http://docs.strongloop.com",
+  "main": "./dist/live-set.js",
+  "license": "MIT",
+  "dependencies": {
+    "angular": ">= 1.0.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.1"
+  },
+  "_release": "1bce3cc511",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1bce3cc511bd187236ba916f1ced88ddcb724e79"
+  },
+  "_source": "git://github.com/strongloop/angular-live-set.git",
+  "_target": "*",
+  "_originalSource": "angular-live-set",
+  "_direct": true
+}

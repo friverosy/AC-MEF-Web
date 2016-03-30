@@ -1,0 +1,63 @@
+<h1>
+	Peoples
+</h1>
+<hr>
+<div ng-controller="CDController">
+	 {{currentDate | date:'dd MMM yyyy'}}
+</div>
+<p class="text-right">
+   <button class="btn btn-link" ng-click="exportToExcel('#peoples')">
+   <span class="glyphicon glyphicon-share"></span> Export to Excel
+   </button>
+</p>
+
+<div ng-controller="PeopleController" class="table-responsive">
+	<table class="table table-striped" id="peoples">
+		<thead>
+		<tr>
+			<th>Run</th>
+			<th>FullName</th>
+			<th>
+				<a href="#" ng-click="sortType = 'input_datetime'; sortIt = !sortIt">
+				    <span ng-show="sortType == 'input_datetime' && !sortIt" class="fa fa-caret-down"></span>
+				    <span ng-show="sortType == 'input_datetime' && sortIt" class="fa fa-caret-up"></span>
+				Input
+				</a>
+			</th>
+			<th>
+				<a href="#" ng-click="sortType = 'output_datetime'; sortIt = !sortIt">
+				    <span ng-show="sortType == 'output_datetime' && !sortIt" class="fa fa-caret-down"></span>
+				    <span ng-show="sortType == 'output_datetime' && sortIt" class="fa fa-caret-up"></span>
+				Output
+				</a>
+			</th>
+			<th>
+				<a href="#" ng-click="sortType = 'is_permitted'; sortIt = !sortIt">
+				    <span ng-show="sortType == 'is_permitted' && !sortIt" class="fa fa-caret-down"></span>
+				    <span ng-show="sortType == 'is_permitted' && sortIt" class="fa fa-caret-up"></span>
+				State
+				</a>
+			</th>
+			<th>Comment</th>
+			<th>Action</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr ng:repeat="people in peoples | orderBy:sortType:sortIt | filter:dateRange:expression">
+				<td><a href="people/{{people.people_run}}">{{people.people_run}}</a></td>
+				<td>{{people.fullname}}</td>
+				<td>{{people.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+				<td>{{people.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+				<td>
+					<span ng-if="people.is_permitted" class="label label-success label-mini">Permitted</span>
+					<span ng-if="people.is_permitted == false" class="label label-danger label-mini">Dennied</span>
+				</td>
+				<td>{{people.comment}}</td>
+				<td>
+					<input type="text" ng-model="people.comment" ng-change="update(people)" placeholder="Add Comment" class="form-control">
+					<!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
