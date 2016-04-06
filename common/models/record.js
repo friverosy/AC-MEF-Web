@@ -5,7 +5,7 @@ module.exports = function(Record) {
     Record.observe('before save', function(ctx, next) {
         if (ctx.instance) {
             Record.find({
-                where: { people_run: ctx.instance.people_run}},
+                where: { fullname: ctx.instance.fullname }},
                 function (err, records) {
 
                     var set_input = true;
@@ -14,7 +14,6 @@ module.exports = function(Record) {
                         if(record.output_datetime == undefined){
                             set_input = false;
                             ctx.instance.id_finded = record.id;
-                            console.log("encontro una entrada");
                         }else{
                             set_input = true;
                         };
@@ -38,7 +37,7 @@ module.exports = function(Record) {
                     { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.is_input &&
             ctx.instance.updating == undefined){
-                console.log("Insert input with permision dennied");
+                console.log("Insert input dennied");
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date() }, null);
             }else if(ctx.instance.id_finded != undefined &&
@@ -48,21 +47,15 @@ module.exports = function(Record) {
                     { output_datetime: new Date(), is_input: false }, null);
                 Record.destroyById(ctx.instance.id, null);
             }else if(ctx.instance.updating != undefined){
-                console.log("adding comment");
+                console.log("Adding comment");
                 Record.updateAll({ id: ctx.instance.id },
                     { comment: ctx.instance.comment }, null);
                 //Record.destroyById(ctx.instance.id, null);
+            }else{
+                console.log("else");
             }
         }
         next();
     });
 
-
-    // Record.afterRemote('findById', function (ctx, result, next) {
-    //     result.updateAttribute({"$inc": {output_datetime: new Date()}},
-    //     function (err, instance) {
-    //         if(err) {console.log(err)};
-    //         if(!err) {console.log(instance)}
-    //     })
-    // });
 };
