@@ -11,7 +11,7 @@ module.exports = function(Record) {
                     var set_input = true;
 
                     records.forEach(function (record) {
-                        if(record.output_datetime == undefined){
+                        if(record.is_input == true){
                             set_input = false;
                             ctx.instance.id_finded = record.id;
                         }else{
@@ -54,6 +54,10 @@ module.exports = function(Record) {
             }else{
                 console.log("else");
             }
+
+            if(ctx.instance.input_datetime == undefined &&
+                ctx.instance.output_datetime == undefined)
+                ctx.instance.input_datetime = new Date();
         }
         next();
     });
