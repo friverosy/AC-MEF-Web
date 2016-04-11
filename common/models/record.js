@@ -9,13 +9,18 @@ module.exports = function(Record) {
                 function (err, records) {
                     var set_input = true;
                     records.forEach(function (record) {
-                        if(record.is_input == true ||
-                                record.output_datetime == undefined){
-                            set_input = false;
-                            ctx.instance.id_finded = record.id;
-                        }else{
+                        if(record.input_datetime != undefined &&
+                                record.output_datetime != undefined){
                             set_input = true;
-                        };
+                        }else{
+                            if(record.is_input == true ||
+                                    record.output_datetime == undefined){
+                                set_input = false;
+                                ctx.instance.id_finded = record.id;
+                            }else{
+                                set_input = true;
+                            }
+                        }
                     });
 
                     if(set_input) ctx.instance.is_input = true;
