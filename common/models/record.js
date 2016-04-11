@@ -33,9 +33,7 @@ module.exports = function(Record) {
 
     Record.observe('after save', function(ctx, next) {
         if (ctx.instance) {
-            console.log(ctx.instance.is_input);
-            console.log(ctx.instance.id_finded);
-            console.log(ctx.instance.updating);
+            console.log("--------------------");
             if(ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating == undefined){
                 console.log("Insert input");
@@ -47,15 +45,15 @@ module.exports = function(Record) {
                 console.log("Insert input dennied");
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date() }, null);
-            }else if(ctx.instance.is_input == false &&
-                    ctx.instance.id_finded !== undefined &&
+            }else if((ctx.instance.is_input == false ||
+                    ctx.instance.id_finded !== undefined) &&
                     ctx.instance.updating == undefined){
                 console.log("Insert output");
                 Record.updateAll({ id: ctx.instance.id_finded },
                     { output_datetime: new Date() }, null);
-                console.log("Updated id: " + ctx.instance.id_finded);
+                console.log("--- Updated id: " + ctx.instance.id_finded);
                 Record.destroyById(ctx.instance.id, null);
-                console.log("Deleted id: " + ctx.instance.id);
+                console.log("--- Deleted id: " + ctx.instance.id);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.id_finded == undefined &&
                     ctx.instance.updating == undefined &&
@@ -63,6 +61,7 @@ module.exports = function(Record) {
                 console.log("Insert input (fixed)");
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date() }, null);
+                console.log("--- Updated id (fixed): " + ctx.instance.id);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.id_finded == undefined &&
                     ctx.instance.updating == undefined &&
@@ -81,12 +80,14 @@ module.exports = function(Record) {
             if(ctx.instance.input_datetime == undefined &&
                 ctx.instance.output_datetime == undefined){
                     ctx.instance.input_datetime = new Date();
+                    ctx.instance.is_input = true;
                     console.log("Sin fecha de ingreso ni salida");
             }
 
             console.log(ctx.instance);
         }
         next();
+        console.log("--------------------");
     });
 
 };
