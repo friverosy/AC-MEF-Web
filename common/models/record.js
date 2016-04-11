@@ -33,6 +33,9 @@ module.exports = function(Record) {
 
     Record.observe('after save', function(ctx, next) {
         if (ctx.instance) {
+            console.log(ctx.instance.is_input);
+            console.log(ctx.instance.id_finded);
+            console.log(ctx.instance.updating);
             if(ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating == undefined){
                 console.log("Insert input");
