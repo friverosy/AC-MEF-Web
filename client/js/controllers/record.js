@@ -31,7 +31,13 @@ angular
 
     // Counts
     $scope.inputs = Record.count({
-      where: { is_input: true }
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true}
+          ]
+      }
     });
     $scope.permitted = Record.count({
       where: { is_permitted : true }
