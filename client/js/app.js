@@ -11,6 +11,5 @@ angular
         templateUrl: 'views/record.html',
         controller: 'RecordController'
       });
-
     $urlRouterProvider.otherwise('record');
   }]);

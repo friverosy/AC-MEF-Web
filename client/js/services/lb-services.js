@@ -1737,39 +1737,6 @@ module.factory(
 
         /**
          * @ngdoc method
-         * @name lbServices.People#deleteById
-         * @methodOf lbServices.People
-         *
-         * @description
-         *
-         * Delete a model instance by id from the data source.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - Model id
-         *
-         * @param {Function(Object, Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {Function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @return {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `People` object.)
-         * </em>
-         */
-        "deleteById": {
-          url: urlBase + "/people/:id",
-          method: "DELETE",
-        },
-
-        /**
-         * @ngdoc method
          * @name lbServices.People#count
          * @methodOf lbServices.People
          *
@@ -2373,39 +2340,6 @@ module.factory(
         "updateAll": {
           url: urlBase + "/records/update",
           method: "POST",
-        },
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Record#deleteById
-         * @methodOf lbServices.Record
-         *
-         * @description
-         *
-         * Delete a model instance by id from the data source.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - Model id
-         *
-         * @param {Function(Object, Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {Function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @return {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `Record` object.)
-         * </em>
-         */
-        "deleteById": {
-          url: urlBase + "/records/:id",
-          method: "DELETE",
         },
 
         /**
@@ -4226,6 +4160,36 @@ module.factory(
           url: urlBase + "/people/:id/position",
           method: "GET",
         },
+      }
+    );
+
+
+    return R;
+  }]);
+
+/**
+ * @ngdoc object
+ * @name lbServices.Email
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Email` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+module.factory(
+  "Email",
+  ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
+    var R = Resource(
+      urlBase + "/Emails/:id",
+      { 'id': '@id' },
+      {
       }
     );
 
