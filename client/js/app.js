@@ -5,11 +5,24 @@ angular
   ])
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
       $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
     $stateProvider
       .state('record', {
-        url: '',
+        url: '/',
         templateUrl: 'views/record.html',
         controller: 'RecordController'
-      });
-    $urlRouterProvider.otherwise('record');
+      })
+      .state('visit', {
+        url: '/visits',
+        templateUrl: 'views/visits.html',
+        controller: 'VisitController'
+      })
+      .state('contractors', {
+        url: '/contractors',
+        templateUrl: 'views/contractors.html',
+        controller: 'ContractorController'
+      })
+      .state('about', {
+          //we'll get to this in a bit
+      })
   }]);

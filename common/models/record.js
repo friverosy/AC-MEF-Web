@@ -39,6 +39,7 @@ module.exports = function(Record) {
                         // console.log("|");
                     }
 
+                    //not saved is_input instance here
                     if(set_input){
                         ctx.instance.is_input = true;
                         console.log("Entrada: "+records.length);
@@ -62,13 +63,13 @@ module.exports = function(Record) {
                     ctx.instance.updating === undefined){
                 // console.log("Insert input");
                 Record.updateAll({ id: ctx.instance.id },
-                    { input_datetime: new Date() }, null);
+                    { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.is_input &&
                     ctx.instance.is_permitted == false &&
                     ctx.instance.updating === undefined){
                 // console.log("Insert input dennied");
                 Record.updateAll({ id: ctx.instance.id },
-                    { input_datetime: new Date() }, null);
+                    { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.updating === undefined){
                 // console.log("Insert output");
@@ -85,7 +86,7 @@ module.exports = function(Record) {
                     ctx.instance.is_permitted){
                 // console.log("Insert input (fixed)");
                 Record.updateAll({ id: ctx.instance.id },
-                    { input_datetime: new Date() }, null);
+                    { input_datetime: new Date(), is_input: true }, null);
                 console.log("--- Updated id (fixed): " + ctx.instance.id);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.id_finded == undefined &&
@@ -93,7 +94,7 @@ module.exports = function(Record) {
                     ctx.instance.is_permitted){
                 // console.log("Insert input dennnied (fixed)");
                 Record.updateAll({ id: ctx.instance.id },
-                    { input_datetime: new Date() }, null);
+                    { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.updating !== undefined){
                 // console.log("Adding comment");
                 Record.updateAll({ id: ctx.instance.id },

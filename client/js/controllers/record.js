@@ -39,6 +39,36 @@ angular
           ]
       }
     });
+    $scope.employees = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "E"}
+          ]
+      }
+    });
+    $scope.visits = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "V"}
+          ]
+      }
+    });
+    $scope.contractors = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "C"}
+          ]
+      }
+    });
     $scope.permitted = Record.count({
       where: { is_permitted : true }
     });
