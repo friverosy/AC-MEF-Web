@@ -4,51 +4,32 @@ module.exports = function(Record) {
 
     Record.observe('before save', function(ctx, next) {
         if (ctx.instance) {
-            Record.find({
-                where: { fullname: ctx.instance.fullname }},
+            Record.findOne({
+                where: { fullname: ctx.instance.fullname },
+                order: 'id DESC'},
                 function (err, records) {
-                    var set_input = true;
-
-                    if(records.length < 1){
-                        //console.log("first record: "+records.length);
-                        set_input = true
-                    }else{
-                        //console.log("more than one record: "+records.length);
-                        var input = records[records.length-1].input_datetime;
-                        var output = records[records.length-1].output_datetime;
-                        var id = records[records.length-1].id;
-
-                        if(input !== undefined && output !== undefined){
+                    try {
+                        var id = records.id;
+                        if(records.input_datetime !== undefined && records.output_datetime !== undefined){
                             // console.log("already has input and output");
-                            set_input = true;
-                        }else if(input !== undefined && output == undefined){
+                            ctx.instance.is_input = true;
+                        }else if(records.input_datetime !== undefined && records.output_datetime == undefined){
                             // console.log("has input without output");
-                            set_input = false;
+                            ctx.instance.is_input = false;
                             ctx.instance.id_finded = id;
-                        }else if(input == undefined && output !== undefined){
+                        }else if(records.input_datetime == undefined && records.output_datetime !== undefined){
                             // console.log("has output without input");
-                            set_input = true;
-                        }else if(input == undefined && output == undefined){
+                            ctx.instance.is_input = true;
+                        }else if(records.input_datetime == undefined && records.output_datetime == undefined){
                             // console.log("no intput and output");
-                            set_input = true;
+                            ctx.instance.is_input = true;
                         }
-                        // console.log("|");
-                        // console.log(id);
-                        // console.log(input)
-                        // console.log(output);
-                        // console.log("|");
-                    }
-
-                    //not saved is_input instance here
-                    if(set_input){
+                    } catch (err) {
                         ctx.instance.is_input = true;
-                        console.log("Entrada: "+records.length);
-                    }else{
-                        ctx.instance.is_input = false;
-                        console.log("Salida : "+records.length);
                     }
                 }
             );
+            ctx.instance.profile = "E";
         };
         next();
     });
@@ -57,22 +38,20 @@ module.exports = function(Record) {
         var socket = Record.app.io;
         if (ctx.instance) {
             var today = new Date();
-
-
             if(ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating === undefined){
-                // console.log("Insert input");
+                console.log("Insert input "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.is_input &&
                     ctx.instance.is_permitted == false &&
                     ctx.instance.updating === undefined){
-                // console.log("Insert input dennied");
+                console.log("Insert input dennied "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.updating === undefined){
-                // console.log("Insert output");
+                console.log("Insert output "+ new Date());
                 if(ctx.instance.id_finded !== undefined){
                     Record.updateAll({ id: ctx.instance.id_finded },
                         { output_datetime: new Date(), is_input: false }, null);
@@ -84,28 +63,24 @@ module.exports = function(Record) {
                     ctx.instance.id_finded === undefined &&
                     ctx.instance.updating === undefined &&
                     ctx.instance.is_permitted){
-                // console.log("Insert input (fixed)");
+                console.log("Insert input (fixed) "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
-                console.log("--- Updated id (fixed): " + ctx.instance.id);
+                // console.log("--- Updated id (fixed): " + ctx.instance.id);
             }else if(ctx.instance.is_input == false &&
                     ctx.instance.id_finded == undefined &&
                     ctx.instance.updating == undefined &&
                     ctx.instance.is_permitted){
-                // console.log("Insert input dennnied (fixed)");
+                console.log("Insert input dennnied (fixed) "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.updating !== undefined){
-                // console.log("Adding comment");
+                console.log("Adding comment "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { comment: ctx.instance.comment }, null);
-            }else{
-                // console.log("else");
             }
-
-            // console.log(ctx.instance);
-            console.log("-------------------------------------------");
         }
         next();
     });
+
 };
