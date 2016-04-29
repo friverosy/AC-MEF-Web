@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('VisitController', ['$scope', '$state', 'Record', function($scope,
+  .controller('VisitsController', ['$scope', '$state', 'Record', function($scope,
       $state, Record) {
     $scope.records = [];
     ONE_DAY = 24 * 60 * 60 * 1000;
@@ -36,6 +36,36 @@ angular
               {is_input: true},
               {output_datetime: undefined},
               {is_permitted: true}
+          ]
+      }
+    });
+    $scope.employees = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "E"}
+          ]
+      }
+    });
+    $scope.visits = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "V"}
+          ]
+      }
+    });
+    $scope.contractors = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {profile: "C"}
           ]
       }
     });

@@ -1,13 +1,13 @@
 angular
   .module('app', [
-    'lbServices',
-    'ui.router'
+    'ui.router',
+    'lbServices'
   ])
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider,
       $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
     $stateProvider
-      .state('record', {
+      .state('dashboard', {
         url: '/',
         templateUrl: 'views/record.html',
         controller: 'RecordController'
@@ -15,12 +15,17 @@ angular
       .state('visit', {
         url: '/visits',
         templateUrl: 'views/visits.html',
-        controller: 'VisitController'
+        controller: 'VisitsController'
       })
       .state('contractors', {
         url: '/contractors',
         templateUrl: 'views/contractors.html',
         controller: 'ContractorController'
+      })
+      .state('employees', {
+        url: '/employees',
+        templateUrl: 'views/employees.html',
+        controller: 'EmployeesController'
       })
       .state('about', {
           //we'll get to this in a bit
