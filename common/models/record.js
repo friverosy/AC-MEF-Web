@@ -1,9 +1,10 @@
 module.exports = function(Record) {
-    // remove the DELETE functionality from API
+    // remove DELETE functionality from API
     Record.disableRemoteMethod('deleteById', true);
 
     Record.observe('before save', function(ctx, next) {
         if (ctx.instance) {
+            // find last one
             Record.findOne({
                 where: { fullname: ctx.instance.fullname },
                 order: 'id DESC'},
@@ -29,7 +30,7 @@ module.exports = function(Record) {
                     }
                 }
             );
-            ctx.instance.profile = "E";
+            //ctx.instance.profile = "E";
         };
         next();
     });
@@ -75,9 +76,30 @@ module.exports = function(Record) {
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
             }else if(ctx.instance.updating !== undefined){
-                console.log("Adding comment "+ new Date());
-                Record.updateAll({ id: ctx.instance.id },
-                    { comment: ctx.instance.comment }, null);
+                console.log("Modified at "+ new Date());
+                //try to optimize!!
+                if (ctx.instance.company !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.company }, null);
+                }else if(ctx.instance.reason !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.reason }, null);
+                }else if(ctx.instance.destination !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.destination }, null);
+                }else if(ctx.instance.input_patent !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.input_patent }, null);
+                }else if(ctx.instance.output_patent !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.output_patent }, null);
+                }else if(ctx.instance.authorized_by !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { company: ctx.instance.authorized_by }, null);
+                }else{
+                    Record.updateAll({ id: ctx.instance.id },
+                        { comment: ctx.instance.comment }, null);
+                }
             }
         }
         next();

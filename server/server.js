@@ -16,9 +16,20 @@ app.start = function() {
   });
 };
 
+app.get('/login', function(req, res) {
+  res.sendfile('client/views/login.html');
+});
+
 app.get('/status', function(req, res){
     res.status(200).send("I'am alive!!");
 });
+
+// app.use(loopback.urlNotFound());
+//
+// app.use(function(req, res, next) {
+//   if (req.method != 'GET') return next();
+//   res.sendfile(path.resolve('../client/index.html'));
+// });
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.

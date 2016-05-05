@@ -6,6 +6,9 @@
   "options": {
     "validateUpsert": true
   },
+  "Email": {
+    "dataSource": "emailDs"
+  },
   "properties": {
     "patent_input": {
       "type": "string"

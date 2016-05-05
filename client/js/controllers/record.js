@@ -8,14 +8,23 @@ angular
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    function getRecords() {
-        Record.find()
+    function getEmployees() {
+        Record.find( { filter: { where: { profile: "E" }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
-            $scope.records = results;
+            $scope.employees = results;
         });
     }
-    getRecords();
+
+    function getVisits() {
+        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.visits = results;
+        });
+    }
+    getEmployees();
+    getVisits();
 
     var f=new Date();
     var ano = f.getFullYear();
@@ -30,7 +39,7 @@ angular
     }
 
     // Counts
-    $scope.inputs = Record.count({
+    $scope.num_inputs = Record.count({
       where: { and:
           [
               {is_input: true},
@@ -39,7 +48,7 @@ angular
           ]
       }
     });
-    $scope.employees = Record.count({
+    $scope.num_employees = Record.count({
       where: { and:
           [
               {is_input: true},
@@ -49,17 +58,16 @@ angular
           ]
       }
     });
-    $scope.visits = Record.count({
+    $scope.num_visits = Record.count({
       where: { and:
           [
               {is_input: true},
               {output_datetime: undefined},
-              {is_permitted: true},
               {profile: "V"}
           ]
       }
     });
-    $scope.contractors = Record.count({
+    $scope.num_contractors = Record.count({
       where: { and:
           [
               {is_input: true},

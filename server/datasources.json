@@ -13,19 +13,19 @@
   },
   "emailDs": {
     "name": "emailDs",
+    "defaultForType": "mail",
     "connector": "mail",
-    "transports": [{
-        "type": "smtp",
+    "transports": [
+      {
+        "type": "SMTP",
         "host": "smtp.gmail.com",
         "secure": true,
         "port": 465,
-        "tls": {
-          "rejectUnauthorized": false
-        },
         "auth": {
-          "user": "ifreaking@gmail.com",
+          "user": "",
           "pass": ""
         }
-      }]
+      }
+    ]
   }
 }

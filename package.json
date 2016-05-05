@@ -8,6 +8,7 @@
     "posttest": "nsp check"
   },
   "dependencies": {
+    "bcrypt": "^0.8.6",
     "bluebird": "^3.3.5",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
@@ -16,8 +17,11 @@
     "loopback": "^2.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.1.0",
+    "loopback-component-storage": "^1.8.0",
     "loopback-connector-mongodb": "^1.13.3",
     "loopback-datasource-juggler": "^2.39.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "serve-favicon": "^2.0.1",
     "socket.io": "^1.4.5"
   },

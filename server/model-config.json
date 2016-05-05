@@ -76,5 +76,13 @@
   },
   "Email": {
     "dataSource": "emailDs"
+  },
+  "user": {
+    "dataSource": "mongoDS",
+    "public": false
+  },
+  "login": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
