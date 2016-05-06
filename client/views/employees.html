@@ -20,6 +20,10 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <ul class="nav nav-tabs">
+                    <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
+            		<li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
+                    <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
+            		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
                   <li class="pull-right"><a href="employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
                 </ul>
               <table id="example2" class="table table-bordered table-hover">
@@ -34,7 +38,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr ng:repeat="record in employees">
+                    <tr ng:repeat="record in employees | filter: filterByDate(input_datetime)">
                         <td><!--<a href="people/{{record.people_run}}">-->{{record.people_run}}<!--</a>--></td>
                         <td>{{record.fullname}}</td>
                         <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
