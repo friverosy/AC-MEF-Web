@@ -19,6 +19,13 @@
               <h3 class="box-title">Registro de visitas ({{num_visits.count}} en planta)</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
+                <ul class="nav nav-tabs">
+                    <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
+            		<li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
+                    <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
+            		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
+                  <li class="pull-right"><a href="employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+                </ul>
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -35,7 +42,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr ng:repeat="record in visits | filter:dateRange">
+                    <tr ng:repeat="record in visits | filter: filterByDate(input_datetime)">
                           <td>{{record.people_run}}</td>
                           <td>{{record.fullname}}</td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
