@@ -30,14 +30,41 @@ module.exports = function(Record) {
                     }
                 }
             );
-            //ctx.instance.profile = "E";
+            if(ctx.instance.profile === undefined){
+                ctx.instance.profile = "E";
+            }
         };
         next();
     });
 
     Record.observe('after save', function(ctx, next) {
         var socket = Record.app.io;
+
         if (ctx.instance) {
+
+            // add visit if is new
+            if(ctx.instance.profile == "V"){
+                var app = require('../../server/server');
+                var People = app.models.People
+                People.findOrCreate(
+                {
+                    where: { run: ctx.instance.people_run } },
+                {
+                    run: ctx.instance.people_run,
+                    fullname: ctx.instance.fullname,
+                    profile: 'V',
+                    create_at: new Date()
+                },
+                function(error, instance, created) {  // Callback
+                    if (error) throw error;
+                    if (created) {
+                        console.log('Object already exists: \n', instance);
+                    } else {
+                        console.log('Already existed.');
+                    }
+                });
+            }
+
             var today = new Date();
             if(ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating === undefined){
@@ -83,19 +110,22 @@ module.exports = function(Record) {
                         { company: ctx.instance.company }, null);
                 }else if(ctx.instance.reason !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
-                        { company: ctx.instance.reason }, null);
+                        { reason: ctx.instance.reason }, null);
                 }else if(ctx.instance.destination !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
-                        { company: ctx.instance.destination }, null);
+                        { destination: ctx.instance.destination }, null);
                 }else if(ctx.instance.input_patent !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
-                        { company: ctx.instance.input_patent }, null);
+                        { input_patent: ctx.instance.input_patent }, null);
                 }else if(ctx.instance.output_patent !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
-                        { company: ctx.instance.output_patent }, null);
+                        { output_patent: ctx.instance.output_patent }, null);
                 }else if(ctx.instance.authorized_by !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
-                        { company: ctx.instance.authorized_by }, null);
+                        { authorized_by: ctx.instance.authorized_by }, null);
+                }else if(ctx.instance.fullname !== undefined){
+                    Record.updateAll({ id: ctx.instance.id },
+                        { fullname: ctx.instance.fullname }, null);
                 }else{
                     Record.updateAll({ id: ctx.instance.id },
                         { comment: ctx.instance.comment }, null);
