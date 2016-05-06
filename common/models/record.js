@@ -39,13 +39,13 @@ module.exports = function(Record) {
 
     Record.observe('after save', function(ctx, next) {
         var socket = Record.app.io;
+        var app = require('../../server/server');
+        var People = app.models.People
 
         if (ctx.instance) {
 
             // add visit if is new
             if(ctx.instance.profile == "V"){
-                var app = require('../../server/server');
-                var People = app.models.People
                 People.findOrCreate(
                 {
                     where: { run: ctx.instance.people_run } },
@@ -60,7 +60,7 @@ module.exports = function(Record) {
                     if (created) {
                         console.log('Object already exists: \n', instance);
                     } else {
-                        console.log('Already existed.');
+                        console.log(instance.fullname + ' Already existed.');
                     }
                 });
             }
@@ -124,7 +124,9 @@ module.exports = function(Record) {
                     Record.updateAll({ id: ctx.instance.id },
                         { authorized_by: ctx.instance.authorized_by }, null);
                 }else if(ctx.instance.fullname !== undefined){
-                    Record.updateAll({ id: ctx.instance.id },
+                    Record.updateAll({ people_run: ctx.instance.people_run },
+                        { fullname: ctx.instance.fullname }, null);
+                    People.updateAll({ run: ctx.instance.people_run },
                         { fullname: ctx.instance.fullname }, null);
                 }else{
                     Record.updateAll({ id: ctx.instance.id },
