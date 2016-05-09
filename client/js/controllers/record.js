@@ -39,7 +39,7 @@ angular
     }
 
     // Counts
-    $scope.num_inputs = Record.count({
+    $scope.num_all = Record.count({
       where: { and:
           [
               {is_input: true},

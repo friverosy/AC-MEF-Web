@@ -9,18 +9,19 @@
   "properties": {
     "start_authorized_date": {
       "type": "date",
-      "required": true
+      "required": false
     },
     "end_authorized_date": {
       "type": "date",
-      "required": true
+      "required": false
     },
     "fullname": {
       "type": "string",
       "required": true
     },
     "cellphone": {
-      "type": "string"
+      "type": "string",
+      "required": false
     },
     "run": {
       "type": "string",
@@ -29,15 +30,15 @@
     },
     "start_authorized_hour": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "end_authorized_hour": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "is_permitted": {
       "type": "boolean",
-      "required": true
+      "required": false
     }
   },
   "validations": [],

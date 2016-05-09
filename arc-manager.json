@@ -1,0 +1,10 @@
+{
+  "ids": {
+    "ManagerHost": 5,
+    "LoadBalancer": 1
+  },
+  "models": {
+    "ManagerHost": {},
+    "LoadBalancer": {}
+  }
+}

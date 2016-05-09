@@ -12,6 +12,11 @@ angular
         templateUrl: 'views/record.html',
         controller: 'RecordController'
       })
+      .state('todayall', {
+        url: '/todayall',
+        templateUrl: 'views/todayall.html',
+        controller: 'RecordController'
+      })
       .state('visit', {
         url: '/visits',
         templateUrl: 'views/visits.html',
