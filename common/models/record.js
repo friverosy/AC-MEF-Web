@@ -63,6 +63,29 @@ module.exports = function(Record) {
                         console.log(instance.fullname + ' Already existed.');
                     }
                 });
+
+                // Get fullname and company from last record, if are diferent update it.
+
+                /*
+                    Check with 128 line, what happens if updated some doc?
+                */
+                People.findOne({
+                    where: { run: ctx.instance.people_run },
+                    order: 'id DESC'},
+                    function (err, people) {
+                        if (error) throw error;
+                        else {
+                            if(people.fullname !== ctx.instance.fullname){
+                                Record.updateAll({ people_run: ctx.instance.people_run },
+                                    { fullname: people.fullname }, null);
+                            }
+                            if(people.company !== ctx.instance.company){
+                                Record.updateAll({ people_run: ctx.instance.people_run },
+                                    { company: people.company }, null);
+                            }
+                        }
+                    }
+                );
             }
 
             var today = new Date();
