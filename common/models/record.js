@@ -9,31 +9,49 @@ module.exports = function(Record) {
                 where: { fullname: ctx.instance.fullname },
                 order: 'id DESC'},
                 function (err, records) {
-                    try {
-                        var id = records.id;
-                        if(records.input_datetime !== undefined && records.output_datetime !== undefined){
-                            // console.log("already has input and output");
-                            ctx.instance.is_input = true;
-                        }else if(records.input_datetime !== undefined && records.output_datetime == undefined){
-                            // console.log("has input without output");
-                            ctx.instance.is_input = false;
-                            ctx.instance.id_finded = id;
-                        }else if(records.input_datetime == undefined && records.output_datetime !== undefined){
-                            // console.log("has output without input");
-                            ctx.instance.is_input = true;
-                        }else if(records.input_datetime == undefined && records.output_datetime == undefined){
-                            // console.log("no intput and output");
+                    if (err) throw error;
+                    else {
+                        try {
+                            var id = records.id;
+                            // Update fullname
+                            if (ctx.instance.fullname !== records.fullname){
+                                console.log("no pasa por acá");
+                                ctx.instance.fullname !== records.fullname;
+                            }
+
+                            // get input or output
+                            if(records.input_datetime !== undefined &&
+                                records.output_datetime !== undefined){
+                                // console.log("already has input and output");
+                                ctx.instance.is_input = true;
+                            } else if (records.input_datetime !== undefined &&
+                                records.output_datetime == undefined){
+                                // console.log("has input without output");
+                                ctx.instance.is_input = false;
+                                ctx.instance.id_finded = id;
+                            } else if (records.input_datetime == undefined &&
+                                records.output_datetime !== undefined){
+                                // console.log("has output without input");
+                                ctx.instance.is_input = true;
+                            } else if (records.input_datetime == undefined &&
+                                records.output_datetime == undefined){
+                                // console.log("no intput and output");
+                                ctx.instance.is_input = true;
+                            }
+                        } catch (err) {
+                            // First record of this person.
                             ctx.instance.is_input = true;
                         }
-                    } catch (err) {
-                        ctx.instance.is_input = true;
                     }
                 }
             );
             if(ctx.instance.profile === undefined){
                 ctx.instance.profile = "E";
             }
-        };
+        } else {
+            // Updating
+            ctx.data.updated = new Date();
+        }
         next();
     });
 
@@ -45,7 +63,7 @@ module.exports = function(Record) {
         if (ctx.instance) {
 
             // add visit if is new
-            if(ctx.instance.profile == "V"){
+            if (ctx.instance.profile == "V"){
                 People.findOrCreate(
                 {
                     where: { run: ctx.instance.people_run } },
@@ -55,62 +73,94 @@ module.exports = function(Record) {
                     profile: 'V',
                     create_at: new Date()
                 },
-                function(error, instance, created) {  // Callback
+                function(error, instance, created) {
                     if (error) throw error;
                     if (created) {
-                        console.log('Object already exists: \n', instance);
+                        //instance.profileId = 2; // ? where put that...???
+                        console.log("new visit created");
                     } else {
-                        console.log(instance.fullname + ' Already existed.');
+                        // Already existed.
+                        try {
+                            // Update fullname if are diferent.
+                            if (ctx.instance.fullname !== instance.fullname){
+                                console.log("updating fullname in poeple after save");
+                                Record.updateAll({ people_run: instance.run },
+                                    { fullname: instance.fullname }, null);
+                            }
+                        } catch (err) {
+                            console.log("92" + err);
+                        }
+
                     }
                 });
-
-                // Get fullname and company from last record, if are diferent update it.
-
-                /*
-                    Check with 128 line, what happens if updated some doc?
-                */
-                People.findOne({
-                    where: { run: ctx.instance.people_run },
-                    order: 'id DESC'},
-                    function (err, people) {
-                        if (error) throw error;
-                        else {
-                            if(people.fullname !== ctx.instance.fullname){
-                                Record.updateAll({ people_run: ctx.instance.people_run },
-                                    { fullname: people.fullname }, null);
-                            }
-                            if(people.company !== ctx.instance.company){
-                                Record.updateAll({ people_run: ctx.instance.people_run },
-                                    { company: people.company }, null);
-                            }
-                        }
-                    }
-                );
             }
 
+            // Get fullname and company from last record, if are diferent update it.
+            // Check with instance.updating part, what happens if updated some doc?
+            People.findOne({
+                where: { run: ctx.instance.people_run },
+                order: 'id DESC'},
+                function (err, people) {
+                    if (err) throw error;
+                    else {
+
+                        // try{
+                        //     if (people.fullname !== ctx.instance.fullname){
+                        //         Record.updateAll(
+                        //             { people_run: ctx.instance.people_run },
+                        //             { fullname: people.fullname },
+                        //             null
+                        //         );
+                        //     }
+                        //
+                        //     Record.find({
+                        //         where: {
+                        //             people_run: ctx.instance.people_run
+                        //         },
+                        //         limit: 1,
+                        //         order: 'id DESC'},
+                        //         function(err, record) {
+                        //             console.log(record.company); //undefined ... why!!!!
+                        //             if(err) console.log(err);
+                        //             else {
+                        //                 Record.updateAll({ id: ctx.instance.id },
+                        //                     { company: record.company }, null);
+                        //             }
+                        //         }
+                        //     );
+                        // }
+                        // catch(err){ // first record of this visit
+                        //     console.log("first record of this visit ", err);
+                        // }
+                    }
+                }
+            );
+
             var today = new Date();
-            if(ctx.instance.is_input && ctx.instance.is_permitted &&
+
+            // set input or output
+            if (ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating === undefined){
                 console.log("Insert input "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
-            }else if(ctx.instance.is_input &&
+            } else if (ctx.instance.is_input &&
                     ctx.instance.is_permitted == false &&
                     ctx.instance.updating === undefined){
                 console.log("Insert input dennied "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
-            }else if(ctx.instance.is_input == false &&
+            } else if (ctx.instance.is_input == false &&
                     ctx.instance.updating === undefined){
                 console.log("Insert output "+ new Date());
-                if(ctx.instance.id_finded !== undefined){
+                if (ctx.instance.id_finded !== undefined){
                     Record.updateAll({ id: ctx.instance.id_finded },
                         { output_datetime: new Date(), is_input: false }, null);
                     // console.log("--- Updated id: " + ctx.instance.id_finded);
                     Record.destroyById(ctx.instance.id, null);
                     // console.log("--- Deleted id: " + ctx.instance.id);
                 }
-            }else if(ctx.instance.is_input == false &&
+            } else if (ctx.instance.is_input == false &&
                     ctx.instance.id_finded === undefined &&
                     ctx.instance.updating === undefined &&
                     ctx.instance.is_permitted){
@@ -118,40 +168,41 @@ module.exports = function(Record) {
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
                 // console.log("--- Updated id (fixed): " + ctx.instance.id);
-            }else if(ctx.instance.is_input == false &&
+            } else if (ctx.instance.is_input == false &&
                     ctx.instance.id_finded == undefined &&
                     ctx.instance.updating == undefined &&
                     ctx.instance.is_permitted){
                 console.log("Insert input dennnied (fixed) "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
-            }else if(ctx.instance.updating !== undefined){
-                console.log("Modified at "+ new Date());
+            } else if (ctx.instance.updating !== undefined){
                 //try to optimize!!
                 if (ctx.instance.company !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { company: ctx.instance.company }, null);
-                }else if(ctx.instance.reason !== undefined){
+                    People.updateAll({ run: ctx.instance.people_run },
+                        { company: ctx.instance.company }, null);
+                } else if (ctx.instance.reason !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { reason: ctx.instance.reason }, null);
-                }else if(ctx.instance.destination !== undefined){
+                } else if (ctx.instance.destination !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { destination: ctx.instance.destination }, null);
-                }else if(ctx.instance.input_patent !== undefined){
+                } else if (ctx.instance.input_patent !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { input_patent: ctx.instance.input_patent }, null);
-                }else if(ctx.instance.output_patent !== undefined){
+                } else if (ctx.instance.output_patent !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { output_patent: ctx.instance.output_patent }, null);
-                }else if(ctx.instance.authorized_by !== undefined){
+                } else if (ctx.instance.authorized_by !== undefined){
                     Record.updateAll({ id: ctx.instance.id },
                         { authorized_by: ctx.instance.authorized_by }, null);
-                }else if(ctx.instance.fullname !== undefined){
+                } else if (ctx.instance.fullname !== undefined){
                     Record.updateAll({ people_run: ctx.instance.people_run },
                         { fullname: ctx.instance.fullname }, null);
                     People.updateAll({ run: ctx.instance.people_run },
                         { fullname: ctx.instance.fullname }, null);
-                }else{
+                } else {
                     Record.updateAll({ id: ctx.instance.id },
                         { comment: ctx.instance.comment }, null);
                 }
@@ -159,5 +210,4 @@ module.exports = function(Record) {
         }
         next();
     });
-
 };
