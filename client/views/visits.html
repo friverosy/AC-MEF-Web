@@ -5,7 +5,7 @@
 	<small>Visitas</small>
   </h1>
   <ol class="breadcrumb">
-	<li><a href="dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
 	<li class="active">Visitas</li>
   </ol>
 </section>
@@ -24,7 +24,7 @@
             		<li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
                     <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
             		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
-                  <li class="pull-right"><a href="employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+                  <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
                 </ul>
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
@@ -42,7 +42,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr ng:repeat="record in visits | filter: filterByDate(input_datetime)">
+                    <tr ng:repeat="record in visits | filter: filterByDate(input_datetime) | filter:expression">
                           <td>{{record.people_run}}</td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>

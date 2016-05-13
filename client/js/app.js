@@ -32,11 +32,17 @@ angular
         templateUrl: 'views/employees.html',
         controller: 'RecordController'
       })
+      .state('reports', {
+        url: '/reports',
+        templateUrl: 'views/reports.html',
+        controller: 'RecordController'
+      })
       .state('about', {
           //we'll get to this in a bit
       });
-      $locationProvider.html5Mode(({
-          enabled: true,
-          requireBase: false
-      }));
+    //   $locationProvider.html5Mode(({
+    //       enabled: true,
+    //       requireBase: true
+    //   }));
+    //   $locationProvider.hashPrefix('#');
   }]);
