@@ -5,7 +5,7 @@ angular
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
       $urlRouterProvider,$locationProvider) {
-    $urlRouterProvider.otherwise('login');
+    $urlRouterProvider.otherwise('dashboard');
     $stateProvider
       .state('dashboard', {
         url: '/dashboard',
@@ -30,6 +30,16 @@ angular
       .state('employees', {
         url: '/employees',
         templateUrl: 'views/employees.html',
+        controller: 'RecordController'
+      })
+      .state('pendings', {
+        url: '/pendings',
+        templateUrl: 'views/pendings.html',
+        controller: 'RecordController'
+      })
+      .state('dennieds', {
+        url: '/dennieds',
+        templateUrl: 'views/dennieds.html',
         controller: 'RecordController'
       })
       .state('reports', {
