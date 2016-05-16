@@ -34,6 +34,7 @@
                           <th>Entrada</th>
                           <th>Salida</th>
                           <th>Perfil</th>
+                          <th>Estado</th>
                       </tr>
                 </thead>
                 <tbody>
@@ -44,8 +45,12 @@
                           <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                           <td>
         					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-        					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
-        				</td>
+        					<span ng-if="record.profile == 'E'" class="label label-info label-mini">Empleado</span>
+        				  </td>
+                          <td>
+        					<span ng-if="record.is_permitted == false" class="label label-danger label-mini">Denegado</span>
+        					<span ng-if="record.is_permitted" class="label label-success label-mini">Permitido</span>
+        				  </td>
                       </tr>
                 </tbody>
               </table>
