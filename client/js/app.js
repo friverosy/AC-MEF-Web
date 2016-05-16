@@ -1,7 +1,8 @@
 angular
   .module('app', [
     'ui.router',
-    'lbServices'
+    'lbServices',
+    'angularUtils.directives.dirPagination'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
       $urlRouterProvider,$locationProvider) {

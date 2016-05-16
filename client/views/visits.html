@@ -42,7 +42,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr ng:repeat="record in visits | filter: filterByDate(input_datetime) | filter:expression">
+                    <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter:expression | itemsPerPage:5">
                           <td>{{record.people_run}}</td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
@@ -55,21 +55,12 @@
                           <td><input type="text" ng-model="record.authorized_by" ng-change="update(record)" placeholder="Autorizado por" class="form-control"></td>
                       </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                          <th>Rut</th>
-                          <th>Nombre</th>
-                          <th>Empresa</th>
-                          <th>Motivo</th>
-                          <th>Destino</th>
-                          <th>Entrada</th>
-                          <th>Salida</th>
-                          <th>Patente Entrada</th>
-                          <th>Patente Salida</th>
-                          <th>Autorizado por</th>
-                      </tr>
-                </tfoot>
               </table>
+              <dir-pagination-controls
+                 max-size="5"
+                 direction-links="true"
+                 boundary-links="true" >
+              </dir-pagination-controls>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
       </div>

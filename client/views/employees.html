@@ -38,7 +38,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr ng:repeat="record in employees | filter: filterByDate(input_datetime) | filter:expression">
+                    <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter:expression | itemsPerPage:5">
                         <td><!--<a href="people/{{record.people_run}}">-->{{record.people_run}}<!--</a>--></td>
                         <td>{{record.fullname}}</td>
                         <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
@@ -53,17 +53,12 @@
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Rut</th>
-                        <th>Nombre</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
-                        <th>Estado</th>
-                        <th>Comentario</th>
-                      </tr>
-                </tfoot>
               </table>
+              <dir-pagination-controls
+                 max-size="5"
+                 direction-links="true"
+                 boundary-links="true" >
+              </dir-pagination-controls>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
       </div>
