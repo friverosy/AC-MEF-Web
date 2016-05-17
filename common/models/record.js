@@ -69,7 +69,7 @@ module.exports = function(Record) {
                     where: { run: ctx.instance.people_run } },
                 {
                     run: ctx.instance.people_run,
-                    fullname: ctx.instance.fullname,
+                    fullname: ctx.instance.fullname.toUpperCase(),
                     profile: 'V',
                     create_at: new Date()
                 },
