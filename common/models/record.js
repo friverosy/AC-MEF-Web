@@ -2,6 +2,8 @@ module.exports = function(Record) {
     // remove DELETE functionality from API
     Record.disableRemoteMethod('deleteById', true);
 
+    var Promise = require('bluebird');
+
     Record.observe('before save', function(ctx, next) {
         if (ctx.instance) {
             // find last one
