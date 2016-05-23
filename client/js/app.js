@@ -43,6 +43,16 @@ angular
         templateUrl: 'views/dennieds.html',
         controller: 'RecordController'
       })
+      .state('employee_individual', {
+        url: '/employee_individual',
+        templateUrl: 'views/employee_individual.html',
+        controller: 'RecordController'
+      })
+      .state('visit_individual', {
+        url: '/visit_individual',
+        templateUrl: 'views/visit_individual.html',
+        controller: 'RecordController'
+      })
       .state('reports', {
         url: '/reports',
         templateUrl: 'views/reports.html',
