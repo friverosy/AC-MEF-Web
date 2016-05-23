@@ -181,6 +181,16 @@
             <li><a href="/#/"><i class="fa fa-circle-o text-yellow"></i> Contratistas</a></li>
             <li><a href="/#/"><i class="fa fa-circle-o text-red"></i> Proveedores</a></li>
             <li><a href="/#/visits"><i class="fa fa-circle-o text-red"></i> Visitas</a></li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-share"></i> <span>Registro Individual</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="/#/employee_individual"><i class="fa fa-circle-o"></i> Empleado</a></li>
+                <li><a href="/#/visit_individual"><i class="fa fa-circle-o"></i> Visita</a></li>
+              </ul>
+            </li>
             <!-- <li><a href="/#/todayall"><i class="fa fa-circle-o text-aqua"></i> Todos</a></li> -->
           </ul>
         </li>
@@ -433,6 +443,12 @@
 
 <!--loopback client side-->
 <script src="vendor/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    jQuery.noConflict();
+    var j = jQuery.noConflict();
+    j(document).ready(function(){});
+</script>
 <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
 <script src="vendor/angular/angular.js"></script>
 <script src="vendor/angular-resource/angular-resource.js"></script>
