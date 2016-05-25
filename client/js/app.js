@@ -58,6 +58,11 @@ angular
         templateUrl: 'views/reports.html',
         controller: 'RecordController'
       })
+      .state('maintainers', {
+        url: '/maintainers',
+        templateUrl: 'views/maintainers.html',
+        controller: 'MaintainersController'
+      })
       .state('about', {
           //we'll get to this in a bit
       });

@@ -6,15 +6,15 @@
     "validateUpsert": true
   },
   "properties": {
-      "email": {
-        "type": "string"
-      },
-      "password": {
-        "type": "string"
-      },
-      "datetime": {
-        "type": "date"
-      }
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "datetime": {
+      "type": "date"
+    }
   },
   "validations": [],
   "relations": {},

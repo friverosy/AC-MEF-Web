@@ -1,0 +1,99 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Dashboard
+	<small>Registro Individual</small>
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Registro Individual</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row" ng-controller="RecordController">
+        <div class="col-xs-12">
+            <!-- left column -->
+            <div class="col-md-6">
+            <!-- general form elements disabled -->
+               <div class="box box-warning">
+                 <div class="box-header with-border">
+                   <h3 class="box-title">General Elements</h3>
+                 </div><!-- /.box-header -->
+                 <div class="box-body">
+                   <form role="form">
+                     <!-- text input -->
+                     <div class="form-group">
+                       <label>Rut / Tarjeta Identificación</label>
+                       <input type="text" class="form-control" placeholder="Enter ...">
+                     </div>
+
+                     <div class="form-group">
+                       <label>Nombre Completo</label>
+                       <input type="text" class="form-control" placeholder="Enter ...">
+                     </div>
+
+                     <div class="form-group">
+                       <label>Empresa</label>
+                       <input type="text" class="form-control" placeholder="Enter ...">
+                     </div>
+
+                     <div class="form-group">
+                      <label>Motivo</label>
+                      <select class="form-control">
+                        <option>Reunión</option>
+                        <option>option 2</option>
+                        <option>option 3</option>
+                        <option>option 4</option>
+                        <option>option 5</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                    <label>Destino</label>
+                    <select class="form-control select2" style="width: 100%;">
+                      <option selected="selected">Reunión</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                      <option>Select 1</option>
+                    </select>
+                  </div><!-- /.form-group -->
+
+                   <div class="form-group">
+                     <label>Patente</label>
+                     <input type="text" class="form-control" placeholder="Enter ...">
+                   </div>
+
+                   <div class="form-group">
+                     <label>Autorizado Por</label>
+                     <input type="text" class="form-control" placeholder="Enter ...">
+                   </div>
+
+                     <!-- textarea -->
+                     <div class="form-group">
+                       <label>Comentario</label>
+                       <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                     </div>
+                     <button type="submit" class="btn btn-primary">Registrar</button>
+                   </form>
+                 </div><!-- /.box-body -->
+               </div><!-- /.box -->
+             </div><!--/.col (right) -->
+        </div>
+      </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  });
+</script>

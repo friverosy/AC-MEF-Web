@@ -1,0 +1,55 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Dashboard
+	<small>Registro Individual</small>
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Registro Individual</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row" ng-controller="RecordController">
+        <div class="col-xs-12">
+            <!-- left column -->
+            <div class="col-md-6">
+            <!-- general form elements disabled -->
+               <div class="box box-warning">
+                 <div class="box-header with-border">
+                   <h3 class="box-title"></h3>
+                 </div><!-- /.box-header -->
+                 <div class="box-body">
+                   <form role="form">
+                       <label>Rut / Tarjeta Identificación</label>
+                       <form action="/#/dashboard#" method="get" class="sidebar-form">
+                         <div class="input-group">
+                           <input type="text" name="q" ng-model="Record.people_run" class="form-control" placeholder="Ingrese identificador">
+                               <span class="input-group-btn">
+                                 <button type="submit" name="search" id="search-btn" class="btn btn-flat" ng-click="employee_searched(Record.people_run)"><i class="fa fa-search"></i>
+                                 </button>
+                               </span>
+                         </div>
+                       </form>
+                     <!-- text input -->
+
+                     <div class="form-group">
+                       <label>Nombre Completo</label>
+                       <input type="text" class="form-control" disabled placeholder="">
+                     </div>
+
+                     <div class="form-group">
+                       <label>Comentario</label>
+                       <textarea class="form-control" rows="3" placeholder=""></textarea>
+                     </div>
+                     <button type="submit" class="btn btn-primary">Registrar</button>
+                   </form>
+                 </div><!-- /.box-body -->
+               </div><!-- /.box -->
+             </div><!--/.col (right) -->
+        </div>
+      </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->

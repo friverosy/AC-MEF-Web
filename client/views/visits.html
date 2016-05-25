@@ -37,12 +37,13 @@
                           <th>Entrada</th>
                           <th>Salida</th>
                           <th>Patente Entrada</th>
+                          <th>Estacionamiento</th>
                           <th>Patente Salida</th>
                           <th>Autorizado por</th>
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter:expression | itemsPerPage:5">
+                    <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:5">
                           <td>{{record.people_run}}</td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
@@ -51,6 +52,12 @@
                           <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                           <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                           <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
+                          <td>
+                              <select
+                              ng-model="parkings"
+                              ng-options="value.id as value.name for value in parkings"
+                              ></select>
+                          </td>
                           <td><input type="text" ng-model="record.output_patent" ng-change="update(record)" placeholder="Patente de salida" class="form-control"></td>
                           <td><input type="text" ng-model="record.authorized_by" ng-change="update(record)" placeholder="Autorizado por" class="form-control"></td>
                       </tr>

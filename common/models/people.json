@@ -67,6 +67,11 @@
       "type": "belongsTo",
       "model": "position",
       "foreignKey": ""
+    },
+    "records": {
+      "type": "hasMany",
+      "model": "record",
+      "foreignKey": ""
     }
   },
   "acls": [],

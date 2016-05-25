@@ -1,12 +1,35 @@
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', function($scope,
-      $state, Record) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', function($scope,
+      $state, Record, Parking, $http) {
     $scope.records = [];
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
+
+    $scope.employee_searched = function(rut) {
+        console.log(rut);
+        $http({
+            method : "GET",
+            url : "http://0.0.0.0:3000/api/records?filter[where][people_run]=" + rut
+        }).then(function mySucces(response) {
+            console.log(response);
+            $scope.myWelcome = response.data;
+        }, function myError(response) {
+            console.log(response);
+            $scope.myWelcome = response.statusText;
+        });
+    }
+
+    function getParkings() {
+        Parking.find()
+        .$promise
+        .then(function(results) {
+            $scope.parkings = results;
+        });
+    }
+    getParkings();
 
     function getEmployees() {
         Record.find( { filter: { where: { profile: "E" }, order: ['input_datetime DESC'] } } )
@@ -104,7 +127,6 @@ angular
     };
 
     $scope.eventDateFilter = function(column) {
-        console.log(column);
         if(column === 'today') {
             $scope.dateRange = "";
             $scope.filterByDate = function(input){
@@ -133,7 +155,12 @@ angular
                 }
             }
         } else {
-            $scope.filterByDate = "";
+            $scope.filterByDate = function(input){
+                return function(item){
+                    var INPUT = new Date(item.input_datetime)
+                    return INPUT.getTime() <= Date.now();
+                }
+            }
         }
     }
 

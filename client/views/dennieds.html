@@ -36,7 +36,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in dennieds | filter: filterByDate(input_datetime) | filter:expression | itemsPerPage:5">
+                    <tr dir-paginate="record in dennieds | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:5">
                           <td>{{record.people_run}}</td>
                           <td>{{record.fullname}}</td>
                           <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
