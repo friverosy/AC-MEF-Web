@@ -1,8 +1,8 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Dashboard
-	<small>Registro Individual</small>
+	Registro Individual
+	<small>Empleados</small>
   </h1>
   <ol class="breadcrumb">
 	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -28,7 +28,7 @@
                          <div class="input-group">
                            <input type="text" name="q" ng-model="Record.people_run" class="form-control" placeholder="Ingrese identificador">
                                <span class="input-group-btn">
-                                 <button type="submit" name="search" id="search-btn" class="btn btn-flat" ng-click="employee_searched(Record.people_run)"><i class="fa fa-search"></i>
+                                 <button type="submit" name="search" id="search-btn" class="btn btn-flat" ng-click="employee_search(Record.people_run)"><i class="fa fa-search"></i>
                                  </button>
                                </span>
                          </div>
@@ -37,7 +37,7 @@
 
                      <div class="form-group">
                        <label>Nombre Completo</label>
-                       <input type="text" class="form-control" disabled placeholder="">
+                       <input type="text" class="form-control" disabled placeholder="" value="{{employee.fullname}}">
                      </div>
 
                      <div class="form-group">

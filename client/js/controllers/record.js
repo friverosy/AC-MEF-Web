@@ -1,25 +1,28 @@
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', function($scope,
-      $state, Record, Parking, $http) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', function($scope,
+      $state, Record, Parking, Destination, $http) {
     $scope.records = [];
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    $scope.employee_searched = function(rut) {
-        console.log(rut);
-        $http({
-            method : "GET",
-            url : "http://0.0.0.0:3000/api/records?filter[where][people_run]=" + rut
-        }).then(function mySucces(response) {
-            console.log(response);
-            $scope.myWelcome = response.data;
-        }, function myError(response) {
-            console.log(response);
-            $scope.myWelcome = response.statusText;
+    $scope.employee_search = function(rut) {
+        $http.get('http://0.0.0.0:3000/api/records?filter[where][people_run]=' + rut).
+        success(function(employee) {
+            $scope.employee = employee;
         });
+        // $http({
+        //     method : "GET",
+        //     url : "http://0.0.0.0:3000/api/records?filter[where][people_run]=" + rut
+        // }).then(function mySucces(response) {
+        //     console.log(response);
+        //     $scope.myWelcome = response.data;
+        // }, function myError(response) {
+        //     console.log(response);
+        //     $scope.myWelcome = response.statusText;
+        // });
     }
 
     function getParkings() {
@@ -29,7 +32,15 @@ angular
             $scope.parkings = results;
         });
     }
+    function getDestinations() {
+        Destination.find()
+        .$promise
+        .then(function(results) {
+            $scope.destinations = results;
+        });
+    }
     getParkings();
+    getDestinations();
 
     function getEmployees() {
         Record.find( { filter: { where: { profile: "E" }, order: ['input_datetime DESC'] } } )
@@ -54,9 +65,18 @@ angular
             $scope.visits = results;
         });
     }
+
+    function getPendings() {
+        Record.find( { filter: { where: { output_datetime: undefined }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.pendings = results;
+        });
+    }
     getEmployees();
     getVisits();
     getAll();
+    getPendings();
 
     var f=new Date();
     var ano = f.getFullYear();

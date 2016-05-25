@@ -1,8 +1,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Dashboard
-	<small>Mantenedores</small>
+	Mantenedores
   </h1>
   <ol class="breadcrumb">
 	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -34,7 +33,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
-                                <th>Opciones</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,6 +41,41 @@
                                 <td>{{$index + 1}}</td>
                                 <td><input type="text" ng-model="parking.name" ng-change="update(parking)" class="form-control"></td>
                                 <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteParking(parking)"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <div class="col-xs-4">
+            <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Destinos</h3>
+                  <span class="pull-right badge bg-green">{{num_destinations.count}}</span>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form name="destinationForm" novalidate ng-submit="addDestination()">
+                      <div class="form-group">
+                        <input type="text" class="form-control focus" name="name"
+                            placeholder="Nombre" autocomplete="off" required
+                            ng-model="newDestination.name">
+                      </div>
+                      <button class="btn btn-info">Agregar</button>
+                    </form>
+                    <hr>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng:repeat="destination in destinations">
+                                <td>{{$index + 1}}</td>
+                                <td><input type="text" ng-model="destination.name" ng-change="update(destination)" class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteDestination(destination)"></a></td>
                             </tr>
                         </tbody>
                     </table>

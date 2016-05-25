@@ -88,5 +88,9 @@
   "parking": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "destination": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
