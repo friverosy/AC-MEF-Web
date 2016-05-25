@@ -1,0 +1,52 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Dashboard
+	<small>Mantenedores</small>
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Mantenedores</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row" ng-controller="MaintainersController">
+        <div class="col-xs-4">
+            <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Estacionamientos</h3>
+                  <span class="pull-right badge bg-green">{{num_parkings.count}}</span>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form name="parkingForm" novalidate ng-submit="addParking()">
+                      <div class="form-group">
+                        <input type="text" class="form-control focus" name="name"
+                            placeholder="Nombre" autocomplete="off" required
+                            ng-model="newParking.name">
+                      </div>
+                      <button class="btn btn-info">Agregar</button>
+                    </form>
+                    <hr>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng:repeat="parking in parkings">
+                                <td>{{$index + 1}}</td>
+                                <td><input type="text" ng-model="parking.name" ng-change="update(parking)" class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteParking(parking)"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
