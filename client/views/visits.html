@@ -1,3 +1,5 @@
+<script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
@@ -73,6 +75,9 @@
                  boundary-links="true" >
               </dir-pagination-controls>
             </div><!-- /.box-body -->
+            <button class="btn btn-link" ng-click="exportData()">
+                <span class="glyphicon glyphicon-share"></span> Export to Excel
+            </button>
           </div><!-- /.box -->
       </div>
   </div><!-- /.row -->

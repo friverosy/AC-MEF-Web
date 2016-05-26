@@ -63,6 +63,11 @@ angular
         templateUrl: 'views/maintainers.html',
         controller: 'MaintainersController'
       })
+      .state('profile', {
+        url: '/profile',
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileController'
+      })
       .state('about', {
           //we'll get to this in a bit
       });

@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', function($scope,
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', function($scope,
       $state, Record, Parking, Destination, $http) {
     $scope.records = [];
     ONE_DAY = 24 * 60 * 60 * 1000;
@@ -9,20 +9,30 @@ angular
     FILTER = '';
 
     $scope.employee_search = function(rut) {
-        $http.get('http://0.0.0.0:3000/api/records?filter[where][people_run]=' + rut).
-        success(function(employee) {
-            $scope.employee = employee;
-        });
-        // $http({
-        //     method : "GET",
-        //     url : "http://0.0.0.0:3000/api/records?filter[where][people_run]=" + rut
-        // }).then(function mySucces(response) {
-        //     console.log(response);
-        //     $scope.myWelcome = response.data;
-        // }, function myError(response) {
-        //     console.log(response);
-        //     $scope.myWelcome = response.statusText;
-        // });
+        if(rut != null){
+            console.log(rut);
+            var url = 'http://10.0.0.125:6000/employee/' + rut;
+
+            $http.jsonp(url).success(function(respuesta){
+                console.log("res:", respuesta);
+                $scope.employee = respuesta.name;
+            });
+
+
+
+            // $http({
+            //     method : 'GET',
+            //     url : url
+            // }).then(function mySucces(response) {
+            //     console.log(response);
+            //     $scope.employee = response.data;
+            // }, function myError(response) {
+            //     console.log(response);
+            //     $scope.employee = response.statusText;
+            // });
+        }else{
+            console.log("vacio");
+        }
     }
 
     function getParkings() {
@@ -185,15 +195,18 @@ angular
     }
 
     // New record, not in use now
-    $scope.add = function() {
+    $scope.addRecord = function() {
       Record
         .create($scope.newRecord)
         .$promise
         .then(function(record) {
+          console.log(record);
+          console.log(record.id);
+          console.log(record.fullname);
+          console.log(record.people_run);
+          console.log(record.input_datetime);
           $scope.newRecord = '';
-          $scope.recordForm.content.$setPristine();
-          $('.focus').focus();
-          getRecords();
+          getAll();
         });
     };
 

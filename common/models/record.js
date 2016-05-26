@@ -6,6 +6,7 @@ module.exports = function(Record) {
 
     Record.observe('before save', function(ctx, next) {
         if (ctx.instance) {
+            console.log("before save");
             // find last one
             Record.findOne({
                 where: { fullname: ctx.instance.fullname },
