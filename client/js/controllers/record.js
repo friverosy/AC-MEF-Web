@@ -1,7 +1,19 @@
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', function($scope,
-      $state, Record, Parking, Destination, $http) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', function($scope,
+      $state, Record, Parking, Destination, $http, $window) {
+
+      if(localStorage.email != "cberzins@multiexportfoods.com" && localStorage.password != "CB3rZin5"){
+          $window.location.href = '/login';
+      }else{
+          console.log("aca");
+      }
+
+    $scope.logout = function() {
+          localStorage.clear();
+          $window.location.href = '/login';
+    };
+
     $scope.records = [];
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;

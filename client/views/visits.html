@@ -44,7 +44,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:5">
+                    <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
                           <td>{{record.people_run}}</td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
@@ -70,7 +70,7 @@
                 </tbody>
               </table>
               <dir-pagination-controls
-                 max-size="5"
+                 max-size="10"
                  direction-links="true"
                  boundary-links="true" >
               </dir-pagination-controls>
