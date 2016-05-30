@@ -5,8 +5,8 @@ module.exports = function(Record) {
     var Promise = require('bluebird');
 
     Record.observe('before save', function(ctx, next) {
+        console.log("before save");
         if (ctx.instance) {
-            console.log("before save");
             // find last one
             Record.findOne({
                 where: { fullname: ctx.instance.fullname },
