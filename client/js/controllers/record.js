@@ -6,7 +6,7 @@ angular
       if(localStorage.email != "cberzins@multiexportfoods.com" && localStorage.password != "CB3rZin5"){
           $window.location.href = '/login';
       }else{
-          console.log("aca");
+        //   console.log("aca");
       }
 
     $scope.logout = function() {
@@ -95,10 +95,20 @@ angular
             $scope.pendings = results;
         });
     }
+
+    function getDennieds() {
+        Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.dennieds = results;
+        });
+    }
+
     getEmployees();
     getVisits();
     getAll();
     getPendings();
+    getDennieds();
 
     var f=new Date();
     var ano = f.getFullYear();
@@ -224,8 +234,21 @@ angular
 
     // Add comment to record
     $scope.update = function(record){
-        record.updating = 1;
         console.log(record);
+        record.$save(record);
+  	};
+
+    // Add parkin to record
+    $scope.updateParking = function(record, parking){
+        record.parking = parking;
+        console.log(record);
+        record.$save(record);
+  	};
+
+    // Add destination to record
+    $scope.updateDestination = function(record,destination){
+        record.destination = destination;
+        console.log(destination);
         record.$save(record);
   	};
 
