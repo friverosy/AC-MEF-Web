@@ -56,7 +56,7 @@ angular
       .state('reports', {
         url: '/reports',
         templateUrl: 'views/reports.html',
-        controller: 'RecordController'
+        controller: 'ReportsController'
       })
       .state('maintainers', {
         url: '/maintainers',

@@ -51,8 +51,9 @@
                           <td><input type="text" ng-model="record.reason" ng-change="update(record)" placeholder="Motivo" class="form-control"></td>
                           <td>
                               <select
-                              ng-model="destination"
-                              ng-options="value.id as value.name for value in destinations"
+                                  ng-model="destination"
+                                  ng-options="destination.id as destination.name for destination in destinations"
+                                  ng-change="updateDestination(parking)"
                               ></select>
                           </td>
                           <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
@@ -60,8 +61,9 @@
                           <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td>
                               <select
-                              ng-model="parking"
-                              ng-options="value.id as value.name for value in parkings"
+                                  ng-model="record"
+                                  ng-options="parking as parking.name for parking in parkings"
+                                  ng-change="updateParking(record)"
                               ></select>
                           </td>
                           <td><input type="text" ng-model="record.output_patent" ng-change="update(record)" placeholder="Patente de salida" class="form-control"></td>
