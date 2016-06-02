@@ -5,7 +5,7 @@ module.exports = function(Record) {
     var Promise = require('bluebird');
 
     Record.observe('before save', function(ctx, next) {
-        console.log("before save");
+        console.log(ctx.instance);
         if (ctx.instance) {
             // find last one
             Record.findOne({
@@ -18,8 +18,7 @@ module.exports = function(Record) {
                             var id = records.id;
                             // Update fullname
                             if (ctx.instance.fullname !== records.fullname){
-                                console.log("no pasa por acá");
-                                ctx.instance.fullname !== records.fullname;
+                                ctx.instance.fullname = records.fullname;
                             }
 
                             // get input or output
