@@ -46,8 +46,8 @@
 			<tr ng:repeat="people in peoples | orderBy:sortType:sortIt | filter:dateRange:expression">
 				<td><a href="people/{{people.people_run}}">{{people.people_run}}</a></td>
 				<td>{{people.fullname}}</td>
-				<td>{{people.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
-				<td>{{people.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+				<td>{{people.input_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
+				<td>{{people.output_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
 				<td>
 					<span ng-if="people.is_permitted" class="label label-success label-mini">Permitted</span>
 					<span ng-if="people.is_permitted == false" class="label label-danger label-mini">Dennied</span>
