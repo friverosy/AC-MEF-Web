@@ -2,10 +2,10 @@ module.exports = function(Record) {
     // remove DELETE functionality from API
     Record.disableRemoteMethod('deleteById', true);
 
+    var colors = require('colors');
     var Promise = require('bluebird');
 
     Record.observe('before save', function(ctx, next) {
-        console.log(ctx.instance);
         if (ctx.instance) {
             // find last one
             Record.findOne({
@@ -20,36 +20,48 @@ module.exports = function(Record) {
                             if (ctx.instance.fullname !== records.fullname){
                                 ctx.instance.fullname = records.fullname;
                             }
-
                             // get input or output
-                            if(records.input_datetime !== undefined &&
-                                records.output_datetime !== undefined){
-                                // console.log("already has input and output");
+                            if(records.input_datetime !== undefined && records.output_datetime !== undefined){
+                                console.log("already has input and output");
                                 ctx.instance.is_input = true;
-                            } else if (records.input_datetime !== undefined &&
-                                records.output_datetime == undefined){
-                                // console.log("has input without output");
+                            } else if (records.input_datetime !== undefined && records.output_datetime === undefined){
+                                console.log("has input without output");
                                 ctx.instance.is_input = false;
                                 ctx.instance.id_finded = id;
-                            } else if (records.input_datetime == undefined &&
-                                records.output_datetime !== undefined){
-                                // console.log("has output without input");
+                            } else if (records.input_datetime === undefined && records.output_datetime !== undefined){
+                                console.log("has output without input");
                                 ctx.instance.is_input = true;
-                            } else if (records.input_datetime == undefined &&
-                                records.output_datetime == undefined){
-                                // console.log("no intput and output");
+                            } else if (records.input_datetime === undefined && records.output_datetime === undefined){
+                                console.error("no intput and output".red);
                                 ctx.instance.is_input = true;
                             }
                         } catch (err) {
                             // First record of this person.
                             ctx.instance.is_input = true;
+                            console.log("First record".green);
                         }
                     }
                 }
             );
-            if(ctx.instance.profile === undefined){
-                ctx.instance.profile = "E";
-            }
+            switch (ctx.instance.profile) {
+                case "E": //Employee
+                    //nothing yet
+                    break;
+                case "C": //Contractor
+                    //nothing yet
+                    break;
+                case "V": //Visit
+                    //Is registered by human, so, is permitted too.
+                    ctx.instance.is_permitted = true;
+                    console.log("is visit".yellow);
+                    break;
+                default:
+                    console.log("without profile".yellow);
+                    ctx.instance.profile = "E";
+                    console.log("Profile set to Employee by default".green);
+                    break;
+            };
+            console.log("----------------".green);
         } else {
             // Updating
             ctx.data.updated = new Date();
@@ -63,23 +75,26 @@ module.exports = function(Record) {
         var People = app.models.People
 
         if (ctx.instance) {
-
             // add visit if is new
-            if (ctx.instance.profile == "V"){
+            if (ctx.instance.profile == "V" || ctx.instance.profile == "C"){
                 People.findOrCreate(
                 {
                     where: { run: ctx.instance.people_run } },
                 {
                     run: ctx.instance.people_run,
                     fullname: ctx.instance.fullname.toUpperCase(),
-                    profile: 'V',
+                    company: ctx.instance.company.toUpperCase(),
+                    profile: ctx.instance.profile,
                     create_at: new Date()
                 },
                 function(error, instance, created) {
-                    if (error) throw error;
+                    if (error){
+                        throw error;
+                        console.log(error);
+                    }
                     if (created) {
                         //instance.profileId = 2; // ? where put that...???
-                        console.log("new visit created");
+                        console.log("new person created".green);
                     } else {
                         // Already existed.
                         try {
@@ -90,12 +105,15 @@ module.exports = function(Record) {
                                     { fullname: instance.fullname }, null);
                             }
                         } catch (err) {
+                            throw err;
                             console.log("92" + err);
                         }
 
                     }
                 });
             }
+
+            console.log("after visit");
 
             // Get fullname and company from last record, if are diferent update it.
             // Check with instance.updating part, what happens if updated some doc?
@@ -140,6 +158,9 @@ module.exports = function(Record) {
 
             var today = new Date();
 
+            console.log(ctx.instance);
+            console.log("----------------");
+
             // set input or output
             if (ctx.instance.is_input && ctx.instance.is_permitted &&
                     ctx.instance.updating === undefined){
@@ -152,7 +173,7 @@ module.exports = function(Record) {
                 console.log("Insert input dennied "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
-            } else if (ctx.instance.is_input == false &&
+            } else if (ctx.instance.is_input === false &&
                     ctx.instance.updating === undefined){
                 console.log("Insert output "+ new Date());
                 if (ctx.instance.id_finded !== undefined){
@@ -162,7 +183,7 @@ module.exports = function(Record) {
                     Record.destroyById(ctx.instance.id, null);
                     // console.log("--- Deleted id: " + ctx.instance.id);
                 }
-            } else if (ctx.instance.is_input == false &&
+            } else if (ctx.instance.is_input === false &&
                     ctx.instance.id_finded === undefined &&
                     ctx.instance.updating === undefined &&
                     ctx.instance.is_permitted){
@@ -170,9 +191,9 @@ module.exports = function(Record) {
                 Record.updateAll({ id: ctx.instance.id },
                     { input_datetime: new Date(), is_input: true }, null);
                 // console.log("--- Updated id (fixed): " + ctx.instance.id);
-            } else if (ctx.instance.is_input == false &&
-                    ctx.instance.id_finded == undefined &&
-                    ctx.instance.updating == undefined &&
+            } else if (ctx.instance.is_input === false &&
+                    ctx.instance.id_finded === undefined &&
+                    ctx.instance.updating === undefined &&
                     ctx.instance.is_permitted){
                 console.log("Insert input dennnied (fixed) "+ new Date());
                 Record.updateAll({ id: ctx.instance.id },
@@ -208,7 +229,10 @@ module.exports = function(Record) {
                     Record.updateAll({ id: ctx.instance.id },
                         { comment: ctx.instance.comment }, null);
                 }
+            }else{
+                console.error("ERR: input or output not define!".red);
             }
+            console.log(ctx.instance);
         }
         next();
     });

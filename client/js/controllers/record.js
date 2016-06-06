@@ -22,26 +22,22 @@ angular
 
     $scope.employee_search = function(rut) {
         if(rut != null){
-            console.log(rut);
             var url = 'http://10.0.0.125:6000/employee/' + rut;
-
-            $http.jsonp(url).success(function(respuesta){
-                console.log("res:", respuesta);
-                $scope.employee = respuesta.name;
+            $http({
+                method : 'GET',
+                url : url
+            }).then(function mySucces(response) {
+                console.log(response);
+                $scope.employee = response.data;
+                // for(var i=0;i<len;i++){
+                //     twitterEntry = dataWeGotViaJsonp[i];
+                //     text += '<p><img src = "' + twitterEntry.user.profile_image_url_https +'"/>' + twitterEntry['text'] + '</p>'
+                // }
+                // $('#twitterFeed').html(text);
+            }, function myError(response) {
+                console.log(response);
+                $scope.employee = response.statusText;
             });
-
-
-
-            // $http({
-            //     method : 'GET',
-            //     url : url
-            // }).then(function mySucces(response) {
-            //     console.log(response);
-            //     $scope.employee = response.data;
-            // }, function myError(response) {
-            //     console.log(response);
-            //     $scope.employee = response.statusText;
-            // });
         }else{
             console.log("vacio");
         }
@@ -216,19 +212,16 @@ angular
         }
     }
 
-    // New record, not in use now
-    $scope.addRecord = function() {
+    $scope.addVisit = function() {
+        console.log(Record);
       Record
         .create($scope.newRecord)
         .$promise
         .then(function(record) {
           console.log(record);
-          console.log(record.id);
-          console.log(record.fullname);
-          console.log(record.people_run);
-          console.log(record.input_datetime);
           $scope.newRecord = '';
-          getAll();
+          $scope.visitForm.people_run.$setPristine();
+          $('.focus').focus();
         });
     };
 
