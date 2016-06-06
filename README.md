@@ -9,3 +9,5 @@ to run:
 * mongod
 * node .
 * open http://0.0.0.0:3000
+
+![plantilla.png](https://bitbucket.org/repo/7bbkby/images/3625128779-plantilla.png)
