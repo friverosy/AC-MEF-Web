@@ -8,6 +8,11 @@ angular
       $urlRouterProvider,$locationProvider) {
     $urlRouterProvider.otherwise('dashboard');
     $stateProvider
+      .state('accounts', {
+        url: '/accounts',
+        templateUrl: 'views/accounts.html',
+        controller: 'AccountsController'
+      })
       .state('dashboard', {
         url: '/dashboard',
         templateUrl: 'views/record.html',
@@ -67,6 +72,11 @@ angular
         url: '/profile',
         templateUrl: 'views/profile.html',
         controller: 'ProfileController'
+      })
+      .state('profiles', {
+        url: '/profiles',
+        templateUrl: 'views/profiles.html',
+        controller: 'ProfilesController'
       })
       .state('about', {
           //we'll get to this in a bit
