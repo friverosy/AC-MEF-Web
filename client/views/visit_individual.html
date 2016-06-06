@@ -23,7 +23,7 @@
                    <small>(*) campos obligatorios.</small>
                  </div><!-- /.box-header -->
                  <div class="box-body">
-                   <form role="form" name="visitForm" ng-submit="addVisit()">
+                    <form role="form" name="visitForm" ng-submit="addVisit()">
                        <div class="form-group"
                             ng-class="{'has-error': visitForm.people_run.$invalid && visitForm.people_run.$dirty}">
                            <!-- text input -->
@@ -84,13 +84,12 @@
                           </div>
                       </div>
                      <button type="submit" class="btn btn-primary" ng-disabled="visitForm.$success">Registrar</button>
-
-                     <div class="alert alert-success alert-dismissible" ng-show="">
+                     <br><br>
+                     <div class="alert alert-success alert-dismissible fade in" ng-show="visitForm.$submitted">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
                         Visita registrada con exito.
                      </div>
-
                    </form>
                  </div><!-- /.box-body -->
                </div><!-- /.box -->
@@ -99,3 +98,15 @@
       </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+window.setTimeout(function() {
+$(".alert").fadeTo(1500, 0).slideUp(500, function(){
+    $(this).remove();
+});
+}, 5000);
+
+});
+</script>

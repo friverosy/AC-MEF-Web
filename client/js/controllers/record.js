@@ -213,12 +213,12 @@ angular
     }
 
     $scope.addVisit = function() {
-        console.log(Record);
+        $scope.newRecord.profile = "V";
+        $scope.newRecord.is_permitted = true;
       Record
         .create($scope.newRecord)
         .$promise
         .then(function(record) {
-          console.log(record);
           $scope.newRecord = '';
           $scope.visitForm.people_run.$setPristine();
           $('.focus').focus();
@@ -227,21 +227,16 @@ angular
 
     // Add comment to record
     $scope.update = function(record){
-        console.log(record);
         record.$save(record);
   	};
 
     // Add parkin to record
-    $scope.updateParking = function(record, parking){
-        record.parking = parking;
-        console.log(record);
+    $scope.updateParking = function(record){
         record.$save(record);
   	};
 
     // Add destination to record
-    $scope.updateDestination = function(record,destination){
-        record.destination = destination;
-        console.log(destination);
+    $scope.updateDestination = function(record){
         record.$save(record);
   	};
 

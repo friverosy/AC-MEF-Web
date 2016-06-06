@@ -51,8 +51,6 @@ module.exports = function(Record) {
                     //nothing yet
                     break;
                 case "V": //Visit
-                    //Is registered by human, so, is permitted too.
-                    ctx.instance.is_permitted = true;
                     console.log("is visit".yellow);
                     break;
                 default:
