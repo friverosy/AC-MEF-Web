@@ -11,7 +11,7 @@ angular
       .state('dashboard', {
         url: '/dashboard',
         templateUrl: 'views/record.html',
-        controller: 'RecordController'
+        controller: 'DashboardController'
       })
       .state('todayall', {
         url: '/todayall',
