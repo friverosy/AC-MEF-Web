@@ -40,8 +40,8 @@
                     <tr dir-paginate="record in todayall | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:15">
                           <td>{{record.people_run}}</td>
                           <td>{{record.fullname}}</td>
-                          <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
-                          <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                          <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
+                          <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
                           <td>
         					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
         					<span ng-if="record.profile == 'E'" class="label label-info label-mini">Empleado</span>
