@@ -19,69 +19,78 @@
             <!-- general form elements disabled -->
                <div class="box box-warning">
                  <div class="box-header with-border">
-                   <h3 class="box-title">General Elements</h3>
+                   <h3 class="box-title">Formulario de visita</h3>
+                   <small>(*) campos obligatorios.</small>
                  </div><!-- /.box-header -->
                  <div class="box-body">
-                   <form role="form">
-                     <!-- text input -->
-                     <div class="form-group">
-                       <label>Rut / Tarjeta Identificación</label>
-                       <input type="text" class="form-control" placeholder="Enter ...">
+                   <form role="form" name="visitForm" ng-submit="addVisit()">
+                       <div class="form-group"
+                            ng-class="{'has-error': visitForm.people_run.$invalid && visitForm.people_run.$dirty}">
+                           <!-- text input -->
+                           <div class="form-group">
+                             <label>Rut / Tarjeta Identificación *</label>
+                             <input type="number" class="form-control focus" placeholder="" ng-model="newRecord.people_run" name="people_run" autocomplete="off" required>
+                           </div>
+
+                           <div class="form-group" show-errors='{ showSuccess: true }'>
+                             <label>Nombre Completo *</label>
+                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.fullname" required>
+                           </div>
+
+                           <div class="form-group">
+                             <label>Empresa *</label>
+                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.company" required>
+                           </div>
+
+                           <div class="form-group">
+                            <label>Motivo *</label>
+                            <select class="form-control" ng-model="newRecord.reason" required>
+                              <option selected>Reunión</option>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                          <label>Destino *</label>
+                          <select
+                              class="form-control"
+                              style="width: 100%;"
+                              ng-model="newRecord.destination"
+                              ng-options="destination.id as destination.name for destination in destinations"
+                              required
+                          ></select>
+                        </div><!-- /.form-group -->
+
+                         <div class="form-group">
+                           <label>Patente</label>
+                           <input type="text" class="form-control" placeholder="" ng-model="newRecord.input_patent">
+                         </div>
+
+                         <div class="form-group">
+                           <label>Autorizado Por *</label>
+                           <input type="text" class="form-control" placeholder="" ng-model="newRecord.authorized_by" required>
+                         </div>
+
+                           <!-- textarea -->
+                           <div class="form-group">
+                             <label>Comentario</label>
+                             <textarea class="form-control" rows="3" placeholder="" ng-model="newRecord.comment"></textarea>
+                           </div>
+
+                           <div class="has-error alert alert-danger alert-dismissible" ng-show="
+                              visitForm.people_run.$invalid && visitForm.people_run.$dirty">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                            Rut o targeta inválida.
+                          </div>
+                      </div>
+                     <button type="submit" class="btn btn-primary" ng-disabled="visitForm.$success">Registrar</button>
+
+                     <div class="alert alert-success alert-dismissible" ng-show="">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
+                        Visita registrada con exito.
                      </div>
 
-                     <div class="form-group">
-                       <label>Nombre Completo</label>
-                       <input type="text" class="form-control" placeholder="Enter ...">
-                     </div>
-
-                     <div class="form-group">
-                       <label>Empresa</label>
-                       <input type="text" class="form-control" placeholder="Enter ...">
-                     </div>
-
-                     <div class="form-group">
-                      <label>Motivo</label>
-                      <select class="form-control">
-                        <option>Reunión</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                    <label>Destino</label>
-                    <select class="form-control select2" style="width: 100%;">
-                      <option selected="selected">Reunión</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                      <option>Select 1</option>
-                    </select>
-                  </div><!-- /.form-group -->
-
-                   <div class="form-group">
-                     <label>Patente</label>
-                     <input type="text" class="form-control" placeholder="Enter ...">
-                   </div>
-
-                   <div class="form-group">
-                     <label>Autorizado Por</label>
-                     <input type="text" class="form-control" placeholder="Enter ...">
-                   </div>
-
-                     <!-- textarea -->
-                     <div class="form-group">
-                       <label>Comentario</label>
-                       <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                     </div>
-                     <button type="submit" class="btn btn-primary">Registrar</button>
                    </form>
                  </div><!-- /.box-body -->
                </div><!-- /.box -->
@@ -90,10 +99,3 @@
       </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
-
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $(".select2").select2();
-  });
-</script>
