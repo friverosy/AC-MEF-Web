@@ -36,7 +36,7 @@
   <![endif]-->
 </head>
 <body ng-app="app" class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" ng-controller="RecordController">
 
   <header class="main-header">
     <!-- Logo -->
@@ -65,7 +65,11 @@
           <img src="dist/img/user.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Cristian Berzins</p>
+          <p>
+            <script type="text/javascript">
+              document.write(localStorage.email.replace("@multiexportfoods.com",""))
+            </script>
+          </p>
           <a href="/#/dashboard#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
