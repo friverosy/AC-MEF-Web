@@ -17,44 +17,19 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script language="javascript">
-        <!--//
-        /*This Script allows people to enter by using a form that asks for a
-        UserID and Password*/
-        if(localStorage.email == "cberzins@multiexportfoods.com" && localStorage.password == "CB3rZin5"){
-            location="/#/dashboard"
-        }
-        console.log(localStorage.email);
-        console.log(localStorage.password);
-
-        function pasuser(form) {
-            switch (form.email.value) {
-              case "cberzins@multiexportfoods.com":
-                if (form.password.value=="CB3rZin5"){
-                    localStorage.setItem("email", form.email.value);
-                    localStorage.setItem("password", form.password.value);
-                    location="/#/dashboard"
-                }
-                else alert("Invalid Password")
-                break;
-              default:
-                alert("Invalid user")
-            }
-        }
-        //-->
-    </script>
-
+    <script src="../../js/controllers/login.js"></script>
   </head>
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>Acess</b>Control</a>
+        <a href=""><b>Acess</b>Control</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
