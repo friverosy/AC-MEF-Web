@@ -1,13 +1,36 @@
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', function($scope,
-      $state, Record, Parking, Destination, $http, $window) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource', function($scope,
+      $state, Record, Parking, Destination, $http, $window, $resource) {
 
-      if(localStorage.email != "cberzins@multiexportfoods.com" && localStorage.password != "CB3rZin5"){
-          $window.location.href = '/login';
-      }else{
-        //   console.log("aca");
-      }
+    switch (localStorage.email) {
+      case "cberzins@multiexportfoods.com":
+        if (localStorage.password !== "CB3rZin5") $window.location.href = '/login';
+        break;
+        case "jaime":
+          if (localStorage.password !== "j4im3") $window.location.href = '/login';
+          break;
+        case "seguridad1":
+          if (localStorage.password !== "84799") $window.location.href = '/login';
+          break;
+        case "seguridad2":
+          if (localStorage.password !== "14551") $window.location.href = '/login';
+          break;
+        case "seguridad3":
+          if (localStorage.password !== "66494") $window.location.href = '/login';
+          break;
+        case "asistente1":
+          if (localStorage.password !== "25913") $window.location.href = '/login';
+          break;
+        case "asistente2":
+          if (localStorage.password !== "19825") $window.location.href = '/login';
+          break;
+        case "asistente3":
+          if (localStorage.password !== "41331") $window.location.href = '/login';
+          break;
+      default:
+        $window.location.href = '/login';
+    }
 
     $scope.logout = function() {
           localStorage.clear();
@@ -20,14 +43,39 @@ angular
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    $scope.employee_search = function(rut) {
-        if(rut != null){
+    $scope.searchEmployee = function() {
+      try {
+        var rut = $scope.employee.people_run;
+      } catch (err) {
+        console.error(err);
+      }
+
+        if(rut !== null){
             var url = 'http://10.0.0.125:6000/employee/' + rut;
+            // var url = 'http://restcountries.eu/rest/v1/';
+
+
+
+            // var User = $resource('http://10.0.0.125:6000/employee/:rut', {rut});
+            // User.get({rut}, function(user, getResponseHeaders){
+            //
+            //   console.log(user);
+            //
+            // });
+
+            // curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET url
+
+
             $http({
                 method : 'GET',
+                headers: {
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                },
                 url : url
             }).then(function mySucces(response) {
-                console.log(response);
+                console.log(JSON.stringify(response));
+                console.log(response.data);
                 $scope.employee = response.data;
                 // for(var i=0;i<len;i++){
                 //     twitterEntry = dataWeGotViaJsonp[i];
@@ -35,7 +83,7 @@ angular
                 // }
                 // $('#twitterFeed').html(text);
             }, function myError(response) {
-                console.log(response);
+                // console.log(response);
                 $scope.employee = response.statusText;
             });
         }else{
@@ -167,12 +215,12 @@ angular
     // Paginate
 
     //Reports
-    $scope.exportData = function () {
-        var blob = new Blob([document.getElementById('records').innerHTML], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-        });
-        saveAs(blob, "Report.xls");
-    };
+    // $scope.exportData = function () {
+    //     var blob = new Blob([document.getElementById('records').innerHTML], {
+    //         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+    //     });
+    //     saveAs(blob, "Report.xls");
+    // };
 
     $scope.eventDateFilter = function(column) {
         if(column === 'today') {
