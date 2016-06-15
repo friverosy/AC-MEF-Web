@@ -46,7 +46,7 @@
                 <tbody>
                     <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
                           <td>{{record.people_run}}</td>
-                          <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
+                          <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Nombre Completo" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
                           <td><input type="text" ng-model="record.reason" ng-change="update(record)" placeholder="Motivo" class="form-control"></td>
                           <td>
@@ -56,8 +56,8 @@
                                   ng-change="updateDestination(record)"
                               ></select>
                           </td>
-                          <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
-                          <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
+                          <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                          <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                           <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
                           <td>
                               <select
@@ -77,9 +77,9 @@
                  boundary-links="true" >
               </dir-pagination-controls>
             </div><!-- /.box-body -->
-            <button class="btn btn-link" ng-click="exportData()">
+            <!-- <button class="btn btn-link" ng-click="exportData()">
                 <span class="glyphicon glyphicon-share"></span> Export to Excel
-            </button>
+            </button> -->
           </div><!-- /.box -->
       </div>
   </div><!-- /.row -->

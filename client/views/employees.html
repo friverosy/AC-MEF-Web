@@ -40,8 +40,8 @@
                     <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
                         <td><!--<a href="people/{{record.people_run}}">-->{{record.people_run}}<!--</a>--></td>
                         <td>{{record.fullname}}</td>
-                        <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
-                        <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
+                        <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                        <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                         <td>
                             <span ng-if="record.is_permitted" class="label label-success label-mini">Permitido</span>
                             <span ng-if="record.is_permitted == false" class="label label-danger label-mini">Denegado</span>
