@@ -28,7 +28,7 @@
                             ng-class="{'has-error': visitForm.people_run.$invalid && visitForm.people_run.$dirty}">
                            <!-- text input -->
                            <div class="form-group">
-                             <label>Rut / Tarjeta Identificación *</label>
+                             <label>Rut / Tarjeta Identificación * </label>
                              <input type="number" class="form-control focus" placeholder="" ng-model="newRecord.people_run" name="people_run" autocomplete="off" required>
                            </div>
 
@@ -58,12 +58,25 @@
                               ng-options="destination.id as destination.name for destination in destinations"
                               required
                           ></select>
+                          <option value="?" selected="selected"></option>
                         </div><!-- /.form-group -->
 
                          <div class="form-group">
                            <label>Patente</label>
                            <input type="text" class="form-control" placeholder="" ng-model="newRecord.input_patent">
                          </div>
+
+                         <div class="form-group">
+                         <label>Estacionamiento</label>
+                         <select
+                             class="form-control"
+                             style="width: 100%;"
+                             ng-model="newRecord.parking"
+                             ng-options="parking.id as parking.name for parking in parkings"
+                             required
+                         ></select>
+                         <option value="?" selected="selected"></option>
+                       </div><!-- /.form-group -->
 
                          <div class="form-group">
                            <label>Autorizado Por *</label>
