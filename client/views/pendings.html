@@ -15,10 +15,10 @@
         <div class="col-xs-10">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Todos los perfiles {{num_all.count}})</h3>
+              <h3 class="box-title">Todos los perfiles</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-              <form name="recordForm" novalidate ng-submit="addRecord()">
+              <form role="form" name="recordForm" ng-submit="addRecord()">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -30,7 +30,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in pendings | filter: searchKeyword | itemsPerPage:10">
+                    <tr dir-paginate="record in pendings | filter: searchKeyword | itemsPerPage:15">
                           <td>
                               <input type="text"
                                 class="form-control focus"
@@ -62,17 +62,17 @@
                                 disabled>
                           </td>
                           <td>
-        					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-        					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
-        				  </td>
+                  					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
+                  					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
+                  				  </td>
                           <td>
-                            <button type="button" class="fa fa-exchange" ng-click="addRecord()"></button>
+                            <button type="submit" class="fa fa-exchange" ng-click="addRecord()"></button>
                           </td>
                       </tr>
                 </tbody>
               </table>
               <dir-pagination-controls
-                 max-size="10"
+                 max-size="15"
                  direction-links="true"
                  boundary-links="true" >
               </dir-pagination-controls>
