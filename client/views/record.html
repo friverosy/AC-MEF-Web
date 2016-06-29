@@ -7,22 +7,23 @@
 </section>
 
 <!-- Main content -->
-<section class="content" ng-controller="DashboardController">
+<section class="content" ng-controller="RecordController">
   <!-- Small boxes (Stat box) -->
   <div class="row">
 	<div class="col-lg-2 col-xs-6">
 	  <!-- small box -->
 	  <div class="small-box bg-aqua">
 		<div class="inner">
-		  <h3>{{ num_all.count }}</h3>
+		  <h3>{{ num_pendings.count }}</h3>
 		  <p>En Planta</p>
 		</div>
 		<div class="icon">
 		  <i class="ion ion-pie-graph"></i>
 		</div>
-		<a href="/#/todayall" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+		<a href="/#/pendings" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
 	  </div>
 	</div><!-- ./col -->
+
 	<div class="col-lg-2 col-xs-6">
 	  <!-- small box -->
 	  <div class="small-box bg-green">
@@ -54,9 +55,7 @@
 	  <div class="small-box bg-red">
 		<div class="inner">
 		  <h3>{{ num_visits.count }}</h3>
-		  <p ng-if="num_visits.count > 1">Visitas en la planta</p>
-		  <p ng-if="num_visits.count < 1">Visitas en la planta</p>
-		  <p ng-if="num_visits.count = 1">Visita en la planta</p>
+		  <p>Visitas en la planta</p>
 		</div>
 		<div class="icon">
 		  <i class="ion ion-person-add"></i>
