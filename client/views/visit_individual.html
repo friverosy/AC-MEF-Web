@@ -1,125 +1,117 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-	Registro Individual
-	<small>Visita</small>
-  </h1>
+  <h1>Registro Individual<small>Visita</small></h1>
   <ol class="breadcrumb">
-	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Registro Individual</li>
+    <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Registro Individual</li>
   </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
-        <div class="col-xs-12">
-            <!-- left column -->
-            <div class="col-md-6">
-            <!-- general form elements disabled -->
-               <div class="box box-warning">
-                 <div class="box-header with-border">
-                   <h3 class="box-title">Formulario de visita</h3>
-                   <small>(*) campos obligatorios.</small>
-                 </div><!-- /.box-header -->
-                 <div class="box-body">
-                    <form role="form" name="visitForm" ng-submit="addVisit()">
-                       <div class="form-group"
-                            ng-class="{'has-error': visitForm.people_run.$invalid && visitForm.people_run.$dirty}">
-                           <!-- text input -->
-                           <div class="form-group">
-                             <label>Rut / Tarjeta Identificación * </label>
-                             <input type="number" class="form-control focus" placeholder="" ng-model="newRecord.people_run" name="people_run" autocomplete="off" required>
-                           </div>
+  <div class="row" ng-controller="RecordController">
+    <div class="col-xs-12">
+      <!-- left column -->
+      <div class="col-md-6">
+      <!-- general form elements disabled -->
+        <div class="box box-warning">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulario de visita</h3>
+            <small>(*) campos obligatorios.</small>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <form role="form" name="visitForm" ng-submit="addVisit()">
+              <div class="form-group"
+                ng-class="{'has-error': visitForm.people_run.$invalid && visitForm.people_run.$dirty}">
+                <!-- text input -->
+                <div class="form-group" show-errors='{ showSuccess: true }'>
 
-                           <div class="form-group" show-errors='{ showSuccess: true }'>
-                             <label>Nombre Completo *</label>
-                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.fullname" required>
-                           </div>
+                  <label>Rut / Tarjeta Identificación * <span class="label label-warning label-mini">Sin dígito verificador</span></label>
+                  <input type="number" class="form-control focus" placeholder="" ng-model="newRecord.people_run" name="people_run" autocomplete="off" required>
 
-                           <div class="form-group">
-                             <label>Empresa *</label>
-                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.company" required>
-                           </div>
+                  <br>
+                  <input type="checkbox" ng-model="newRecord.is_input" checked
+                    data-toggle="toggle"
+                    data-on-text="Entrada"
+                    data-off-text="Salida"
+                    name="my-checkbox"
+                    data-on-color="success"
+                    data-off-color="danger">
+                  <br>
+                  <br>
 
-                           <div class="form-group">
-                            <label>Motivo *</label>
-                            <select class="form-control" ng-model="newRecord.reason" required>
-                              <option selected>Reunión</option>
-                            </select>
-                          </div>
+                  <label>Nombre Completo *</label>
+                  <input type="text" class="form-control" placeholder="" ng-model="newRecord.fullname" ng-trim="true" required>
 
-                          <div class="form-group">
-                          <label>Destino *</label>
-                          <select
-                              class="form-control"
-                              style="width: 100%;"
-                              ng-model="newRecord.destination"
-                              ng-options="destination.id as destination.name for destination in destinations"
-                              required
-                          ></select>
-                          <option value="?" selected="selected"></option>
-                        </div><!-- /.form-group -->
+                  <label>Empresa *</label>
+                  <input type="text" class="form-control" placeholder="" ng-model="newRecord.company" autocomplete="on" required>
 
-                         <div class="form-group">
-                           <label>Patente</label>
-                           <input type="text" class="form-control" placeholder="" ng-model="newRecord.input_patent">
-                         </div>
+                  <label>Motivo *</label>
+                  <!-- <select class="form-control" ng-model="newRecord.reason" required>
+                    <option selected>Reunión</option>
+                  </select> -->
+                  <input type="text" class="form-control" placeholder="" ng-model="newRecord.reason" autocomplete="on" required>
 
-                         <div class="form-group">
-                         <label>Estacionamiento</label>
-                         <select
-                             class="form-control"
-                             style="width: 100%;"
-                             ng-model="newRecord.parking"
-                             ng-options="parking.id as parking.name for parking in parkings"
-                             required
-                         ></select>
-                         <option value="?" selected="selected"></option>
-                       </div><!-- /.form-group -->
+                  <label>Destino *</label>
+                  <select
+                      class="form-control"
+                      style="width: 100%;"
+                      ng-model="newRecord.destination"
+                      ng-options="destination.id as destination.name for destination in destinations"
+                      autocomplete="on"
+                      required
+                  ></select>
 
-                         <div class="form-group">
-                           <label>Autorizado Por *</label>
-                           <input type="text" class="form-control" placeholder="" ng-model="newRecord.authorized_by" required>
-                         </div>
+                  <label>Patente</label>
+                  <input type="text" class="form-control" placeholder="" ng-model="newRecord.input_patent" autocomplete="on">
 
-                           <!-- textarea -->
-                           <div class="form-group">
-                             <label>Comentario</label>
-                             <textarea class="form-control" rows="3" placeholder="" ng-model="newRecord.comment"></textarea>
-                           </div>
+                  <label>Estacionamiento</label>
+                  <select
+                      class="form-control"
+                      style="width: 100%;"
+                      ng-model="newRecord.parking"
+                      ng-options="parking.id as parking.name for parking in parkings"
+                      required
+                  ></select>
 
-                           <div class="has-error alert alert-danger alert-dismissible" ng-show="
-                              visitForm.people_run.$invalid && visitForm.people_run.$dirty">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                            Rut o targeta inválida.
-                          </div>
-                      </div>
-                     <button type="submit" class="btn btn-primary" ng-disabled="visitForm.$success">Registrar</button>
-                     <br><br>
-                     <div class="alert alert-success alert-dismissible fade in" ng-show="visitForm.$submitted">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
-                        Visita registrada con exito.
-                     </div>
-                   </form>
-                 </div><!-- /.box-body -->
-               </div><!-- /.box -->
-             </div><!--/.col (right) -->
-        </div>
-      </div>
-  </div><!-- /.row -->
+                  <label>Autorizado Por *</label>
+                  <input type="text" class="form-control" placeholder="" ng-model="newRecord.authorized_by" autocomplete="on" required>
+
+                  <label>Comentario</label>
+                  <textarea class="form-control" rows="3" placeholder="" ng-model="newRecord.comment"></textarea>
+                </div>
+                <div class="has-error alert alert-danger alert-dismissible" ng-show="
+                   visitForm.people_run.$invalid && visitForm.people_run.$dirty">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                  Rut o targeta inválida.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary"    ng-disabled="visitForm.$success">Registrar</button>
+              <br><br>
+              <div class="alert alert-success alert-dismissible fade in" ng-show="visitForm.$submitted">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
+                Visita registrada con exito.
+              </div>
+            </form>
+          </div><!-- /.box-body -->
+         </div><!-- /.box -->
+      </div><!--/.col (right) -->
+    </div>
+  </div>
 </section><!-- /.content -->
 
 <script type="text/javascript">
-$(document).ready(function () {
+  $(document).ready(function () {
+    window.setTimeout(function() {
+    $(".alert").fadeTo(1500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+    }, 5000);
+  });
+</script>
 
-window.setTimeout(function() {
-$(".alert").fadeTo(1500, 0).slideUp(500, function(){
-    $(this).remove();
-});
-}, 5000);
-
-});
+<script type="text/javascript">
+  $("[name='my-checkbox']").bootstrapSwitch();
 </script>
