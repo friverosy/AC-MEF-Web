@@ -47,25 +47,22 @@ angular
     };
 
     // Counts
-    $scope.num_all = Record.count({
+    $scope.num_pendings = Record.count({
       where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {is_permitted: true}
-          ]
+          [{output_datetime: undefined}]
       }
     });
+
     $scope.num_employees = Record.count({
       where: { and:
           [
               {is_input: true},
               {output_datetime: undefined},
-              {is_permitted: true},
               {profile: "E"}
           ]
       }
     });
+
     $scope.num_visits = Record.count({
       where: { and:
           [
@@ -75,18 +72,15 @@ angular
           ]
       }
     });
+
     $scope.num_contractors = Record.count({
       where: { and:
           [
               {is_input: true},
               {output_datetime: undefined},
-              {is_permitted: true},
               {profile: "C"}
           ]
       }
-    });
-    $scope.permitted = Record.count({
-      where: { is_permitted : true }
     });
     $scope.rejected = Record.count({
       where: {

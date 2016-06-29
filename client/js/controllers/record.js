@@ -115,7 +115,7 @@ angular
         });
     }
     function getEmployees() {
-        Record.find( { filter: { where: { profile: "E" }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { profile: "E", is_permitted: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.employees = results;
@@ -136,7 +136,7 @@ angular
         });
     }
     function getPendings() {
-        Record.find( { filter: { where: { output_datetime: undefined }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.pendings = results;
@@ -171,21 +171,15 @@ angular
     }
 
     // Counts
-    $scope.num_all = Record.count({
-      where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {is_permitted: true}
-          ]
-      }
+    $scope.num_pendings = Record.count({
+      where: { is_input: true}
     });
+
     $scope.num_employees = Record.count({
       where: { and:
           [
               {is_input: true},
               {output_datetime: undefined},
-              {is_permitted: true},
               {profile: "E"}
           ]
       }
