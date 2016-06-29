@@ -1,8 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', function($scope,
-      $state, Parking, Destination) {
-    $scope.parkings = [];
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', function($scope, $state, Parking, Destination) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -29,6 +27,15 @@ angular
         case "asistente3":
           if (localStorage.password !== "41331") $window.location.href = '/login';
           break;
+        case "seguridad4":
+          if (localStorage.password !== "74294") $window.location.href = '/login';
+          break;
+        case "seguridad5":
+          if (localStorage.password !== "74225") $window.location.href = '/login';
+          break;
+        case "seguridad6":
+          if (localStorage.password !== "35294") $window.location.href = '/login';
+          break;
       default:
         $window.location.href = '/login';
     }
@@ -47,12 +54,21 @@ angular
             $scope.destinations = results;
         });
     }
+    // function getReasons() {
+    //     Reason.find()
+    //     .$promise
+    //     .then(function(results) {
+    //         $scope.reasons = results;
+    //     });
+    // }
     getParkings();
     getDestinations();
+    // getReasons();
 
     // Counts
     $scope.num_parkings = Parking.count();
     $scope.num_destinations = Destination.count();
+    // $scope.num_reasons = Reason.count();
 
     // New parking
     $scope.addParking = function() {
@@ -64,6 +80,16 @@ angular
           getParkings();
         });
     };
+    // New Reason
+    // $scope.addReason = function() {
+    //   Reason
+    //     .create($scope.newReason)
+    //     .$promise
+    //     .then(function(reason) {
+    //       $scope.newReason = '';
+    //       getReasons();
+    //     });
+    // };
     // New Destination
     $scope.addDestination = function() {
       Destination
@@ -87,6 +113,12 @@ angular
         console.log(destination);
         destination.$save(destination);
   	};
+    // Update Reason
+    // $scope.updateReason = function(reason){
+    //     reason.updating = 1;
+    //     console.log(reason);
+    //     reason.$save(reason);
+  	// };
 
     // Delete Parking
     $scope.deleteParking = function(parking) {
@@ -106,5 +138,14 @@ angular
           getDestinations();
         });
     };
+    // Delete Reason
+    // $scope.deleteDestination = function(reason) {
+    //   Reason
+    //     .deleteById(reason)
+    //     .$promise
+    //     .then(function() {
+    //       getReasons();
+    //     });
+    // };
 
   }]);

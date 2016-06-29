@@ -28,6 +28,15 @@ angular
         case "asistente3":
           if (localStorage.password !== "41331") $window.location.href = '/login';
           break;
+        case "seguridad4":
+          if (localStorage.password !== "74294") $window.location.href = '/login';
+          break;
+        case "seguridad5":
+          if (localStorage.password !== "74225") $window.location.href = '/login';
+          break;
+        case "seguridad6":
+          if (localStorage.password !== "35294") $window.location.href = '/login';
+          break;
       default:
         $window.location.href = '/login';
     }
