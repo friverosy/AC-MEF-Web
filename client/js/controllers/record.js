@@ -28,6 +28,15 @@ angular
         case "asistente3":
           if (localStorage.password !== "41331") $window.location.href = '/login';
           break;
+        case "seguridad4":
+          if (localStorage.password !== "74294") $window.location.href = '/login';
+          break;
+        case "seguridad5":
+          if (localStorage.password !== "74225") $window.location.href = '/login';
+          break;
+        case "seguridad6":
+          if (localStorage.password !== "35294") $window.location.href = '/login';
+          break;
       default:
         $window.location.href = '/login';
     }
@@ -105,9 +114,6 @@ angular
             $scope.destinations = results;
         });
     }
-    getParkings();
-    getDestinations();
-
     function getEmployees() {
         Record.find( { filter: { where: { profile: "E" }, order: ['input_datetime DESC'] } } )
         .$promise
@@ -115,7 +121,6 @@ angular
             $scope.employees = results;
         });
     }
-
     function getAll() {
         Record.find( { filter: { order: ['input_datetime DESC'] } } )
         .$promise
@@ -123,15 +128,13 @@ angular
             $scope.todayall = results;
         });
     }
-
     function getVisits() {
-        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { profile: "V" }, order: ['updated DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.visits = results;
         });
     }
-
     function getPendings() {
         Record.find( { filter: { where: { output_datetime: undefined }, order: ['input_datetime DESC'] } } )
         .$promise
@@ -139,7 +142,6 @@ angular
             $scope.pendings = results;
         });
     }
-
     function getDennieds() {
         Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
         .$promise
@@ -153,6 +155,8 @@ angular
     getAll();
     getPendings();
     getDennieds();
+    getParkings();
+    getDestinations();
 
     var f=new Date();
     var ano = f.getFullYear();
@@ -263,6 +267,7 @@ angular
     $scope.addVisit = function() {
         $scope.newRecord.profile = "V";
         $scope.newRecord.is_permitted = true;
+        $scope.newRecord.is_input = true;
       Record
         .create($scope.newRecord)
         .$promise
@@ -273,18 +278,21 @@ angular
         });
     };
 
-    // Add comment to record
+    $scope.addRecord = function() {
+      console.log($scope.newRecord);
+      if($scope.newRecord !== undefined)
+      Record
+        .create($scope.newRecord)
+        .$promise
+        .then(function(record) {
+          console.log(record);
+          $scope.newRecord = '';
+          getAll();
+        });
+    };
+
     $scope.update = function(record){
-        record.$save(record);
-  	};
-
-    // Add parkin to record
-    $scope.updateParking = function(record){
-        record.$save(record);
-  	};
-
-    // Add destination to record
-    $scope.updateDestination = function(record){
+        record.updating=true;
         record.$save(record);
   	};
 
