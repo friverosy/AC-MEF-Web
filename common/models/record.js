@@ -6,24 +6,21 @@ module.exports = function(Record) {
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
-      console.log(ctx.instance);
       if(ctx.instance.is_input == true){
         ctx.instance.input_datetime = new Date();
-        console.log("its input");
       }else{
         Record.findOne({
           where: { fullname: ctx.instance.fullname }, order: 'id DESC'},
           function (err, records) {
             if (err) {
               throw err;
-              console.error("line 16", err);
+              console.error(new Date(), "Error line 17", err);
             } else {
               try {
-                Record.updateAll({ id: records.id }, { output_datetime: new Date() }, null);
-                console.log("its output");
+                Record.updateAll({ id: records.id }, { output_datetime: new Date(), is_input: false }, null);
               } catch (err) {
                 // First record of this person.
-                console.log("First record".green);
+                console.log(new Date(), "First record of".green, ctx.instance.fullname);
               }
             }
           }
@@ -37,11 +34,12 @@ module.exports = function(Record) {
           // nothing yet
           break;
         case "V": //Visit
+          // ctx.instance.is_permitted = true;
           break;
         default:
-          console.log("without profile".yellow);
+          console.log(ctx.instance.fullname, "without profile".yellow);
           ctx.instance.profile = "E";
-          console.log("Profile set to Employee by default".green);
+          console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
           break;
       };
     } else {
@@ -69,12 +67,10 @@ Record.observe('after save', function(ctx, next) {
         },
         function (error, instance, created) {
           if (error){
-            console.log("88 ",error);
+            console.log(new date(), "Error line 70:",error);
           }
           if (created) {
-            console.log(instance);
             //instance.profileId = 2; // ? where put that...???
-            console.log("new ".green, ctx.instance.profile," created".green);
             People.updateAll({ run: instance.run }, { profile: ctx.instance.profile, company: ctx.instance.company }, function(err, info) {
               if (err) {
                 console.error(err);
@@ -88,13 +84,13 @@ Record.observe('after save', function(ctx, next) {
                   if (err) {
                     console.error(err);
                   }else{
-                    console.log("fullname updated, "+instance.fullname+" to "+ctx.instance.fullname+"".green);
+                    console.log(new Date(), "fullname updated, "+instance.fullname+" to "+ctx.instance.fullname+"".green);
                   }
                 });
               }
             } catch (err) {
               throw err;
-              console.error("92" + err);
+              console.error(new date(), "Error line 93" + err);
             }
           }
         });
@@ -129,9 +125,7 @@ Record.observe('after save', function(ctx, next) {
           Record.updateAll({ id: ctx.instance.id }, { comment: ctx.instance.comment }, null);
         }
       }
-      // console.log(ctx.instance);
     }
     next();
-    console.log("----------------");
   });
 };
