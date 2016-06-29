@@ -92,5 +92,9 @@
   "destination": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "reason": {
+    "dataSource": "mongoDS",
+    "public": true
   }
 }
