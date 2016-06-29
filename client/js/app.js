@@ -58,6 +58,11 @@ angular
         templateUrl: 'views/visit_individual.html',
         controller: 'RecordController'
       })
+      .state('visit_calendar', {
+        url: '/visit_calendar',
+        templateUrl: 'views/visit_calendar.html',
+        controller: 'RecordController'
+      })
       .state('reports', {
         url: '/reports',
         templateUrl: 'views/reports.html',
