@@ -1,3 +1,4 @@
+<img class="axxezo" src="../../dist/img/axxezo_logo.png" alt="Axxezo">
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
@@ -53,7 +54,9 @@
 	  <div class="small-box bg-red">
 		<div class="inner">
 		  <h3>{{ num_visits.count }}</h3>
-		  <p>Visitas</p>
+		  <p ng-if="num_visits.count > 1">Visitas en la planta</p>
+		  <p ng-if="num_visits.count < 1">Visitas en la planta</p>
+		  <p ng-if="num_visits.count = 1">Visita en la planta</p>
 		</div>
 		<div class="icon">
 		  <i class="ion ion-person-add"></i>
