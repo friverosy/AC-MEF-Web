@@ -40,8 +40,10 @@
                         <td ng-if="record.is_permitted" class="text-green"><strong>{{record.people_run}}</strong></td>
                         <td ng-if="record.is_permitted == false" class="box-title  text-red"><strong>{{record.people_run}}</strong></td>
                         <td>{{record.fullname}}</td>
-                        <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                        <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
+                        <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
                         <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+
                         <td>
                             <input type="text" ng-model="record.comment" ng-change="update(record)" placeholder="Comentario" class="form-control">
                             <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
