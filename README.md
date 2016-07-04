@@ -10,4 +10,8 @@ to run:
 * node .
 * open http://0.0.0.0:3000
 
+
+To write code use:
+https://google.github.io/styleguide/javascriptguide.xml
+
 ![plantilla.png](https://bitbucket.org/repo/7bbkby/images/3625128779-plantilla.png)
