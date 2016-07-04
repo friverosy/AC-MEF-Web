@@ -122,14 +122,14 @@ angular
         });
     }
     function getAll() {
-        Record.find( { filter: { order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { order: ['id ASC'] } } )
         .$promise
         .then(function(results) {
             $scope.todayall = results;
         });
     }
     function getVisits() {
-        Record.find( { filter: { where: { profile: "V" }, order: ['updated DESC'] } } )
+        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.visits = results;
