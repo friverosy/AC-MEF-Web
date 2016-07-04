@@ -10,7 +10,7 @@ module.exports = function(Record) {
         ctx.instance.input_datetime = new Date();
       }else{
         Record.findOne({
-          where: { fullname: ctx.instance.fullname }, order: 'id DESC'},
+          where: { fullname: ctx.instance.fullname }, order: 'id DESC'},{limit: 1},
           function (err, records) {
             if (err) {
               throw err;
@@ -20,7 +20,8 @@ module.exports = function(Record) {
                 Record.updateAll({ id: records.id }, { output_datetime: new Date(), is_input: false }, null);
               } catch (err) {
                 // First record of this person.
-                console.log(new Date(), "First record of".green, ctx.instance.fullname);
+                console.log(new Date(), "First record of", ctx.instance.fullname);
+                ctx.instance.owi = true; //output without input
               }
             }
           }
@@ -41,7 +42,7 @@ module.exports = function(Record) {
           ctx.instance.profile = "E";
           console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
           break;
-      };
+      }
     } else {
       // Updating
       ctx.data.updating = new Date();
@@ -97,7 +98,11 @@ Record.observe('after save', function(ctx, next) {
       }
 
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined){
-        Record.destroyById(ctx.instance.id, null);
+        if( ctx.instance.is_input === false && ctx.instance.input_datetime === undefined &&     ctx.instance.owi === true){
+          Record.updateAll({ id: ctx.instance.id }, { output_datetime: new Date(), is_input: false, input_datetime: false }, null);
+        }else{
+            Record.destroyById(ctx.instance.id, null);
+        }
       }
 
       var today = new Date();
