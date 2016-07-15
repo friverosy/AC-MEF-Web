@@ -27,6 +27,12 @@
     },
     "is_input": {
       "type": "boolean"
+    },
+    "company": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string"
     }
   },
   "validations": [],
