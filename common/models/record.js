@@ -5,8 +5,10 @@ module.exports = function(Record) {
   var colors = require('colors');
 
   Record.observe('before save', function(ctx, next) {
+    var app = require('../../server/server');
+    var People = app.models.People;
     if (ctx.instance) {
-      if(ctx.instance.is_input == true){
+      if(ctx.instance.is_input === true){
         ctx.instance.input_datetime = new Date();
       }else{
         Record.findOne({
@@ -26,6 +28,27 @@ module.exports = function(Record) {
             }
           }
         );
+        if(ctx.instance.profile === "V"){
+          Record.findOne({
+            where: { people_run: ctx.instance.people_run }, order: 'id DESC'}, {limit: 1},
+            function (err, records) {
+              if (err) {
+                throw err;
+                console.error(new Date(), "Error line 17", err);
+              } else {
+                try {
+                  console.log("salida de:",records.id);
+                  Record.updateAll({ id: records.id }, { output_datetime: new Date(), is_input: false }, null);
+                } catch (err) {
+                  // First record of this person.
+                  console.log(err);
+                  console.log(new Date(), "First record of", ctx.instance.fullname);
+                  ctx.instance.owi = true; //output without input
+                }
+              }
+            }
+          );
+        }
       }
       switch (ctx.instance.profile) {
         case "E": //Employee
@@ -79,13 +102,13 @@ Record.observe('after save', function(ctx, next) {
             });
           } else { // Already existed.
             try {
-              // Update fullname if is different.
-              if (ctx.instance.fullname !== instance.fullname){
-                Record.updateAll({ people_run: ctx.instance.people_run }, { fullname: ctx.instance.fullname }, function(err, info) {
+              // Update fullname if is different, considers the name of the people table
+              if (ctx.instance.fullname !== instance.fullname && ctx.instance.updating === undefined && ctx.instance.is_input === true){
+                Record.updateAll({ people_run: ctx.instance.people_run}, { fullname: instance.fullname }, function(err, info) {
                   if (err) {
                     console.error(err);
                   }else{
-                    console.log(new Date(), "fullname updated, "+instance.fullname+" to "+ctx.instance.fullname+"".green);
+                    //console.log(new Date(), "fullname updated, "+instance.fullname+" to "+ctx.instance.fullname+"".green);
                   }
                 });
               }
