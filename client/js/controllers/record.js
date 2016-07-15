@@ -121,6 +121,13 @@ angular
             $scope.employees = results;
         });
     }
+    function getContractors() {
+        Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.contractors = results;
+        });
+    }
     function getAll() {
         Record.find( { filter: { order: ['id ASC'] } } )
         .$promise
@@ -151,6 +158,7 @@ angular
     }
 
     getEmployees();
+    getContractors();
     getVisits();
     getAll();
     getPendings();
@@ -181,6 +189,15 @@ angular
               {is_input: true},
               {output_datetime: undefined},
               {profile: "E"}
+          ]
+      }
+    });
+    $scope.num_contractors = Record.count({
+      where: { and:
+          [
+              {is_input: true},
+              {output_datetime: undefined},
+              {profile: "C"}
           ]
       }
     });
