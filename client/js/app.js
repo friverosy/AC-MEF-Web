@@ -83,6 +83,11 @@ angular
         templateUrl: 'views/profiles.html',
         controller: 'ProfilesController'
       })
+      .state('blacklist', {
+        url: '/blacklist',
+        templateUrl: 'views/blacklist.html',
+        controller: 'BlacklistController'
+      })
       .state('about', {
           //we'll get to this in a bit
       });
