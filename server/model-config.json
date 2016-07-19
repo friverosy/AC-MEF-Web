@@ -96,5 +96,11 @@
   "reason": {
     "dataSource": "mongoDS",
     "public": true
+  },
+  "blacklist": {
+    "dataSource": "db",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }
