@@ -18,57 +18,41 @@
               <h3 class="box-title">Todos los perfiles</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-              <form role="form" name="recordForm" ng-submit="addRecord()">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                          <th>Rut</th>
-                          <th>Nombre</th>
-                          <th>Entrada</th>
-                          <th>Perfil</th>
-                          <th>Opción</th>
-                      </tr>
+                        <th>Rut</th>
+                        <th>Nombre</th>
+                        <th>Entrada</th>
+                        <th>Perfil</th>
+                        <th>Opción</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr dir-paginate="record in pendings | filter: searchKeyword | itemsPerPage:15">
-                          <td>
-                              <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.people_run}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.people_run"
-                                disabled>
-                          </td>
-                          <td>
-                              <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.fullname}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.fullname"
-                                disabled>
+                        <form name="recordForm" novalidate>
+                            <td>
+                                <input type="text" class="form-control focus" ng-model="newRecord.people_run"
+                                placeholder="{{record.people_run}}">
                             </td>
-                          <td>
-                              <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.input_datetime"
-                                disabled>
-                          </td>
-                          <td>
-                  					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-                  					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
-                  				  </td>
-                          <td>
-                            <button type="submit" class="fa fa-exchange" ng-click="addRecord()"></button>
-                          </td>
-                      </tr>
+                            <td>
+                                <input type="text" class="form-control focus" ng-model="newRecord.fullname" placeholder="{{record.fullname}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control focus" placeholder="{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}">
+                            </td>
+                            <td>
+                                <span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
+                                <span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
+                                <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
+                                <span ng-if="record.profile == 'N'" class="label label-warning label-mini">Eventual</span>
+                                <span ng-if="record.profile == 'T'" class="label label-warning label-mini">Tripulante</span>
+                            </td>
+                            <td>
+                              <input type="submit" class="btn btn-primary" ng-click="addRecord(newRecord)" value="Registrar Salida" />
+                            </td>
+                        </form>
+                    </tr>
                 </tbody>
               </table>
               <dir-pagination-controls
@@ -76,9 +60,8 @@
                  direction-links="true"
                  boundary-links="true" >
               </dir-pagination-controls>
-              </form>
-            </div><!-- /.box-body -->
-          </div><!-- /.box -->
+            </div>
+          </div>
       </div>
-  </div><!-- /.row -->
-</section><!-- /.content -->
+  </div>
+</section>

@@ -1,5 +1,5 @@
 angular
-  .module('app')
+  .module('app',[])
   .controller('ProfilesController', ['$scope', '$state', function($scope,
       $state) {
 

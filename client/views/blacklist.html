@@ -1,0 +1,62 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Lista Negra
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Lista Negra</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content" ng-controller="RecordController">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Empleados</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form name="blacklistForm" novalidate ng-submit="addBlack()">
+                      <div class="form-group">
+                        <input type="text" class="form-control focus" name="rut"
+                            placeholder="Rut" autocomplete="off" required
+                            ng-model="newBlack.rut">
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control focus" name="credential"
+                            placeholder="Tarjeta" autocomplete="off" required
+                            ng-model="newBlack.credential">
+                      </div>
+                      <button class="btn btn-info">Agregar</button>
+                    </form>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Rut</th>
+                                <th>Tarjeta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng:repeat="black in blacklist">
+                                <td>{{$index + 1}}</td>
+                                <td><input type="text" ng-model="black.rut" ng-change="update(black)" class="form-control"></td>
+                                <td><input type="text" ng-model="black.credential" ng-change="update(black)" class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteBlack(black)"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</section><!-- /.content -->

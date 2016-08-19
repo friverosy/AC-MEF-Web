@@ -1,63 +1,76 @@
-<h1>
-	Peoples
-</h1>
-<hr>
-<div ng-controller="CDController">
-	 {{currentDate | date:'dd MMM yyyy'}}
-</div>
-<p class="text-right">
-   <button class="btn btn-link" ng-click="exportToExcel('#peoples')">
-   <span class="glyphicon glyphicon-share"></span> Export to Excel
-   </button>
-</p>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Linea de tiempo
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Individual</li>
+  </ol>
+</section>
 
-<div ng-controller="PeopleController" class="table-responsive">
-	<table class="table table-striped" id="peoples">
-		<thead>
-		<tr>
-			<th>Run</th>
-			<th>FullName</th>
-			<th>
-				<a href="#" ng-click="sortType = 'input_datetime'; sortIt = !sortIt">
-				    <span ng-show="sortType == 'input_datetime' && !sortIt" class="fa fa-caret-down"></span>
-				    <span ng-show="sortType == 'input_datetime' && sortIt" class="fa fa-caret-up"></span>
-				Input
-				</a>
-			</th>
-			<th>
-				<a href="#" ng-click="sortType = 'output_datetime'; sortIt = !sortIt">
-				    <span ng-show="sortType == 'output_datetime' && !sortIt" class="fa fa-caret-down"></span>
-				    <span ng-show="sortType == 'output_datetime' && sortIt" class="fa fa-caret-up"></span>
-				Output
-				</a>
-			</th>
-			<th>
-				<a href="#" ng-click="sortType = 'is_permitted'; sortIt = !sortIt">
-				    <span ng-show="sortType == 'is_permitted' && !sortIt" class="fa fa-caret-down"></span>
-				    <span ng-show="sortType == 'is_permitted' && sortIt" class="fa fa-caret-up"></span>
-				State
-				</a>
-			</th>
-			<th>Comment</th>
-			<th>Action</th>
-		</tr>
-		</thead>
-		<tbody>
-			<tr ng:repeat="people in peoples | orderBy:sortType:sortIt | filter:dateRange:expression">
-				<td><a href="people/{{people.people_run}}">{{people.people_run}}</a></td>
-				<td>{{people.fullname}}</td>
-				<td>{{people.input_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
-				<td>{{people.output_datetime | date:'dd MMM yyyy HH:mm:ss':'-0300'}}</td>
-				<td>
-					<span ng-if="people.is_permitted" class="label label-success label-mini">Permitted</span>
-					<span ng-if="people.is_permitted == false" class="label label-danger label-mini">Dennied</span>
-				</td>
-				<td>{{people.comment}}</td>
-				<td>
-					<input type="text" ng-model="people.comment" ng-change="update(people)" placeholder="Add Comment" class="form-control">
-					<!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+<!-- Main content -->
+<section class="content">
+    <div class="row" ng-controller="RecordController">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Registros</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Rut</th>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Entrada</th>
+                        <th>Patente Entrada</th>
+                        <th>Tipo Vehiculo</th>
+                        <th>Salida</th>
+                        <th>Patente Salida</th>
+                        <th>Tipo Vehiculo</th>
+                        <th>Comentario</th>
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
+                        <td ng-if="record.is_permitted" class="text-green">
+                          <strong ng-if="record.brawler" class="text-red">*</strong>
+                          <strong>{{record.people_run}}</strong>
+                        </td>
+                        <td ng-if="record.is_permitted == false" class="text-red">
+                          <strong ng-if="record.brawler" class="text-red">*</strong>
+                          <strong>{{record.people_run}}</strong>
+                        </td>
+                        <td>{{record.fullname}}</td>
+                        <td>{{record.department}}</td>
+                        <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
+                        <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+
+                        <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>
+
+                        <td><input type="text" ng-if="record.input_patent != undefined" ng-model="record.input_patent_type" ng-change="update(record)" placeholder="Tipo Vechiculo" class="form-control"></td>
+
+                        <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                        <td><input type="text" ng-if="record.output_datetime != undefined" ng-model="record.output_patent" ng-change="update(record)" placeholder="Patente de salida" class="form-control"></td>
+
+                        <td><input type="text" ng-if="record.output_patent != undefined" ng-model="record.output_patent_type" ng-change="update(record)" placeholder="Tipo Vechiculo" class="form-control"></td>
+
+                        <td>
+                            <input type="text" ng-model="record.comment" ng-change="update(record)" placeholder="Comentario" class="form-control">
+                            <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
+              <dir-pagination-controls
+                 max-size="10"
+                 direction-links="true"
+                 boundary-links="true" >
+              </dir-pagination-controls>
+            </div><!-- /.box-body -->
+          </div><!-- /.box -->
+      </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->

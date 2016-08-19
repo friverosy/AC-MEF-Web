@@ -1,5 +1,5 @@
 angular
-  .module('app')
+  .module('app',[])
   .controller('AccountsController', ['$scope', '$state', 'Record', '$http', '$window', function($scope,
       $state, Record, $http, $window) {
 

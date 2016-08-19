@@ -1,5 +1,5 @@
 'use strict';
-angular.module('LoopbackSocketIntegration')
+angular.module('app', [])
 .factory('PubSub', function (socket) {
     var container =  [];
     return {

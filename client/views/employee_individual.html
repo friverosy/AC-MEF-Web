@@ -1,93 +1,118 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Registro Individual
-	<small>Empleados</small>
+    Registro Individual
+    <small>Empleados</small>
   </h1>
   <ol class="breadcrumb">
-	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Registro Individual</li>
+    <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Registro Individual</li>
   </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
-        <div class="col-xs-12">
-            <!-- left column -->
-            <div class="col-md-6">
-            <!-- general form elements disabled -->
-               <div class="box box-warning">
-                 <div class="box-header with-border">
-                   <h3 class="box-title">Formulario de empleados</h3>
-                   <small>(*) campos obligatorios.</small>
-                 </div><!-- /.box-header -->
-                 <div class="box-body">
-                     <form role="form" name="searchEmployeeForm" ng-submit="searchEmployee()">
-                        <div class="form-group"
-                             ng-class="{'has-error': searchEmployeeForm.people_run.$invalid && searchEmployeeForm.people_run.$dirty}">
-                            <!-- text input -->
+  <div class="row" ng-controller="RecordController">
+    <div class="col-xs-12">
+      <div class="col-md-6">
+        <div class="box box-warning">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulario de empleados</h3>
+            <small>(*) campos obligatorios.</small>
+          </div><!-- /.box-header -->
+          <div class="box-body">
 
-                            <div class="input-group">
-                              <input type="text" name="people_run" ng-model="employee.people_run" class="form-control" placeholder="Ingrese identificador" required>
-                                  <span class="input-group-btn">
-                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success"><i class="fa fa-search"></i>
-                                    </button>
-                                  </span>
-                            </div>
+            <form role="form" name="searchEmployeeForm" ng-submit="findPeople()">
+              <div class="form-group" ng-class="{'has-error': searchEmployeeForm.people_run.$invalid && searchEmployeeForm.people_run.$dirty}">
+                <div class="input-group" show-errors='{ showSuccess: true }'>
+                  <input type="text" name="people_run" ng-model="findModel.people_run" class="form-control" placeholder="Ingrese identificador" required>
+                  <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success"><i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </form>
 
-                            <!-- <div class="has-error alert alert-danger alert-dismissible" ng-show="
-                               searchEmployeeForm.people_run.$invalid && searchEmployeeForm.people_run.$dirty">
-                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                             <h4><i class="icon fa fa-ban"></i> Denegado!</h4>
-                             Rut o targeta no permitido.
-                           </div> -->
-                       </div>
-                      <div class="alert alert-success alert-dismissible fade in" ng-show="searchEmployeeForm.$submitted">
-                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                         <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
-                         Empleado encontrado.
+            <form role="form" name="employeeForm" ng-submit="addEmployee()">
+              <div class="form-group">
+
+                <div class="form-group">
+                  <label>¿Marque casilla si es Salida?</label>
+                  <input type="checkbox" ng-model="newRecord.is_input" checked="true">
+                </div>
+
+                <div class="form-group">
+                  <label>Nombre Completo *</label>
+                  <input type="text" class="form-control" ng-model="newRecord.fullname" disabled="true">
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha:</label>
+                    <div class="input-group date">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
                       </div>
-                    </form>
+                      <input type="text" class="form-control pull-right" id="datepicker" ng-model="newRecord.date">
+                    </div>
+                  </div>
 
-                    <form role="form" name="employeeForm" ng-submit="addEmployee()">
-                       <div class="form-group"
-                            ng-class="{'has-error': employeeForm.fullname.$invalid && employeeForm.fullname.$dirty}">
-
-                           <div class="form-group" show-errors='{ showSuccess: true }'>
-                             <label>Nombre Completo *</label>
-                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.fullname" required>
-                           </div>
-
-                           <div class="form-group">
-                             <label>Comentario</label>
-                             <textarea class="form-control" rows="3" placeholder="" ng-model="newRecord.comment"></textarea>
-                           </div>
+                <div class="bootstrap-timepicker">
+                  <div class="form-group">
+                    <label>Hora:</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control timepicker" ng-model="newRecord.time">
+                      <div class="input-group-addon">
+                        <i class="fa fa-clock-o"></i>
                       </div>
-                     <button type="submit" class="btn btn-primary" ng-disabled="employeeForm.$success">Registrar</button>
-                     <br><br>
-                     <div class="alert alert-success alert-dismissible fade in" ng-show="employeeForm.$submitted">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
-                        Empleado registrado con exito.
-                     </div>
-                   </form>
-                 </div><!-- /.box-body -->
-               </div><!-- /.box -->
-             </div><!--/.col (right) -->
-        </div>
-      </div>
-  </div><!-- /.row -->
+                    </div><!-- /.input group -->
+                  </div><!-- /.form group -->
+                </div>
+
+                <div class="form-group">
+                  <label>Comentario</label>
+                  <textarea class="form-control" rows="3" ng-model="newRecord.comment"></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" ng-disabled="employeeForm.$success">Registrar</button>
+            </form>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+      </div><!--/.col (right) -->
+    </div>
+  </div>
+</div><!-- /.row -->
 </section><!-- /.content -->
 
 <script type="text/javascript">
 $(document).ready(function () {
 
-window.setTimeout(function() {
-$(".alert").fadeTo(1000, 0).slideUp(500, function(){
-    $(this).remove();
-});
-}, 5000);
+  window.setTimeout(function() {
+    $(".alert").fadeTo(1000, 0).slideUp(500, function(){
+      $(this).remove();
+    });
+  }, 5000);
 
 });
+</script>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+    //Datemask dd/mm/yyyy
+    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    //Switch
+    $("[name='my-checkbox']").bootstrapSwitch();
+    //Money Euro
+    $("[data-mask]").inputmask();
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false
+    });
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+  });
 </script>

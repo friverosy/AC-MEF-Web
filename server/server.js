@@ -21,7 +21,7 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/status', function(req, res){
-    res.status(200).send("I'am alive!!");
+    res.status(200).send("I'm alive!");
 });
 
 // app.use(loopback.urlNotFound());
@@ -37,8 +37,18 @@ boot(app, __dirname, function(err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
-  if (require.main === module){
+  if (require.main === module) {
+    //Comment this app.start line and add following lines
     //app.start();
     app.io = require('socket.io')(app.start());
+    app.io.on('connection', function(socket){
+      console.log('a user connected');
+      socket.on('record created', function(msg){
+        console.log('record: ' + msg);
+      });
+      socket.on('disconnect', function(){
+          console.log('user disconnected');
+      });
+    });
   }
 });

@@ -1,5 +1,5 @@
 angular
-  .module('app')
+  .module('app',[])
   .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', function($scope, $state, Parking, Destination) {
 
     switch (localStorage.email) {

@@ -1,7 +1,7 @@
 angular
   .module('app',[])
-  .controller('ReportsController', ['$scope', '$state', 'Record', '$http', '$window', function($scope,
-      $state, Record, $http, $window) {
+  .controller('BrawlerController', ['$scope', '$state', '$http', '$window', '$resource', function($scope,
+      $state, $http, $window, $resource) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -46,5 +46,32 @@ angular
           $window.location.href = '/login';
     };
 
+    // function getBlackList() {
+    //     Blacklist.find()
+    //     .$promise
+    //     .then(function(results) {
+    //         $scope.Blacklist = results;
+    //     });
+    // }
+    //
+    // getBlackList();
+    //
+    // $scope.addBlack = function() {
+    //   console.log($scope.newBlack);
+    //   if($scope.newBlack !== undefined)
+    //   Blacklist
+    //     .create($scope.newBlack)
+    //     .$promise
+    //     .then(function(black) {
+    //       console.log(black);
+    //       $scope.newBlack = '';
+    //       getAll();
+    //     });
+    // };
+    //
+    // $scope.update = function(black){
+    //     black.updating=true;
+    //     black.$save(black);
+  	// };
 
   }]);

@@ -1,5 +1,5 @@
-angular
-  .module('app')
+'use strict';
+angular.module('app',[])
   .controller('DashboardController', ['$scope', '$state', 'Record', '$http', '$window', '$resource', function($scope,
       $state, Record, $http, $window, $resource) {
 
