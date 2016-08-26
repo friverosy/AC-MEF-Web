@@ -39,6 +39,19 @@
     "is_permitted": {
       "type": "boolean",
       "required": false
+    },
+    "location": {
+      "type": "string"
+    },
+    "company_code": {
+      "type": "number"
+    },
+    "company": {
+      "type": "string",
+      "required": false
+    },
+    "profile": {
+      "type": "string"
     }
   },
   "validations": [],
