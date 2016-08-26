@@ -93,10 +93,6 @@
     "dataSource": "mongoDS",
     "public": true
   },
-  "reason": {
-    "dataSource": "mongoDS",
-    "public": true
-  },
   "blacklist": {
     "dataSource": "mongoDS",
     "public": true,
