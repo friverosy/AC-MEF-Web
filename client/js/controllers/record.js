@@ -1,7 +1,9 @@
+var updatingInformation = false;
+
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource', function($scope,
-      $state, Record, Parking, Destination, $http, $window, $resource) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource','PubSub', function($scope,
+      $state, Record, Parking, Destination, $http, $window, $resource, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -166,6 +168,8 @@ angular
     getParkings();
     getDestinations();
 
+
+
     var f=new Date();
     var ano = f.getFullYear();
     var mes = f.getMonth()+1;
@@ -306,5 +310,26 @@ angular
         record.updating=true;
         record.$save(record);
   	};
+
+    //Suscribe to Socket.io events
+
+    var onRecordCreate = function(data) {
+      if(!updatingInformation){
+          updatingInformation = true;
+          getPendings();
+          switch(data.instance.profile){
+            case 'E' : getEmployees(); break;
+            case 'V' : getVisits(); break;
+            case 'C' : getContractors(); break;
+          }
+        }
+        updatingInformation = false;
+    }
+
+    PubSub.subscribe({
+                collectionName: 'Record',
+                method : 'POST'
+            }, onRecordCreate);
+
 
   }]);

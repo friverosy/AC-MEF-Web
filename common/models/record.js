@@ -1,3 +1,5 @@
+var pubsub = require("../../server/pubsub.js");
+
 module.exports = function(Record) {
   // remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
@@ -78,8 +80,17 @@ Record.observe('after save', function(ctx, next) {
     var app = require('../../server/server');
     var People = app.models.People;
 
+
     if (ctx.instance) {
       // add visit if is new
+
+      pubsub.publish(socket, {
+          collectionName : 'Record',
+          data: ctx,
+          method: 'POST'
+      });
+
+
       if (ctx.instance.profile === "V") {
         People.findOrCreate(
         {

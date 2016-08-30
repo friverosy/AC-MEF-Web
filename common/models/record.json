@@ -10,30 +10,85 @@
     "dataSource": "emailDs"
   },
   "properties": {
-    "patent_input": {
+
+    "_id": {
+      "type": "Number", 
+      "id": true 
+    },
+
+    "authorized_by": {
       "type": "string"
     },
-    "patent_output": {
+
+    "brawler": {
+      "type": "boolean"
+    },
+
+    "bus": {
       "type": "string"
     },
+
     "comment": {
       "type": "string"
     },
-    "datetime_input": {
-      "type": "date"
-    },
-    "datetime_output": {
-      "type": "date"
-    },
-    "is_input": {
-      "type": "boolean"
-    },
+
     "company": {
       "type": "string"
     },
-    "department": {
+
+    "destination": {
       "type": "string"
+    },
+
+    "fullname": {
+      "type": "string"
+    },
+
+    "input_datetime": {
+      "type": "Date"
+    },
+
+    "input_patent": {
+      "type": "string"
+    },
+
+    "input_patent_type": {
+      "type": "string"
+    },
+
+    "is_input": {
+      "type": "boolean"
+    },
+
+    "is_permitted": {
+      "type": "boolean"
+    },
+
+    "output_datetime": {
+      "type": "date"
+    },
+
+    "parking": {
+      "type": "string"
+    },
+
+    "people_run": {
+      "type": "string"
+    },
+
+    "profile": {
+      "type": "string"
+    },
+
+    "updating": {
+      "type": "date"
     }
+
+
+
+
+
+
   },
   "validations": [],
   "relations": {
