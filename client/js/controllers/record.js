@@ -322,11 +322,13 @@ angular
         });
     };
 
-    $scope.addRecord = function() {
-      console.log($scope.newRecord);
-      if($scope.newRecord !== undefined)
+    $scope.addRecord = function(record) {
+      console.log(record);
+      var newRecord = record;
+      //newRecord.output_datetime = 
+      if(record !== undefined)
       Record
-        .create($scope.newRecord)
+        .create(record)
         .$promise
         .then(function(record) {
           console.log(record);
@@ -334,6 +336,11 @@ angular
           getAll();
         });
     };
+
+    $scope.registrarSalida = function(record){
+      //Date picker
+    
+    }
 
     $scope.update = function(record){
         record.updating=true;
@@ -398,3 +405,6 @@ angular
 
   }]);
 
+$('#datepicker').datepicker({
+  autoclose: true
+});

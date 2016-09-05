@@ -211,7 +211,7 @@ Record.observe('after save', function(ctx, next) {
       var inputDateTime = Date();
 
       //Si es entrada...
-      if(ctx.instance.is_input == true){
+      /*if(ctx.instance.is_input == true){
 
         console.log("is input");
         //Actualiza registro previo si ya existe una entrada sin salida
@@ -277,7 +277,7 @@ Record.observe('after save', function(ctx, next) {
 
 
 
-      }
+//      }
 
 /*
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined){

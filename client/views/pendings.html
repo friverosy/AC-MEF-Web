@@ -32,26 +32,33 @@
                 <tbody>
                     <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
                           <td>
-                              <input type="text"
+
+                            {{record.peopleId}}
+                             <!-- <input type="text"
                                 class="form-control focus"
                                 name="content"
-                                placeholder="{{record.people_run}}"
+                                placeholder="{{record.peopleId}}"
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.peopleId"
-                                disabled>
+                                disabled> !-->
+
                           </td>
                           <td>
-                              <input type="text"
+                          {{record.fullname}}
+                             <!-- <input type="text"
                                 class="form-control focus"
                                 name="content"
                                 placeholder="{{record.fullname}}"
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.fullname"
-                                disabled>
+                                disabled> !-->
                           </td>
                           <td>
+                          {{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}
+
+                            <!--
                               <input type="text"
                                 class="form-control focus"
                                 name="content"
@@ -59,7 +66,7 @@
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.input_datetime"
-                                disabled>
+                                disabled> !-->
                           </td>
                           <td>
                   					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
@@ -67,7 +74,8 @@
                             <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
                   				  </td>
                           <td>
-                            <button type="submit" class="fa fa-exchange" ng-click="addRecord()"></button>
+                            <button type="button" class="fa fa-exchange" title="Registrar Salida" ng-click="registrarSalida(record)"></button>
+                            <input type="text" class="dateTimePicker" data-date-format="mm/dd/yyyy">
                           </td>
                       </tr>
                 </tbody>
@@ -83,3 +91,10 @@
       </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
+ <input type="text" class="dateTimePicker" data-date-format="mm/dd/yyyy">
+<script>
+  $(".dateTimePicker").datepicker({
+    timePicker: true,
+    autoclose: true
+  });
+</script>

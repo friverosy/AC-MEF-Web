@@ -47,9 +47,15 @@
                            <div class="form-group" show-errors='{ showSuccess: true }'>
                              <label>Tipo de registro *</label><br >
 
-                             <label><input type="radio" name="is_input" ng-model="employee.is_input" value="true" ng-value="true" /> Entrada</label><br />
-
-                             <label><input type="radio" name="is_input" ng-model="employee.is_input" value="false" ng-value="false" /> Salida</label>
+                             <input type="checkbox" ng-model="employee.is_input" checked
+                                data-toggle="toggle"
+                                data-on-text="Entrada"
+                                data-off-text="Salida"
+                                name="my-checkbox"
+                                data-on-color="success"
+                                data-off-color="danger">
+                              <br>
+                              <br>
 
                            </div>
 
@@ -89,4 +95,8 @@ $(".alert").fadeTo(1000, 0).slideUp(500, function(){
 }, 3000);
 
 });
+</script>
+
+<script type="text/javascript">
+  $("[name='my-checkbox']").bootstrapSwitch();
 </script>
