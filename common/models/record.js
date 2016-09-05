@@ -61,11 +61,8 @@ module.exports = function(Record) {
         //ctx.instance.input_datetime = ""
       }
 
-      
-
-
       /*
-      console.log("ctx.instance");
+      console.log(ctx.instance);
 
       if(ctx.instance.is_input === true){
         ctx.instance.input_datetime = new Date();
