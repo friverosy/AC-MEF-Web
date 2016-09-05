@@ -3,6 +3,9 @@ var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
 
+var record = require('./controller/record');
+
+
 app.start = function() {
   // start the web server
   return app.listen(function() {
@@ -22,6 +25,13 @@ app.get('/login', function(req, res) {
 
 app.get('/status', function(req, res){
     res.status(200).send("I'am alive!!");
+});
+
+app.get(record.path, function(req, res){
+  record.get(req,res);
+});
+app.post(record.path, function(req, res){
+  record.post(req,res);
 });
 
 // app.use(loopback.urlNotFound());

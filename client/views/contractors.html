@@ -13,11 +13,11 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
+    <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Registro de contratistas ({{num_contractors.count}} en planta)</h3>
+              <h3 class="box-title">Registro de contratistas ({{num_contractors}} en planta)</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <ul class="nav nav-tabs">
@@ -41,8 +41,8 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in contractors | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:15">
-                          <td><strong>{{record.people_run}}<strong></td>
+                    <tr dir-paginate="record in contractors | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                          <td><strong>{{record.peopleId}}<strong></td>
                           <td>{{record.fullname}}</td>
                           <td>{{record.company}}</td>
                           <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>

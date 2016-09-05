@@ -24,55 +24,92 @@ angular
         url: '/todayall',
         templateUrl: 'views/todayall.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
       })
       .state('visit', {
         url: '/visits',
         templateUrl: 'views/visits.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "visits"
+        }
       })
       .state('contractors', {
         url: '/contractors',
         templateUrl: 'views/contractors.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "contractors"
+        }
       })
       .state('employees', {
         url: '/employees',
         templateUrl: 'views/employees.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "employees"
+        }
       })
       .state('pendings', {
         url: '/pendings',
         templateUrl: 'views/pendings.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "pendings"
+        }
       })
       .state('dennieds', {
         url: '/dennieds',
         templateUrl: 'views/dennieds.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
-      })
-      .state('employee_individual', {
-        url: '/employee_individual',
-        templateUrl: 'views/employee_individual.html',
-        controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "denieds"
+        }
       })
       .state('visit_individual', {
         url: '/visit_individual',
         templateUrl: 'views/visit_individual.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
       })
+      .state('contractorInsert', {
+        url: '/contractor/new',
+        templateUrl: 'views/contractors/insertForm.html',
+        controller: 'ContractorController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
+      })
+      .state('employeeInsert', {
+        url: '/employee/new',
+        templateUrl: 'views/employees/insertForm.html',
+        controller: 'EmployeeController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
+      })
+
       .state('visit_calendar', {
         url: '/visit_calendar',
         templateUrl: 'views/visit_calendar.html',
         controller: 'RecordController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
       })
       .state('reports', {
         url: '/reports',

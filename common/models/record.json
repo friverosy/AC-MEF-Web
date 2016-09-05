@@ -11,13 +11,9 @@
   },
   "properties": {
 
-    "_id": {
-      "type": "Number", 
-      "id": true 
-    },
-
     "authorized_by": {
-      "type": "string"
+      "type": "string",
+      "required" :  true
     },
 
     "brawler": {
@@ -41,7 +37,8 @@
     },
 
     "fullname": {
-      "type": "string"
+      "type": "string",
+      "required" :  true
     },
 
     "input_datetime": {
@@ -57,11 +54,13 @@
     },
 
     "is_input": {
-      "type": "boolean"
+      "type": "boolean",
+      "required" :  true
     },
 
     "is_permitted": {
-      "type": "boolean"
+      "type": "boolean",
+      "required" :  true
     },
 
     "output_datetime": {
@@ -72,8 +71,9 @@
       "type": "string"
     },
 
-    "people_run": {
-      "type": "string"
+    "peopleId": {
+      "type": "string",
+      "required" :  true
     },
 
     "profile": {
@@ -84,18 +84,13 @@
       "type": "date"
     }
 
-
-
-
-
-
   },
   "validations": [],
   "relations": {
     "people": {
       "type": "belongsTo",
       "model": "people",
-      "foreignKey": "people_run"
+      "foreignKey": "peopleId"
     }
   },
   "acls": [],

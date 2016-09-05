@@ -11,11 +11,11 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
+    <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Registro de empleados ({{num_employees.count}} en planta)</h3>
+              <h3 class="box-title">Registro de empleados ({{num_employees}} en planta)</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <ul class="nav nav-tabs">
@@ -41,18 +41,18 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
+                    <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:10">
                         <td ng-if="record.is_permitted" class="text-green">
                           <strong ng-if="record.brawler" class="text-red">*</strong>
-                          <strong>{{record.people_run}}</strong>
+                          <strong>{{record.peopleId}}</strong>
                         </td>
                         <td ng-if="record.is_permitted == false" class="text-red">
                           <strong ng-if="record.brawler" class="text-red">*</strong>
-                          <strong>{{record.people_run}}</strong>
+                          <strong>{{record.peopleId}}</strong>
                         </td>
                         <td>{{record.fullname}}</td>
                         <td>{{record.department}}</td>
-                        <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
+                        <td ng-if="record.input_datsetime == false" class="text-red">No registrado</td>
                         <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
 
                         <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="Patente de entrada" class="form-control"></td>

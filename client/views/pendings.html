@@ -11,7 +11,7 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
+    <div class="row">
         <div class="col-xs-10">
           <div class="box">
             <div class="box-header">
@@ -30,7 +30,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in pendings | filter: searchKeyword | itemsPerPage:15">
+                    <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
                           <td>
                               <input type="text"
                                 class="form-control focus"
@@ -38,7 +38,7 @@
                                 placeholder="{{record.people_run}}"
                                 autocomplete="off"
                                 required
-                                ng-model="newRecord.people_run"
+                                ng-model="newRecord.peopleId"
                                 disabled>
                           </td>
                           <td>
@@ -50,7 +50,7 @@
                                 required
                                 ng-model="newRecord.fullname"
                                 disabled>
-                            </td>
+                          </td>
                           <td>
                               <input type="text"
                                 class="form-control focus"

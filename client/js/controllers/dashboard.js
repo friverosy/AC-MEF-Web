@@ -73,7 +73,8 @@ angular
               [
                 {is_input: true},
                 {output_datetime: undefined},
-                {profile: "E"}
+                {profile: "E"},
+                {is_permitted: true}
               ]
           }
         })

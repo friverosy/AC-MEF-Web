@@ -1,0 +1,92 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Registro Individual
+	<small>Empleados</small>
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Registro Individual</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- left column -->
+            <div class="col-md-6">
+            <!-- general form elements disabled -->
+               <div class="box box-warning">
+                 <div class="box-header with-border">
+                   <h3 class="box-title">Formulario de empleados</h3>
+                   <small>(*) campos obligatorios.</small>
+                 </div><!-- /.box-header -->
+                 <div class="box-body">
+                     <form role="form" name="searchEmployeeForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" name="peolpleId" ng-model="employee.peopleId" class="form-control" placeholder="Ingrese identificador" required>
+                                  <span class="input-group-btn">
+                                    <button type="button" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success" ng-click="employee.searchEmployee()"><i class="fa fa-search"></i>
+                                    </button>
+                                  </span>
+                            </div>
+                       </div>
+                    </form>
+
+                    <form role="form" name="employeeForm" ng-submit="addEmployee()">
+                       <div class="form-group"
+                            ng-class="{'has-error': employeeForm.fullname.$invalid && employeeForm.fullname.$dirty}">
+
+                           <div class="form-group" show-errors='{ showSuccess: true }'>
+                             <label>Nombre Completo *</label>
+                             <input type="text" class="form-control" placeholder="Nombre Completo" ng-model="employee.fullname" required>
+                           </div>
+
+                           <div class="form-group" show-errors='{ showSuccess: true }'>
+                             <label>Tipo de registro *</label><br >
+
+                             <label><input type="radio" name="is_input" ng-model="employee.is_input" value="true" ng-value="true" /> Entrada</label><br />
+
+                             <label><input type="radio" name="is_input" ng-model="employee.is_input" value="false" ng-value="false" /> Salida</label>
+
+                           </div>
+
+                           <div class="form-group" show-errors='{ showSuccess: true }'>
+                             <label>Autorizado por</label>
+                             <input type="text" class="form-control" placeholder="Nombre Completo" ng-model="employee.authorized_by" required>
+                           </div>
+
+                           <div class="form-group">
+                             <label>Comentario</label>
+                             <textarea class="form-control" rows="3" placeholder="" ng-model="employee.comment"></textarea>
+                           </div>
+                      </div>
+                     <button type="button" class="btn btn-primary" ng-click="employee.addEmployee()">Registrar</button>
+                     <br><br>
+                     <div class="alert alert-success" ng-show="is_saved">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
+                        Empleado registrado con exito.
+                     </div>
+                   </form>
+                 </div><!-- /.box-body -->
+               </div><!-- /.box -->
+             </div><!--/.col (right) -->
+        </div>
+      </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+window.setTimeout(function() {
+$(".alert").fadeTo(1000, 0).slideUp(500, function(){
+    $(this).remove();
+});
+}, 3000);
+
+});
+</script>
