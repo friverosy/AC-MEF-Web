@@ -8,6 +8,7 @@ module.exports = function(Record) {
     var app = require('../../server/server');
     var People = app.models.People;
     if (ctx.instance) {
+      console.log(ctx.instance);
       if(ctx.instance.is_input === true){
         ctx.instance.input_datetime = new Date();
       }else{
@@ -86,7 +87,7 @@ Record.observe('after save', function(ctx, next) {
           where: { run: ctx.instance.people_run } },
         {
           run: ctx.instance.people_run,
-          fullname: ctx.instance.fullname.toUpperCase(),
+          fullname: ctx.instance.fullname,
           create_at: new Date()
         },
         function (error, instance, created) {
