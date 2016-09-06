@@ -28,9 +28,9 @@ $(function () {
   });
 
   //bootstrap WYSIHTML5 - text editor
-  $(".textarea").wysihtml5();
+  //$(".textarea").wysihtml5();
 
-  $('.daterange').daterangepicker({
+  /*$('.daterange').daterangepicker({
     ranges: {
       'Today': [moment(), moment()],
       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -43,7 +43,7 @@ $(function () {
     endDate: moment()
   }, function (start, end) {
     window.alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-  });
+  });*/
 
   /* jQueryKnob */
   // $(".knob").knob();

@@ -11,7 +11,7 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row" ng-controller="RecordController">
+    <div class="row">
         <div class="col-xs-10">
           <div class="box">
             <div class="box-header">
@@ -30,28 +30,35 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in pendings | filter: searchKeyword | itemsPerPage:15">
+                    <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
                           <td>
-                              <input type="text"
+
+                            {{record.people_run}}
+                             <!-- <input type="text"
                                 class="form-control focus"
                                 name="content"
                                 placeholder="{{record.people_run}}"
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.people_run"
-                                disabled>
+                                disabled> !-->
+
                           </td>
                           <td>
-                              <input type="text"
+                          {{record.fullname}}
+                             <!-- <input type="text"
                                 class="form-control focus"
                                 name="content"
                                 placeholder="{{record.fullname}}"
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.fullname"
-                                disabled>
-                            </td>
+                                disabled> !-->
+                          </td>
                           <td>
+                          {{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}
+
+                            <!--
                               <input type="text"
                                 class="form-control focus"
                                 name="content"
@@ -59,7 +66,7 @@
                                 autocomplete="off"
                                 required
                                 ng-model="newRecord.input_datetime"
-                                disabled>
+                                disabled> !-->
                           </td>
                           <td>
                   					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
@@ -67,7 +74,16 @@
                             <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
                   				  </td>
                           <td>
-                            <button type="submit" class="fa fa-exchange" ng-click="addRecord()"></button>
+                            <div>
+                              <div class="dropdown">
+                                  <a class="dropdown-toggle fa fa-exchange" title="Registrar Salida" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#" onclick="return false;"></a>
+                                  <ul class="dropdown-menu" role="menu">
+                                      <datetimepicker data-ng-model="record.output_datetime" 
+                                      data-on-set-time="onTimeSet(newDate, oldDate,record)" 
+                                      data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep:1 }"/>
+                                  </ul>
+                              </div>
+                            </div>
                           </td>
                       </tr>
                 </tbody>
@@ -83,3 +99,4 @@
       </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
+

@@ -1,7 +1,22 @@
+var updatingInformation = false;
+
+angular.module("app").filter('findById', function() {
+
+  return function(list, _id) {
+    for(var i = 0; i < list.length; i++){
+      if(list[i]._id == _id){
+        return i;
+      }
+    }
+    return -1;
+
+  };
+})
+
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource', function($scope,
-      $state, Record, Parking, Destination, $http, $window, $resource) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
+      $state, Record, Parking, Destination, $http, $window, $resource, PubSub, filterFilter, $filter) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -115,56 +130,81 @@ angular
         });
     }
     function getEmployees() {
-        Record.find( { filter: { where: { profile: "E", is_permitted: true }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { profile: "E", is_permitted: true } } } ) //, order: ['input_datetime DESC']
         .$promise
         .then(function(results) {
             $scope.employees = results;
+            $scope.num_employees = filterFilter($scope.employees, {is_input: true, output_datetime: undefined, profile: "E"}).length;
         });
     }
     function getContractors() {
-        Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { profile: "C", is_permitted: true } } } ) //, order: ['input_datetime DESC']
         .$promise
         .then(function(results) {
             $scope.contractors = results;
+            $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, output_datetime: undefined, profile: "C"}).length;
         });
     }
     function getAll() {
-        Record.find( { filter: { order: ['id ASC'] } } )
+        Record.find(  ) // { filter: { order: ['id ASC'] } }
         .$promise
         .then(function(results) {
             $scope.todayall = results;
         });
     }
     function getVisits() {
-        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { profile: "V" }} } ) //, order: ['input_datetime DESC'] 
         .$promise
         .then(function(results) {
             $scope.visits = results;
+            $scope.num_visits = filterFilter($scope.visits, {is_input: true, output_datetime: undefined, profile: "V"}).length;
         });
     }
     function getPendings() {
-        Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { is_input: true } } } ) //, order: ['input_datetime DESC']
         .$promise
         .then(function(results) {
             $scope.pendings = results;
+            $scope.num_pendings = filterFilter($scope.pendings, {is_input: true}).length;
+            agregaDatePikers();
         });
     }
     function getDennieds() {
-        Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { is_permitted: false } } } )  //, order: ['input_datetime DESC']
         .$promise
         .then(function(results) {
             $scope.dennieds = results;
+            $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
         });
     }
 
-    getEmployees();
+    $scope.onTimeSet = function (newDate, oldDate, record) {
+        record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
+        record.is_input = false;
+        delete record.id;
+        Record.create(record);
+    }
+
+
+    switch($state.current.data.accion) {
+      case 'pendings' : getPendings(); break;
+      case 'employees' : getEmployees(); break;
+      case 'visits' : getVisits(); break;
+      case 'contractors' : getContractors(); break;
+      case 'dennieds' : getDennieds('')(); break;
+    }
+    /*getEmployees();
     getContractors();
     getVisits();
+
     getAll();
     getPendings();
+
     getDennieds();
     getParkings();
-    getDestinations();
+    getDestinations(); */
+
+
 
     var f=new Date();
     var ano = f.getFullYear();
@@ -178,7 +218,8 @@ angular
         }
     }
 
-    // Counts
+    // Counts 
+    /*
     $scope.num_pendings = Record.count({
       where: { is_input: true}
     });
@@ -226,7 +267,7 @@ angular
     $scope.rejected = Record.count({
       where: { is_permitted : false }
     });
-
+*/
     // Paginate
 
     //Reports
@@ -289,11 +330,13 @@ angular
         });
     };
 
-    $scope.addRecord = function() {
-      console.log($scope.newRecord);
-      if($scope.newRecord !== undefined)
+    $scope.addRecord = function(record) {
+      console.log(record);
+      var newRecord = record;
+      //newRecord.output_datetime = 
+      if(record !== undefined)
       Record
-        .create($scope.newRecord)
+        .create(record)
         .$promise
         .then(function(record) {
           console.log(record);
@@ -302,9 +345,77 @@ angular
         });
     };
 
+    $scope.registrarSalida = function(record){
+      //Date picker
+    
+    }
+
     $scope.update = function(record){
         record.updating=true;
         record.$save(record);
   	};
 
+    //Suscribe to Socket.io events
+
+    var onRecordCreate = function(data) {
+      if(!updatingInformation){
+          updatingInformation = true;
+          if(data.instance.is_input == true) {
+            $scope.pendings.push(data.instance)   
+          }else{
+            var index = $filter("findById")($scope.pendings,data._id)
+            $scope.pendings.splice(index,1);
+          }
+
+          if(data.instance.is_input == true) {
+            switch(data.instance.profile){
+            case 'E' : if(typeof $scope.employees != "undefined"){
+                          $scope.employees.push(data.instance);   
+                       }
+                       break;
+            case 'V' : if(typeof $scope.visits != "undefined"){
+                          $scope.visits.push(data.instance);
+                       } 
+                       break;
+            case 'C' : if(typeof $scope.contractors != "undefined"){
+                          $scope.contractors.push(data.instance)   
+                       }; 
+                       break;
+            }
+          } else {
+            switch(data.instance.profile){
+            case 'E' : if(typeof $scope.employees != "undefined"){
+                          var index = $filter("findById")($scope.employees,data._id);
+                          $scope.employees.splice(index,1);
+                       }
+                       break;
+            case 'V' : if(typeof $scope.visits != "undefined") {
+                          var index = $filter("findById")($scope.visits,data._id);
+                          $scope.visits.splice(index,1);
+                       }
+                       break;
+            case 'C' : if(typeof $scope.contractors != "undefined"){
+                           var index = $filter("findById")($scope.contractors,data._id)
+                           $scope.contractors.splice(index,1);
+                       }; 
+                       break;
+            }
+          }
+        }
+        updatingInformation = false;
+    }
+
+    PubSub.subscribe({
+                collectionName: 'Record',
+                method : 'POST'
+            }, onRecordCreate);
+
+
   }]);
+
+function agregaDatePikers(){
+  $(".dateTimePicker").datepicker({
+    timePicker: true,
+    autoclose: true
+  });
+}
