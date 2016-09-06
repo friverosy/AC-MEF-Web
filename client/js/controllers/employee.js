@@ -47,14 +47,25 @@ angular.module('app')
     	}else if(typeof $scope.employee.is_input == "undefined"){
     		alert("Debe seleccionar el tipo de registro");
     		return;
-    	}
-    	/*else if($scope.employee.is_input && (typeof $scope.employee.input_datetime == "undefined" || $scope.employee.input_datetime == "") ) {
+    	}else if($scope.employee.is_input && (typeof $scope.employee.input_patent == "undefined" || $scope.employee.input_patent == "") ) {
+        alert("Debe ingresar la patente de entrada");
+        return;
+      }else if($scope.employee.is_input && (typeof $scope.employee.input_patent_type == "undefined" || $scope.employee.input_patent_type == "") ) {
+        alert("Debe ingresar el tipo de patente de entrada");
+        return;
+      }else if($scope.employee.is_input && (typeof $scope.employee.input_datetime == "undefined" || $scope.employee.input_datetime == "") ) {
     		alert("Debe ingresar la fecha/hora de entrada");
     		return;
     	}else if(!$scope.employee.is_input && (typeof $scope.employee.output_datetime == "undefined" || $scope.employee.output_datetime == "") ) {
     		alert("Debe ingresar la fecha/hora de salida");
     		return;
-    	}*/
+    	}else if(!$scope.employee.is_input && (typeof $scope.employee.output_patent == "undefined" || $scope.employee.output_patent == "") ) {
+        alert("Debe ingresar la patente de salida");
+        return;
+      }else if(!$scope.employee.is_input && (typeof $scope.employee.output_patent_type == "undefined" || $scope.employee.output_patent_type == "") ) {
+        alert("Debe ingresar el tipo de patente de salida");
+        return;
+      }
 
     	if($scope.employee.is_input){
     		$scope.employee.input_datetime = Date();
@@ -65,6 +76,7 @@ angular.module('app')
     	Record.create($scope.employee, function(err,model){
     		$scope.is_saved = false;
     	});
+      
     };
     
 }]);
