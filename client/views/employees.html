@@ -44,11 +44,11 @@
                     <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:10">
                         <td ng-if="record.is_permitted" class="text-green">
                           <strong ng-if="record.brawler" class="text-red">*</strong>
-                          <strong>{{record.peopleId}}</strong>
+                          <strong>{{record.people_run}}</strong>
                         </td>
                         <td ng-if="record.is_permitted == false" class="text-red">
                           <strong ng-if="record.brawler" class="text-red">*</strong>
-                          <strong>{{record.peopleId}}</strong>
+                          <strong>{{record.people_run}}</strong>
                         </td>
                         <td>{{record.fullname}}</td>
                         <td>{{record.department}}</td>

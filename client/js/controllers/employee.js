@@ -1,6 +1,6 @@
 angular.module('app')
-  .controller('EmployeeController', ['$scope', 'Record', 'People', 'PubSub', 
-  	function($scope, Record, People, PubSub) {
+  .controller('EmployeeController', ['$scope', '$http', 'Record', 'People', 'PubSub', 
+  	function($scope, $http, Record, People, PubSub) {
 
   	$scope.is_saved = false;
 
@@ -10,27 +10,35 @@ angular.module('app')
   	$scope.employee.profile = "E";
 
   	$scope.employee.searchEmployee = function() {
-      var id = $scope.employee.peopleId;
-      People.findOne({
-          where: { run: $scope.employee.peopleId }},
-          function (record, err) {
-          	if(record){
-          		if(record.run == $scope.employee.peopleId){
-	          		$scope.employee.peopleId = record.run;
-	          		$scope.employee.is_input = true;
-				  	$scope.employee.authorized_by = localStorage.getItem("email");
-				  	$scope.employee.is_permitted = ((typeof record.is_permited == "undefined")? true : record.is_permitted);
-				  	$scope.employee.fullname = record.fullname;
-				}
-          	}else{
-          		console.log(err)
-          	}
-          	
-          });
+
+      var url = 'http://127.0.0.1:3000/api/people/' + $scope.employee.people_run;
+      $http({
+        method : 'GET',
+        headers: {
+          'Accept': "application/json",
+          'Content-Type': "application/json"
+        },
+        url : url
+      }).then(function mySucces(record) {
+        record = record.data;
+        if(record){
+          if(record.run == $scope.employee.people_run && record.profile == "E"){
+            $scope.employee.people_run = record.run;
+            $scope.employee.is_input = true;
+            $scope.employee.authorized_by = localStorage.getItem("email");
+            $scope.employee.is_permitted = ((typeof record.is_permited == "undefined")? true : record.is_permitted);
+            $scope.employee.fullname = record.fullname;
+          }else{
+            //todo si no existe
+          }
+        }
+      }, function myError(response) {
+        console.log(response)
+      });
     };
 
     $scope.employee.addEmployee = function() {
-    	if(typeof $scope.employee.peopleId == "undefined" || $scope.employee.peopleId == ""){
+    	if(typeof $scope.employee.people_run == "undefined" || $scope.employee.people_run == ""){
     		alert("Debe ingresar el identificador de empleado");
     		return;
     	}else if(typeof $scope.employee.fullname == "undefined" || $scope.employee.fullname == ""){

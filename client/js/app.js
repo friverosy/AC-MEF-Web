@@ -2,7 +2,9 @@ angular
   .module('app', [
     'ui.router',
     'lbServices',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'ui.bootstrap.datetimepicker',
+    'frapontillo.bootstrap-switch'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
       $urlRouterProvider,$locationProvider) {

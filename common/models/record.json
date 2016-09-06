@@ -53,6 +53,14 @@
       "type": "string"
     },
 
+    "output_patent": {
+      "type": "string"
+    },
+
+    "output_patent_type": {
+      "type": "string"
+    },
+
     "is_input": {
       "type": "boolean",
       "required" :  true
@@ -71,9 +79,13 @@
       "type": "string"
     },
 
-    "peopleId": {
+    "people_run": {
       "type": "string",
       "required" :  true
+    },
+
+    "people_card": {
+      "type": "Number"
     },
 
     "profile": {
@@ -90,7 +102,7 @@
     "people": {
       "type": "belongsTo",
       "model": "people",
-      "foreignKey": "peopleId"
+      "foreignKey": "people_run"
     }
   },
   "acls": [],

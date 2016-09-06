@@ -8,7 +8,7 @@ var url = 'mongodb://localhost:27017/AccessControl2'
 var updateSalidaSinEntrada = function(db, ctx, callback) {
    db.collection('record').updateOne(
       { 
-        "peopleId" : ctx.instance.peopleId, 
+        "people_run" : ctx.instance.people_run, 
         "input_datetime" : { $exists : false }, 
         "is_input": false 
       },
@@ -90,7 +90,7 @@ module.exports = function(Record) {
 
         if(ctx.instance.profile === "V"){
           Record.findOne({
-            where: { peopleId : ctx.instance.peopleId }, order: 'id DESC'}, {limit: 1},
+            where: { people_run : ctx.instance.people_run }, order: 'id DESC'}, {limit: 1},
             function (err, records) {
               if (err) {
                 throw err;
@@ -170,9 +170,9 @@ Record.observe('after save', function(ctx, next) {
       if (ctx.instance.profile === "V") {
         People.findOrCreate(
         {
-          where: { run: ctx.instance.peopleId } },
+          where: { run: ctx.instance.people_run } },
         {
-          run: ctx.instance.peopleId,
+          run: ctx.instance.people_run,
           fullname: ctx.instance.fullname.toUpperCase(),
           create_at: new Date()
         },
@@ -191,7 +191,7 @@ Record.observe('after save', function(ctx, next) {
             try {
               // Update fullname if is different, considers the name of the people table
               if (ctx.instance.fullname !== instance.fullname && ctx.instance.updating === undefined && ctx.instance.is_input === true){
-                Record.updateAll({ peopleId: ctx.instance.peopleId}, { fullname: instance.fullname, comment: ctx.instance.comment }, function(err, info) {
+                Record.updateAll({ people_run: ctx.instance.people_run}, { fullname: instance.fullname, comment: ctx.instance.comment }, function(err, info) {
                   if (err) {
                     console.error(err);
                   }else{
@@ -215,7 +215,7 @@ Record.observe('after save', function(ctx, next) {
 
         console.log("is input");
         //Actualiza registro previo si ya existe una entrada sin salida
-        Record.updateAll({peopleId : ctx.instance.peopleId, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
+        Record.updateAll({people_run : ctx.instance.people_run, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
           { output_datetime: ctx.instance.input_datetime, is_input: false },
           function(err, info){
             if(err){
@@ -230,10 +230,10 @@ Record.observe('after save', function(ctx, next) {
       }
       //Si es salida...
       else{
-
+      */
 
         //Actualiza registro previo si ya existe una entrada sin salida
-        Record.updateAll({peopleId : ctx.instance.peopleId, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
+        Record.updateAll({people_run : ctx.instance.people_run, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
           { output_datetime: ctx.instance.output_datetime, is_input: false },
           function(err, info){
             if(err){
@@ -247,7 +247,7 @@ Record.observe('after save', function(ctx, next) {
         });
 
 
-
+/*
         //Si existe una salida sin entrada, cambia el registro a entrada
         MongoClient.connect(url, function(err, db) {
           assert.equal(null, err);
@@ -261,7 +261,7 @@ Record.observe('after save', function(ctx, next) {
 
 
         //Si existe una salida sin entrada, cambia el registro a entrada
-        Record.updateAll( { "where" : { peopleId: ctx.instance.peopleId, "id": { neq : ctx.instance.id}, "input_datetime" : { "$exists": false }, "is_input": false } },
+        Record.updateAll( { "where" : { people_run: ctx.instance.people_run, "id": { neq : ctx.instance.id}, "input_datetime" : { "$exists": false }, "is_input": false } },
          { input_datetime : ctx.instance.output_datetime, is_input: true} ,
           function(err,info){
             if(err){

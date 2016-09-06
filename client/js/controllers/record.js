@@ -166,6 +166,7 @@ angular
         .then(function(results) {
             $scope.pendings = results;
             $scope.num_pendings = filterFilter($scope.pendings, {is_input: true}).length;
+            agregaDatePikers();
         });
     }
     function getDennieds() {
@@ -175,6 +176,13 @@ angular
             $scope.dennieds = results;
             $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
         });
+    }
+
+    $scope.onTimeSet = function (newDate, oldDate, record) {
+        record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
+        record.is_input = false;
+        delete record.id;
+        Record.create(record);
     }
 
 
@@ -405,6 +413,9 @@ angular
 
   }]);
 
-$('#datepicker').datepicker({
-  autoclose: true
-});
+function agregaDatePikers(){
+  $(".dateTimePicker").datepicker({
+    timePicker: true,
+    autoclose: true
+  });
+}

@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="record in visits | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
-                          <td><strong>{{record.peopleId}}<strong></td>
+                          <td><strong>{{record.people_run}}<strong></td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Nombre Completo" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
                           <td><input type="text" ng-model="record.reason" ng-change="update(record)" placeholder="Motivo" class="form-control"></td>
