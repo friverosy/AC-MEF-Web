@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', function($scope, $state, Parking, Destination) {
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -40,6 +40,14 @@ angular
         $window.location.href = '/login';
     }
 
+    function getVehicleType() {
+        VehicleType.find()
+        .$promise
+        .then(function(results) {
+            $scope.vehicleTypes = results;
+        });
+    }
+
     function getParkings() {
         Parking.find()
         .$promise
@@ -63,11 +71,13 @@ angular
     // }
     getParkings();
     getDestinations();
+    getVehicleType();
     // getReasons();
 
     // Counts
     $scope.num_parkings = Parking.count();
     $scope.num_destinations = Destination.count();
+    $scope.num_vehicleTypes = VehicleType.count();
     // $scope.num_reasons = Reason.count();
 
     // New parking
@@ -148,4 +158,29 @@ angular
     //     });
     // };
 
+    // New VehicleType
+    $scope.addVehicleType = function() {
+      VehicleType
+        .create($scope.newVehicleType)
+        .$promise
+        .then(function(type) {
+          $scope.newVehicleType = '';
+          getVehicleType();
+        });
+    };
+    // Delete VehicleType
+    $scope.deleteVehicleType = function(type) {
+      VehicleType
+        .deleteById(type)
+        .$promise
+        .then(function() {
+          getVehicleType();
+        });
+    };
+    // Update VehicleType
+    $scope.updateVehicleType = function(type){
+        type.updating = 1;
+        console.log(type);
+        type.$save(type);
+  	};
   }]);
