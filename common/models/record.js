@@ -1,116 +1,27 @@
-var pubsub = require("../../server/pubsub.js");
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/AccessControl2'
-
-
-var updateSalidaSinEntrada = function(db, ctx, callback) {
-   db.collection('record').updateOne(
-      { 
-        "people_run" : ctx.instance.people_run, 
-        "input_datetime" : { $exists : false }, 
-        "is_input": false 
-      },
-      {
-        $set: { 
-                "input_datetime": ctx.instance.output_datetime, 
-                "is_input" : true, 
-              },
-        $unset : {"output_datetime" : ""}
-      }, function(err, results) {
-        if(err){
-          console.log("Consulta Record updateSalidaSinEntrada: error ", err);
-        }else{
-          
-        }
-   });
-};
+var colors = require('colors')
+var Promise = require('bluebird')
+var app = require('../../server/server')
 
 module.exports = function(Record) {
-
   // remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
 
-  var colors = require('colors');
-
   Record.observe('before save', function(ctx, next) {
-
-    console.log("Before save record");
-    
-
-    var app = require('../../server/server');
-    var People = app.models.People;
-    
+    var People = app.models.People
     if (ctx.instance) {
-
-      //Si es entrada ...
-      if(ctx.instance.is_input == true){
-
-        //Set-up objeto base
-        //ctx.instance.output_datetime = "";
-
-        //Si no estadefinida la fecha de entrada, se define la actual
-        if(typeof ctx.instance.input_datetime == "undefined"){
-          ctx.instance.input_datetime = Date();
+      if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
+        // Online Record
+        if ( ctx.instance.is_input === true ) {
+          var date = new Date()
+          ctx.instance.input_datetime = date.getTime()
+        } else {
+          findByName(ctx.instance)
+          .then(id => saveOutput(id))
+          .catch(err => console.log(err.message))
         }
-        
+      } else {
+        // Offline record
       }
-      //Si es salida...
-      else{
-        //ctx.instance.input_datetime = ""
-      }
-
-      /*
-      console.log(ctx.instance);
-
-      if(ctx.instance.is_input === true){
-        ctx.instance.input_datetime = new Date();
-      }else{
-
-        Record.findOne({
-          where: { fullname: ctx.instance.fullname }, order: 'id DESC'},{limit: 1},
-          function (err, records) {
-            if (err) {
-              throw err;
-              console.error(new Date(), "Error line 17", err);
-            } else {
-              try {
-                console.log(records);
-                Record.updateAll({ id: records.id }, { output_datetime: new Date(), is_input: false }, null);
-              } catch (err) {
-                // First record of this person.
-                console.log(new Date(), "First record of", ctx.instance.fullname);
-                ctx.instance.owi = true; //output without input
-              }
-            }
-          }
-        );
-
-
-        if(ctx.instance.profile === "V"){
-          Record.findOne({
-            where: { people_run : ctx.instance.people_run }, order: 'id DESC'}, {limit: 1},
-            function (err, records) {
-              if (err) {
-                throw err;
-                console.error(new Date(), "Error line 17", err);
-              } else {
-                try {
-                  console.log("salida de:",records.id);
-                  Record.updateAll({ id: records.id }, { output_datetime: new Date(), is_input: false }, null);
-                } catch (err) {
-                  // First record of this person.
-                  console.log(err);
-                  console.log(new Date(), "First record of", ctx.instance.fullname);
-                  ctx.instance.owi = true; //output without input
-                }
-              }
-            }
-          );
-        }
-      }
-
 
       switch (ctx.instance.profile) {
         case "E": //Employee
@@ -121,209 +32,130 @@ module.exports = function(Record) {
           break;
         case "V": //Visit
           // ctx.instance.is_permitted = true;
+          var Company = app.models.Company
+          Company.findOrCreate(
+            {where: {name: ctx.company}},
+            {name: ctx.company, rut: ctx.company_code},
+            function(err, instance, created) {
+              if (err) { console.log(err) }
+              else if (created) console.log("New Company created".green, ctx.location)
+            }
+          )
           break;
         default:
           console.log(ctx.instance.fullname, "without profile".yellow);
           ctx.instance.profile = "E";
           console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
           break;
-      }   
-      */
-    } else {
-      // Updating
-      console.log("ctx.data");
-      ctx.data.updating = new Date();
-
-      //Si es entrada ...
-      if(ctx.data.is_input == true){
-
-        //Set-up objeto base
-        //ctx.instance.output_datetime = "";
-
-        //Si no estadefinida la fecha de entrada, se define la actual
-        if(typeof ctx.data.input_datetime == "undefined"){
-          ctx.data.input_datetime = Date();
-        }
-        
-      }
-      //Si es salida...
-      else{
-        //ctx.instance.input_datetime = ""
       }
     }
-    
     next();
   });
 
-Record.observe('after save', function(ctx, next) {
-
-    console.log("After save record");
-
-    var socket = Record.app.io;
-    var app = require('../../server/server');
-    var People = app.models.People;
-
-
-    if (ctx.instance) {   
-
-      // add visit if is new
-      if (ctx.instance.profile === "V") {
-        People.findOrCreate(
-        {
-          where: { run: ctx.instance.people_run } },
-        {
-          run: ctx.instance.people_run,
-          fullname: ctx.instance.fullname.toUpperCase(),
-          create_at: new Date()
-        },
-        function (error, instance, created) {
-          if (error){
-            console.log(new date(), "Error line 70:",error);
+  function findByName(ctx) {
+    return new Promise(function (resolve, reject) {
+      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
+      Record.findOne(
+        {where: {fullname: ctx.fullname},
+        order: 'id DESC'},
+        function (err, recordFinded) {
+          if (err) { reject(err) }
+          if (recordFinded != null) {
+            console.log(recordFinded);
+            resolve(recordFinded.id)
+          } else {
+            resolve(0)
           }
-          if (created) {
-            //instance.profileId = 2; // ? where put that...???
-            People.updateAll({ run: instance.run }, { profile: ctx.instance.profile, company: ctx.instance.company, comment: ctx.instance.comment }, function(err, info) {
-              if (err) {
-                console.error(err);
-              }
-            });
-          } else { // Already existed.
-            try {
-              // Update fullname if is different, considers the name of the people table
-              if (ctx.instance.fullname !== instance.fullname && ctx.instance.updating === undefined && ctx.instance.is_input === true){
-                Record.updateAll({ people_run: ctx.instance.people_run}, { fullname: instance.fullname, comment: ctx.instance.comment }, function(err, info) {
-                  if (err) {
-                    console.error(err);
-                  }else{
-                    //console.log(new Date(), "fullname updated, "+instance.fullname+" to "+ctx.instance.fullname+"".green);
-                  }
-                });
-              }
-            } catch (err) {
-              throw err;
-              console.error(new date(), "Error line 93" + err);
-            }
-          }
-        });
-      }
-
-
-      var inputDateTime = Date();
-
-      //Si es entrada...
-      /*if(ctx.instance.is_input == true){
-
-        console.log("is input");
-        //Actualiza registro previo si ya existe una entrada sin salida
-        Record.updateAll({people_run : ctx.instance.people_run, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
-          { output_datetime: ctx.instance.input_datetime, is_input: false },
-          function(err, info){
-            if(err){
-              throw err;
-            }else{
-              if(info.count > 0){
-                Record.destroyById(ctx.instance.id);
-              }
-            }
-        });
-
-      }
-      //Si es salida...
-      else{
-      */
-
-        //Actualiza registro previo si ya existe una entrada sin salida
-        Record.updateAll({people_run : ctx.instance.people_run, id: { neq : ctx.instance.id}, output_datetime : undefined , is_input: true}, 
-          { output_datetime: ctx.instance.output_datetime, is_input: false },
-          function(err, info){
-            if(err){
-              throw err;
-            }else{
-              if(info.count > 0){
-                //Borramos el registro actual para evitar duplicados
-                Record.destroyById(ctx.instance.id);
-              }
-            }
-        });
-
-
-/*
-        //Si existe una salida sin entrada, cambia el registro a entrada
-        MongoClient.connect(url, function(err, db) {
-          assert.equal(null, err);
-          updateSalidaSinEntrada(db, ctx, function() {
-            db.close();
-          });
-        });
-
-
-        /*  
-
-
-        //Si existe una salida sin entrada, cambia el registro a entrada
-        Record.updateAll( { "where" : { people_run: ctx.instance.people_run, "id": { neq : ctx.instance.id}, "input_datetime" : { "$exists": false }, "is_input": false } },
-         { input_datetime : ctx.instance.output_datetime, is_input: true} ,
-          function(err,info){
-            if(err){
-              console.log("Consult 4: error ", err);
-            }else{
-              console.log("Consult 4: Registros actualizados: " + info.count);
-            }
-          });
-
-          */
-
-
-
-
-
-//      }
-
-/*
-      if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined){
-        if( ctx.instance.is_input === false && ctx.instance.input_datetime === undefined && ctx.instance.owi === true){
-          Record.updateAll({ id: ctx.instance.id }, { output_datetime: new Date(), is_input: false, input_datetime: false }, null);
-        }else{
-            Record.destroyById(ctx.instance.id, null);
         }
+      )}
+    )
+  }
+
+  function saveOutput(id){
+    return new Promise(function (resolve, reject) {
+      console.log(id);
+      if (id != 0) {
+        var date = new Date()
+        Record.updateAll(
+          { id: id },
+          { output_datetime: date.getTime(), is_input: false },
+          function(err) {
+            if (err) { reject(err) }
+            else { resolve() }
+          }
+        )
+      } else {
+        //double output.
       }
+    })
+  }
 
-      var today = new Date();
+  function deleteRecord(id){
+    Record.destroyById(id, function(err){
+      if (err) {
+        console.log(err)
+      }
+    })
+  }
 
-      // set input or output
-      if (ctx.instance.updating !== undefined){
-        ///try to optimize!!
-        if (ctx.instance.company !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { company: ctx.instance.company }, null);
-          People.updateAll({ run: ctx.instance.people_run }, { company: ctx.instance.company }, null);
-        } else if (ctx.instance.reason !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { reason: ctx.instance.reason }, null);
-        } else if (ctx.instance.destination !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { destination: ctx.instance.destination }, null);
-        } else if (ctx.instance.input_patent !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { input_patent: ctx.instance.input_patent }, null);
-        } else if (ctx.instance.output_patent !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { output_patent: ctx.instance.output_patent }, null);
-        } else if (ctx.instance.authorized_by !== undefined){
-          Record.updateAll({ id: ctx.instance.id }, { authorized_by: ctx.instance.authorized_by }, null);
-        } else if (ctx.instance.fullname !== undefined){
-          Record.updateAll({ people_run: ctx.instance.people_run }, { fullname: ctx.instance.fullname }, null);
-          People.updateAll({ run: ctx.instance.people_run }, { fullname: ctx.instance.fullname }, null);
+  function updateFullname(run, newName) {
+    var app = require('../../server/server')
+    var People = app.models.People
+    People.updateAll(
+      { run: run },
+      { fullname: newName },
+      function(err, info) {
+        if (err) { console.error(err) }
+      }
+    )
+    Record.updateAll(
+      { run: run},
+      { fullname: newName },
+      function(err, info) {
+        if (err) { console.error(err) }
+      }
+    )
+  }
+
+  Record.observe('after save', function(ctx, next) {
+    var socket = Record.app.io
+    var app = require('../../server/server')
+    var People = app.models.People
+
+    if (ctx.instance) {
+      if (ctx.instance.is_input === false && ctx.instance.updating === undefined) {
+        deleteRecord(ctx.instance.id)
+      }
+    }
+    next()
+  })
+
+  // Closed of turn, mark like a output (is_input=false) each record with more than 12 hours without output.
+  Record.closedTurn = function(msg, cb) {
+    var workday = 30 * 24 * 60 * 1000 //12 Hours in milliseconds
+    var date = new Date()
+    var now = date.getTime()
+    Record.updateAll(
+      {and: [{input_datetime: {lt: date - now}}, {output_datetime: undefined}]},
+      {is_input: false, type: "CT"},
+      function(err, info) {
+        if (err) {
+          console.log(err);
+          cb(null, 500)
         } else {
-          Record.updateAll({ id: ctx.instance.id }, { comment: ctx.instance.comment }, null);
+          console.log(info);
+          cb(null, 200);
         }
       }
+    )
+  }
 
-
-      */
-
-      pubsub.publish(socket, {
-          collectionName : 'Record',
-          data: ctx,
-          method: 'POST'
-      });
-
+  Record.remoteMethod(
+    'closedTurn',
+    {
+      accepts: {arg: 'profile', type: 'string', required: false},
+      returns: {arg: 'status', type: 'number'},
+      http: {path: '/closedTurn', verb: 'get'}
     }
-    next();
-  });
+  );
 };
