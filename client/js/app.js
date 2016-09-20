@@ -103,7 +103,6 @@ angular
           accion : ""
         }
       })
-
       .state('visit_calendar', {
         url: '/visit_calendar',
         templateUrl: 'views/visit_calendar.html',
@@ -158,4 +157,3 @@ var unSubscribeAll = function(PubSub){
     //Unsubscribe all listeners..
     PubSub.unSubscribeAll();
 }
-
