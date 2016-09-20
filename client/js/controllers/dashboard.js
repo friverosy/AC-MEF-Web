@@ -49,12 +49,6 @@ angular
 
 
     function getNumPendings() {
-
-        /*$scope.num_pendings = Record.count({
-          where: { and:
-              [{output_datetime: undefined}]
-          }
-        })*/
         Record.count({
           where: { and:
               [{is_input: true},
@@ -68,66 +62,63 @@ angular
     };
 
     function getNumEmployes() {
-        Record.count({
-          where: { and:
-              [
-                {is_input: true},
-                {output_datetime: undefined},
-                {profile: "E"},
-                {is_permitted: true}
-              ]
-          }
-        })
-        .$promise
-        .then(function(result){
-          $scope.num_employees = result;
-        });
+      Record.count({
+        where: { and:
+          [
+            {is_input: true},
+            {output_datetime: undefined},
+            {profile: "E"},
+            {is_permitted: true}
+          ]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_employees = result;
+      });
     };
 
     function getNumVisits() {
-        Record.count({
-          where: { and:
-              [{is_input: true},
-              {output_datetime: undefined},
-              {profile: "V"}]
-          }
-        })
-        .$promise
-        .then(function(result){
-          $scope.num_visits = result;
-        });
-
+      Record.count({
+        where: { and:
+          [{is_input: true},
+          {output_datetime: undefined},
+          {profile: "V"}]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_visits = result;
+      });
     };
 
     function getNumContractos() {
-        Record.count({
-          where: { and:
-              [{is_input: true},
-              {output_datetime: undefined},
-              {profile: "C"}]
-          }
-        })
-        .$promise
-        .then(function(result){
-          $scope.num_contractors = result;
-        });
+      Record.count({
+        where: { and:
+          [{is_input: true},
+          {output_datetime: undefined},
+          {profile: "C"}]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_contractors = result;
+      });
     };
 
     function getRejected() {
-        Record.count({
-          where: { and :
-              [{is_input: true},
-              {output_datetime: undefined},
-              {is_permitted : false}]
-          }
-        })
-        .$promise
-        .then(function(result){
-          $scope.rejected = result;
-        });
+      Record.count({
+        where: { and :
+          [{is_input: true},
+          {output_datetime: undefined},
+          {is_permitted : false}]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.rejected = result;
+      });
     };
-
-
 
     //Count
     getNumPendings();
@@ -135,10 +126,6 @@ angular
     getNumVisits();
     getNumContractos();
     getRejected();
-
-
-
-
 
     var onRecordCreate = function(data) {
           getNumPendings();
@@ -152,5 +139,4 @@ angular
                 collectionName: 'Record',
                 method : 'POST'
             }, onRecordCreate);
-
   }]);
