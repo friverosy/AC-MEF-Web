@@ -10,99 +10,79 @@
     "dataSource": "emailDs"
   },
   "properties": {
-
     "authorized_by": {
       "type": "string",
-      "required" :  true
+      "required": false
     },
-
     "brawler": {
       "type": "boolean"
     },
-
     "bus": {
       "type": "string"
     },
-
     "comment": {
       "type": "string"
     },
-
     "company": {
       "type": "string"
     },
-
-    "destination": {
+    "location": {
       "type": "string"
     },
-
     "fullname": {
       "type": "string",
-      "required" :  true
+      "required": true
     },
-
     "input_datetime": {
       "type": "Date"
     },
-
     "input_patent": {
       "type": "string"
     },
-
     "input_patent_type": {
       "type": "string"
     },
-
     "output_patent": {
       "type": "string"
     },
-
     "output_patent_type": {
       "type": "string"
     },
-
     "is_input": {
       "type": "boolean",
-      "required" :  true
+      "required": true
     },
-
     "is_permitted": {
       "type": "boolean",
-      "required" :  true
+      "required": false
     },
-
     "output_datetime": {
       "type": "date"
     },
-
     "parking": {
       "type": "string"
     },
-
-    "people_run": {
+    "run": {
       "type": "string",
-      "required" :  true
+      "required": true
     },
-
-    "people_card": {
+    "card": {
       "type": "Number"
     },
-
     "profile": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
-
     "updating": {
       "type": "date"
     }
-
   },
   "validations": [],
   "relations": {
     "people": {
       "type": "belongsTo",
       "model": "people",
-      "foreignKey": "people_run"
+      "foreignKey": "run"
     }
   },
   "acls": [],
