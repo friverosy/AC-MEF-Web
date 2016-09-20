@@ -50,7 +50,7 @@ boot(app, __dirname, function(err) {
   if (require.main === module){
     //app.start();
     app.io = require('socket.io')(app.start());
-    
+
     app.io.on('connection', function(socket){
       console.log('a user connected');
       socket.on('disconnect', function(){
