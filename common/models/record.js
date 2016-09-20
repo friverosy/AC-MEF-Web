@@ -11,9 +11,10 @@ module.exports = function(Record) {
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
+        console.log("online record");
+        ctx.instance.type = "ON"
         if ( ctx.instance.is_input === true ) {
-          var date = new Date()
-          ctx.instance.input_datetime = date.getTime()
+          ctx.instance.input_datetime = new Date()
         } else {
           findByName(ctx.instance)
           .then(id => saveOutput(id))
@@ -21,6 +22,8 @@ module.exports = function(Record) {
         }
       } else {
         // Offline record
+        console.log("offline record");
+        ctx.instance.type = "OFF"
       }
 
       switch (ctx.instance.profile) {
@@ -61,7 +64,6 @@ module.exports = function(Record) {
         function (err, recordFinded) {
           if (err) { reject(err) }
           if (recordFinded != null) {
-            console.log(recordFinded);
             resolve(recordFinded.id)
           } else {
             resolve(0)
@@ -75,10 +77,9 @@ module.exports = function(Record) {
     return new Promise(function (resolve, reject) {
       console.log(id);
       if (id != 0) {
-        var date = new Date()
         Record.updateAll(
           { id: id },
-          { output_datetime: date.getTime(), is_input: false },
+          { output_datetime: new Date(), is_input: false },
           function(err) {
             if (err) { reject(err) }
             else { resolve() }
@@ -123,10 +124,14 @@ module.exports = function(Record) {
     var People = app.models.People
 
     if (ctx.instance) {
-      if (ctx.instance.is_input === false && ctx.instance.updating === undefined) {
+      if (ctx.instance.is_input === false && ctx.instance.updating === undefined && ctx.instance.type !== "OFF") {
+        console.log("eliminado", ctx.instance.id)
         deleteRecord(ctx.instance.id)
+      }else {
+        console.log("no eliminado", ctx.instance.id)
       }
     }
+
     next()
   })
 
