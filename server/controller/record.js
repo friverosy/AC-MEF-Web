@@ -28,8 +28,6 @@ record.get = function(req,res,next){
 	         callback();
 	      }
 	   	});
-	   	
-
 	};
 
 	MongoClient.connect(url, function(err, db) {
@@ -38,9 +36,6 @@ record.get = function(req,res,next){
 	      db.close();
 	  });
 	});
-
-	
-	
 }
 
 module.exports = record;
