@@ -9,14 +9,13 @@ angular.module("app").filter('findById', function() {
       }
     }
     return -1;
-
   };
 })
 
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
-      $state, Record, Parking, Destination, $http, $window, $resource, PubSub, filterFilter, $filter) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
+      $state, Record, Parking, Destination, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -69,27 +68,13 @@ angular
 
     $scope.searchEmployee = function() {
       try {
-        var rut = $scope.employee.people_run;
+        var rut = $scope.employee.run;
       } catch (err) {
         console.error(err);
       }
 
         if(rut !== null){
-            var url = 'http://10.0.0.125:6000/employee/' + rut;
-            // var url = 'http://restcountries.eu/rest/v1/';
-
-
-
-            // var User = $resource('http://10.0.0.125:6000/employee/:rut', {rut});
-            // User.get({rut}, function(user, getResponseHeaders){
-            //
-            //   console.log(user);
-            //
-            // });
-
-            // curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET url
-
-
+            var url = 'http://0.0.0.0:3000/people/' + rut;
             $http({
                 method : 'GET',
                 headers: {
@@ -101,13 +86,8 @@ angular
                 console.log(JSON.stringify(response));
                 console.log(response.data);
                 $scope.employee = response.data;
-                // for(var i=0;i<len;i++){
-                //     twitterEntry = dataWeGotViaJsonp[i];
-                //     text += '<p><img src = "' + twitterEntry.user.profile_image_url_https +'"/>' + twitterEntry['text'] + '</p>'
-                // }
-                // $('#twitterFeed').html(text);
             }, function myError(response) {
-                // console.log(response);
+                console.log(response);
                 $scope.employee = response.statusText;
             });
         }else{
@@ -130,51 +110,58 @@ angular
         });
     }
     function getEmployees() {
-        Record.find( { filter: { where: { profile: "E", is_permitted: true } } } ) //, order: ['input_datetime DESC']
+        Record.find( { filter: { where: { profile: "E", is_permitted: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.employees = results;
             $scope.num_employees = filterFilter($scope.employees, {is_input: true, output_datetime: undefined, profile: "E"}).length;
-        });
+        })
     }
     function getContractors() {
-        Record.find( { filter: { where: { profile: "C", is_permitted: true } } } ) //, order: ['input_datetime DESC']
+        Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.contractors = results;
             $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, output_datetime: undefined, profile: "C"}).length;
-        });
+        })
     }
     function getAll() {
-        Record.find(  ) // { filter: { order: ['id ASC'] } }
+        Record.find({ filter: { order: ['id ASC'] } })
         .$promise
         .then(function(results) {
             $scope.todayall = results;
-        });
+        })
     }
     function getVisits() {
-        Record.find( { filter: { where: { profile: "V" }} } ) //, order: ['input_datetime DESC'] 
+        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.visits = results;
             $scope.num_visits = filterFilter($scope.visits, {is_input: true, output_datetime: undefined, profile: "V"}).length;
-        });
+        })
     }
     function getPendings() {
-        Record.find( { filter: { where: { is_input: true } } } ) //, order: ['input_datetime DESC']
+        Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.pendings = results;
             $scope.num_pendings = filterFilter($scope.pendings, {is_input: true}).length;
             agregaDatePikers();
-        });
+        })
     }
     function getDennieds() {
-        Record.find( { filter: { where: { is_permitted: false } } } )  //, order: ['input_datetime DESC']
+        Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.dennieds = results;
             $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
+        });
+    }
+    function getVehicleType() {
+        VehicleType.find( )
+        .$promise
+        .then(function(results) {
+            $scope.vehicleTypes = results;
         });
     }
 
@@ -188,23 +175,11 @@ angular
 
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
-      case 'employees' : getEmployees(); break;
+      case 'employees' : getEmployees(); getVehicleType(); break;
       case 'visits' : getVisits(); break;
       case 'contractors' : getContractors(); break;
-      case 'dennieds' : getDennieds('')(); break;
+      case 'dennieds' : getDennieds()(); break;
     }
-    /*getEmployees();
-    getContractors();
-    getVisits();
-
-    getAll();
-    getPendings();
-
-    getDennieds();
-    getParkings();
-    getDestinations(); */
-
-
 
     var f=new Date();
     var ano = f.getFullYear();
@@ -217,66 +192,6 @@ angular
             return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
         }
     }
-
-    // Counts 
-    /*
-    $scope.num_pendings = Record.count({
-      where: { is_input: true}
-    });
-
-    $scope.num_employees = Record.count({
-      where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {profile: "E"}
-          ]
-      }
-    });
-    $scope.num_contractors = Record.count({
-      where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {profile: "C"}
-          ]
-      }
-    });
-    $scope.num_visits = Record.count({
-      where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {profile: "V"}
-          ]
-      }
-    });
-    $scope.num_contractors = Record.count({
-      where: { and:
-          [
-              {is_input: true},
-              {output_datetime: undefined},
-              {is_permitted: true},
-              {profile: "C"}
-          ]
-      }
-    });
-    $scope.permitted = Record.count({
-      where: { is_permitted : true }
-    });
-    $scope.rejected = Record.count({
-      where: { is_permitted : false }
-    });
-*/
-    // Paginate
-
-    //Reports
-    // $scope.exportData = function () {
-    //     var blob = new Blob([document.getElementById('records').innerHTML], {
-    //         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-    //     });
-    //     saveAs(blob, "Report.xls");
-    // };
 
     $scope.eventDateFilter = function(column) {
         if(column === 'today') {
@@ -325,15 +240,15 @@ angular
         .$promise
         .then(function(record) {
           $scope.newRecord = '';
-          $scope.visitForm.people_run.$setPristine();
+          $scope.visitForm.run.$setPristine();
           $('.focus').focus();
-        });
+        })
     };
 
     $scope.addRecord = function(record) {
       console.log(record);
       var newRecord = record;
-      //newRecord.output_datetime = 
+      //newRecord.output_datetime =
       if(record !== undefined)
       Record
         .create(record)
@@ -342,12 +257,11 @@ angular
           console.log(record);
           $scope.newRecord = '';
           getAll();
-        });
+        })
     };
 
     $scope.registrarSalida = function(record){
       //Date picker
-    
     }
 
     $scope.update = function(record){
@@ -361,7 +275,7 @@ angular
       if(!updatingInformation){
           updatingInformation = true;
           if(data.instance.is_input == true) {
-            $scope.pendings.push(data.instance)   
+            $scope.pendings.push(data.instance)
           }else{
             var index = $filter("findById")($scope.pendings,data._id)
             $scope.pendings.splice(index,1);
@@ -370,16 +284,16 @@ angular
           if(data.instance.is_input == true) {
             switch(data.instance.profile){
             case 'E' : if(typeof $scope.employees != "undefined"){
-                          $scope.employees.push(data.instance);   
+                          $scope.employees.push(data.instance);
                        }
                        break;
             case 'V' : if(typeof $scope.visits != "undefined"){
                           $scope.visits.push(data.instance);
-                       } 
+                       }
                        break;
             case 'C' : if(typeof $scope.contractors != "undefined"){
-                          $scope.contractors.push(data.instance)   
-                       }; 
+                          $scope.contractors.push(data.instance)
+                       };
                        break;
             }
           } else {
@@ -397,7 +311,7 @@ angular
             case 'C' : if(typeof $scope.contractors != "undefined"){
                            var index = $filter("findById")($scope.contractors,data._id)
                            $scope.contractors.splice(index,1);
-                       }; 
+                       };
                        break;
             }
           }
@@ -409,8 +323,6 @@ angular
                 collectionName: 'Record',
                 method : 'POST'
             }, onRecordCreate);
-
-
   }]);
 
 function agregaDatePikers(){
