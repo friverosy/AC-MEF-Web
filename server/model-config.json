@@ -98,5 +98,17 @@
     "public": true,
     "$promise": {},
     "$resolved": true
+  },
+  "vehicleType": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "processPlant": {
+    "dataSource": "mongoDS",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }
