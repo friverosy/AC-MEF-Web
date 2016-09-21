@@ -11,18 +11,20 @@ module.exports = function(Record) {
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
-        console.log("online record");
         ctx.instance.type = "ON"
         if ( ctx.instance.is_input === true ) {
           ctx.instance.input_datetime = new Date()
         } else {
-          findByName(ctx.instance)
-          .then(id => saveOutput(id))
-          .catch(err => console.log(err.message))
+          if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
+            findByName(ctx.instance)
+            .then(id => saveOutput(id))
+            .catch(err => console.log(err.message))
+          }else {
+            // Visit, find by run
+          }
         }
       } else {
         // Offline record
-        console.log("offline record");
         ctx.instance.type = "OFF"
       }
 
@@ -64,7 +66,12 @@ module.exports = function(Record) {
         function (err, recordFinded) {
           if (err) { reject(err) }
           if (recordFinded != null) {
-            resolve(recordFinded.id)
+            // when register 2 output
+            if (recordFinded.output_datetime !== undefined) {
+              resolve(0)
+            } else { // output after input
+              resolve(recordFinded.id)
+            }
           } else {
             resolve(0)
           }
@@ -75,7 +82,6 @@ module.exports = function(Record) {
 
   function saveOutput(id){
     return new Promise(function (resolve, reject) {
-      console.log(id);
       if (id != 0) {
         Record.updateAll(
           { id: id },
@@ -87,6 +93,7 @@ module.exports = function(Record) {
         )
       } else {
         //double output.
+        console.log("double output", id);
       }
     })
   }
@@ -124,11 +131,8 @@ module.exports = function(Record) {
     var People = app.models.People
 
     if (ctx.instance) {
-      if (ctx.instance.is_input === false && ctx.instance.updating === undefined && ctx.instance.type !== "OFF") {
-        console.log("eliminado", ctx.instance.id)
+      if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
         deleteRecord(ctx.instance.id)
-      }else {
-        console.log("no eliminado", ctx.instance.id)
       }
     }
 
