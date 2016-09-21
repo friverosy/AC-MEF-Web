@@ -112,5 +112,41 @@
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
+        <div class="col-xs-4">
+            <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Perfiles</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form name="profilesForm" novalidate ng-submit="addProfile()">
+                      <div class="form-group">
+                        <input type="text" class="form-control focus" name="name"
+                            placeholder="Nombre" autocomplete="off" required
+                            ng-model="newProfile.name">
+                      </div>
+                      <button class="btn btn-info">Agregar</button>
+                    </form>
+                    <hr>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng:repeat="profile in profiles">
+                                <td>{{$index + 1}}</td>
+                                <td><input type="text" ng-model="profile.name" ng-change="update(profile)" class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteProfile(profile)"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+
+ 
     </div><!-- /.row -->
 </section><!-- /.content -->
