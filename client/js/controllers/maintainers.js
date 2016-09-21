@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, PubSub) {
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, Profile, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -62,6 +62,13 @@ angular
             $scope.destinations = results;
         });
     }
+    function getProfiles() {
+        Profile.find()
+        .$promise
+        .then(function(results) {
+            $scope.profiles = results;
+        });
+    }
     // function getReasons() {
     //     Reason.find()
     //     .$promise
@@ -72,12 +79,15 @@ angular
     getParkings();
     getDestinations();
     getVehicleType();
+    getProfiles();
+
     // getReasons();
 
     // Counts
     $scope.num_parkings = Parking.count();
     $scope.num_destinations = Destination.count();
     $scope.num_vehicleTypes = VehicleType.count();
+    $scope.num_profiles = Profile.count();
     // $scope.num_reasons = Reason.count();
 
     // New parking
@@ -110,6 +120,17 @@ angular
           getDestinations();
         });
     };
+    // New Profile
+    $scope.addProfile = function() {
+      Profile
+        .create($scope.newProfile)
+        .$promise
+        .then(function(profile) {
+          $scope.newProfile = '';
+          getProfiles();
+        });
+    };
+
 
     // Update Parking
     $scope.updateParking = function(parking){
@@ -129,6 +150,12 @@ angular
     //     console.log(reason);
     //     reason.$save(reason);
   	// };
+     // Update Profile
+    $scope.updateProfile = function(profile){
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
 
     // Delete Parking
     $scope.deleteParking = function(parking) {
@@ -146,6 +173,16 @@ angular
         .$promise
         .then(function() {
           getDestinations();
+        });
+    };
+
+    // Delete Profile
+    $scope.deleteProfile = function(profile) {
+      Profile
+        .deleteById(profile)
+        .$promise
+        .then(function() {
+          getProfiles();
         });
     };
     // Delete Reason
@@ -183,4 +220,5 @@ angular
         console.log(type);
         type.$save(type);
   	};
-  }]);
+
+}]);
