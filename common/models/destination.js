@@ -1,4 +1,4 @@
-module.exports = function(Destination) {
+/*module.exports = function(Destination) {
     Destination.observe('before save', function removeUnwantedField(ctx, next) {
       if (ctx.instance) {
         ctx.instance.name = ctx.instance.name.trim();
@@ -7,4 +7,9 @@ module.exports = function(Destination) {
       }
       next();
     });
+};*/
+
+module.exports = function(Destination) {
+		
 };
+

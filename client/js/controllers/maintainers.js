@@ -140,7 +140,7 @@ angular
   	};
     // Update Destination
     $scope.updateDestination = function(destination){
-        parking.updating = 1;
+        destination.updating = 1;
         console.log(destination);
         destination.$save(destination);
   	};

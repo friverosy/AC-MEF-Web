@@ -38,7 +38,7 @@
                         <tbody>
                             <tr ng:repeat="parking in parkings">
                                 <td>{{$index + 1}}</td>
-                                <td><input type="text" ng-model="parking.name" ng-change="update(parking)" class="form-control"></td>
+                                <td><input type="text" ng-model="parking.name" ng-change="updateParking(parking)" class="form-control"></td>
                                 <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteParking(parking)"></a></td>
                             </tr>
                         </tbody>
@@ -71,7 +71,8 @@
                         <tbody>
                             <tr ng:repeat="destination in destinations">
                                 <td>{{$index + 1}}</td>
-                                <td><input type="text" ng-model="destination.name" class="form-control"></td>
+                                <td><input type="text" ng-model="destination.name" ng-change="updateDestination(destination)"  class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteDestination(destination)"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -104,7 +105,7 @@
                         <tbody>
                             <tr ng:repeat="type in vehicleTypes">
                                 <td>{{$index + 1}}</td>
-                                <td><input type="text" ng-model="type.name" ng-change="update(type)" class="form-control"></td>
+                                <td><input type="text" ng-model="type.name" ng-change="updateVehicleType(type)" class="form-control"></td>
                                 <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteVehicleType(type)"></a></td>
                             </tr>
                         </tbody>
@@ -138,7 +139,7 @@
                         <tbody>
                             <tr ng:repeat="profile in profiles">
                                 <td>{{$index + 1}}</td>
-                                <td><input type="text" ng-model="profile.name" ng-change="update(profile)" class="form-control"></td>
+                                <td><input type="text" ng-model="profile.name" ng-change="updateProfile(profile)" class="form-control"></td>
                                 <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteProfile(profile)"></a></td>
                             </tr>
                         </tbody>
