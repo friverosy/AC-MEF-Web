@@ -1,8 +1,7 @@
 {
-  "name": "position",
+  "name": "place",
   "base": "PersistedModel",
-  "strict": false,
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -13,7 +12,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "company": {
+      "type": "belongsTo",
+      "model": "company",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
