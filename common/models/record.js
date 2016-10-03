@@ -13,6 +13,7 @@ C = Closed (with input, output datetime, and is_input = false)
 var colors = require('colors')
 var Promise = require('bluebird')
 var app = require('../../server/server')
+var Slack = require('slack-node');
 
 module.exports = function(Record) {
   // remove DELETE functionality from API
@@ -21,6 +22,22 @@ module.exports = function(Record) {
   Record.observe('before save', function(ctx, next) {
     var People = app.models.People
     if (ctx.instance) {
+      if (ctx.instance.is_permitted === false) {
+        slack = new Slack();
+        slack.setWebhook("https://hooks.slack.com/services/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");
+        slack.webhook({
+          channel: "#multiexportfoods",
+          username: "Multi-Boot",
+          text: "Person dennied detected!.",
+          icon_emoji: ":robot_face:",
+          attachments: [
+            {
+                "title": ctx.instance.run + " - " + ctx.instance.fullname,
+                "color": "danger"
+            }
+          ]
+        }, function(err, response) {});
+      }
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
         if (ctx.instance.type === undefined) {
