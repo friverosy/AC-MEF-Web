@@ -84,6 +84,33 @@ angular
           accion : "dennieds"
         }
       })
+      .state('visitInsert', {
+        url: '/visit/new',
+        templateUrl: 'views/visits/insertForm.html',
+        controller: 'VisitController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
+      })
+      .state('contractorInsert', {
+        url: '/contractor/new',
+        templateUrl: 'views/contractors/insertForm.html',
+        controller: 'ContractorController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
+      })
+      .state('employeeInsert', {
+        url: '/employee/new',
+        templateUrl: 'views/employees/insertForm.html',
+        controller: 'EmployeeController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : ""
+        }
+      })
       .state('reports', {
         url: '/reports',
         templateUrl: 'views/reports.html',
@@ -129,6 +156,6 @@ angular
 
 //Function for unsubscribing..
 var unSubscribeAll = function(PubSub){
-    //Unsubscribe all listeners..
-    PubSub.unSubscribeAll();
+    //Unsubscribe all listeners..
+    PubSub.unSubscribeAll();
 }
