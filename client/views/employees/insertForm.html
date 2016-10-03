@@ -26,9 +26,9 @@
                      <form role="form" name="searchEmployeeForm" onsubmit="return false;">
                         <div class="form-group">
                             <div class="input-group">
-                              <input type="text" name="peolpleId" ng-model="employee.people_run" class="form-control" placeholder="Ingrese identificador" required>
+                              <input type="text" name="peolpleId" ng-model="employee.people_run" class="form-control" placeholder="Ingrese RUT o Card" required>
                                   <span class="input-group-btn">
-                                    <button type="button" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success" ng-click="employee.searchEmployee()"><i class="fa fa-search"></i>
+                                    <button type="button" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success" ng-click="employee.searchEmployee(); getPeople(employee.people_run)"><i class="fa fa-search"></i>
                                     </button>
                                   </span>
                             </div>
@@ -41,7 +41,7 @@
 
                            <div class="form-group" show-errors='{ showSuccess: true }'>
                              <label>Nombre Completo *</label>
-                             <input type="text" class="form-control" placeholder="Nombre Completo" ng-model="employee.fullname" required>
+                             <input class="form-control" placeholder="Nombre Completo" ng-model="employee.fullname" required disabled>
                            </div>
 
                            <div class="form-group" show-errors='{ showSuccess: true }'>
@@ -59,32 +59,42 @@
                                 >
                               <br>
                               <br>
-
                            </div>
 
+                          <label ng-show="employee.is_input">Destino *</label>
+                         <select class="form-control" ng-model="employee.selectedOptionLocations" ng-options="place.name for place in places" ng-show="employee.is_input"></select>
+                          <label>¿El Empleado utiliza vehículo?</label>
+                          <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
+                          <!--Div that show or hide the car information -->
+                          <div ng-show="employee.checkboxCar">
                           <div class="form-group" show-errors='{ showSuccess: true }' ng-show="employee.is_input">
-                             <label>Patente de entrada *</label>
-                             <input type="text" class="form-control" placeholder="Patente Entrada" ng-model="employee.input_patent" required>
+                             <label>Patente de entrada</label>
+                             <input type="text" class="form-control" placeholder="Patente Entrada" ng-model="employee.input_patent" ng-Change="inputParkingCheck()">
                              <br>
-                             <label>Tipo de Patente *</label>
-                             <input type="text" class="form-control" placeholder="Tipo de Patente" ng-model="employee.input_patent_type" required>
+                            <label>Tipo de Patente de Entrada</label >
+                             <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
                           </div>
+
+
 
                           <div class="form-group" show-errors='{ showSuccess: true }' ng-show="!employee.is_input">
-                             <label>Patente de salida *</label>
-                             <input type="text" class="form-control" placeholder="Patente Salida" ng-model="employee.output_patent" required>
+                             <label>Patente de salida</label>
+                             <input type="text" class="form-control" placeholder="Patente Salida" ng-model="employee.output_patent" ng-Change="outputParkingCheck()">
                              <br>
-                             <label>Tipo de Patente *</label>
-                             <input type="text" class="form-control" placeholder="Tipo de Patente" ng-model="employee.output_patent_type" required>
+                            <label>Tipo de Patente de Salida</label >
+                             <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
                           </div>
 
-
+                            <label ng-show="employee.is_input">Estacionamiento</label >
+                             <select class="form-control" ng-model="employee.selectedOptionParkings" ng-options="parking.name for parking in parkings" ng-disabled="employee.unselectParking" ng-show="employee.is_input"></select>
+                          </div>
+<!--
                            <div class="form-group">
                              <label>Autorizado por</label>
                              <input type="text" class="form-control" placeholder="Nombre Completo" ng-model="employee.authorized_by" required>
                            </div>
-
-                           <div class="form-group">
+-->
+                           <div class="form-group" ng-show="employee.is_input">
                              <label>Comentario</label>
                              <textarea class="form-control" rows="3" placeholder="" ng-model="employee.comment"></textarea>
                            </div>

@@ -11,11 +11,7 @@
   },
   "properties": {
     "authorized_by": {
-      "type": "string",
-      "required": false
-    },
-    "brawler": {
-      "type": "boolean"
+      "type": "string"
     },
     "bus": {
       "type": "string"
@@ -26,15 +22,15 @@
     "company": {
       "type": "string"
     },
-    "location": {
+    "company_code": {
+      "type": "number"
+    },
+    "place": {
       "type": "string"
     },
     "fullname": {
       "type": "string",
       "required": true
-    },
-    "input_datetime": {
-      "type": "Date"
     },
     "input_patent": {
       "type": "string"
@@ -53,8 +49,7 @@
       "required": true
     },
     "is_permitted": {
-      "type": "boolean",
-      "required": false
+      "type": "boolean"
     },
     "output_datetime": {
       "type": "date"
@@ -66,15 +61,21 @@
       "type": "string",
       "required": true
     },
-    "card": {
-      "type": "Number"
-    },
     "profile": {
       "type": "string",
       "required": true
     },
     "updating": {
       "type": "date"
+    },
+    "card": {
+      "type": "number"
+    },
+    "input_datetime": {
+      "type": "date"
+    },
+    "status": {
+      "type": "string"
     }
   },
   "validations": [],

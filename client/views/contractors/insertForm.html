@@ -1,12 +1,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Registro Individual
-	<small>Contratista</small>
+  Registro Individual
+  <small>Contratistas</small>
   </h1>
   <ol class="breadcrumb">
-	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Registro Individual</li>
+  <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+  <li class="active">Registro Individual</li>
   </ol>
 </section>
 
@@ -19,28 +19,90 @@
             <!-- general form elements disabled -->
                <div class="box box-warning">
                  <div class="box-header with-border">
-                   <h3 class="box-title">Formulario de contatista</h3>
+                   <h3 class="box-title">Formulario de Contratistas</h3>
                    <small>(*) campos obligatorios.</small>
                  </div><!-- /.box-header -->
                  <div class="box-body">
-                    <form role="form" name="contractorForm" ng-submit="addEmployee()">
+                     <form role="form" name="searchEmployeeForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" name="peolpleId" ng-model="employee.people_run" class="form-control" placeholder="Ingrese RUT" required>
+                                  <span class="input-group-btn">
+                                    <button type="button" name="search" id="search-btn" class="btn btn-flat" ng-disabled="searchEmployeeForm.$success" ng-click="employee.searchContractor(); getPeople(employee.people_run)"><i class="fa fa-search"></i>
+                                    </button>
+                                  </span>
+                            </div>
+                       </div>
+                    </form>
+
+                    <form role="form" name="employeeForm" ng-submit="addEmployee()">
                        <div class="form-group"
                             ng-class="{'has-error': employeeForm.fullname.$invalid && employeeForm.fullname.$dirty}">
 
                            <div class="form-group" show-errors='{ showSuccess: true }'>
                              <label>Nombre Completo *</label>
-                             <input type="text" class="form-control" placeholder="" ng-model="newRecord.fullname" required>
+                             <input class="form-control" placeholder="Nombre Completo" ng-model="employee.fullname" required disabled>
                            </div>
 
+                           <div class="form-group" show-errors='{ showSuccess: true }'>
+                             <label>Tipo de registro *</label><br >
+
+                             <input type="checkbox" ng-model="employee.is_input" bs-switch id="cheboxConflictivo"
+                                data-toggle="toggle"
+                                data-on-text="Entrada"
+                                data-off-text="Salida"
+                                name="my-checkbox"
+                                data-on-color="success"
+                                data-off-color="danger"
+                                ng-true-value="true"
+                                ng-False-value="false"
+                                >
+                              <br>
+                              <br>
+                           </div>
+
+                          <label ng-show="employee.is_input">Destino *</label>
+                         <select class="form-control" ng-model="employee.selectedOptionLocations" ng-options="place.name for place in places" ng-show="employee.is_input"></select>
+                          <label>¿El Contratista utiliza vehículo?</label>
+                          <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
+                          <!--Div that show or hide the car information -->
+                          <div ng-show="employee.checkboxCar">
+                          <div class="form-group" show-errors='{ showSuccess: true }' ng-show="employee.is_input">
+                             <label>Patente de entrada</label>
+                             <input type="text" class="form-control" placeholder="Patente Entrada" ng-model="employee.input_patent" ng-Change="inputParkingCheck()">
+                             <br>
+                            <label>Tipo de Patente de Entrada</label >
+                             <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
+                          </div>
+
+
+
+                          <div class="form-group" show-errors='{ showSuccess: true }' ng-show="!employee.is_input">
+                             <label>Patente de salida</label>
+                             <input type="text" class="form-control" placeholder="Patente Salida" ng-model="employee.output_patent" ng-Change="outputParkingCheck()">
+                             <br>
+                            <label>Tipo de Patente de Salida</label >
+                             <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
+                          </div>
+
+                            <label ng-show="employee.is_input">Estacionamiento</label >
+                             <select class="form-control" ng-model="employee.selectedOptionParkings" ng-options="parking.name for parking in parkings" ng-disabled="employee.unselectParking" ng-show="employee.is_input"></select>
+                          </div>
+<!--
                            <div class="form-group">
+                             <label>Autorizado por</label>
+                             <input type="text" class="form-control" placeholder="Nombre Completo" ng-model="employee.authorized_by" required>
+                           </div>
+-->
+                           <div class="form-group" ng-show="employee.is_input">
                              <label>Comentario</label>
-                             <textarea class="form-control" rows="3" placeholder="" ng-model="newRecord.comment"></textarea>
+                             <textarea class="form-control" rows="3" placeholder="" ng-model="employee.comment"></textarea>
                            </div>
                       </div>
-                     <button type="submit" class="btn btn-primary" ng-disabled="employeeForm.$success">Registrar</button>
+                     <button type="button" class="btn btn-primary" ng-click="employee.addEmployee()">Registrar</button>
                      <br><br>
-                     <div class="alert alert-success alert-dismissible fade in" ng-show="employeeForm.$submitted">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                     <div class="alert alert-success" ng-show="is_saved">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
                         <h4><i class="icon fa fa-check"></i> ENHORABUENA!</h4>
                         Empleado registrado con exito.
                      </div>
@@ -60,7 +122,7 @@ window.setTimeout(function() {
 $(".alert").fadeTo(1000, 0).slideUp(500, function(){
     $(this).remove();
 });
-}, 5000);
+}, 3000);
 
 });
 </script>

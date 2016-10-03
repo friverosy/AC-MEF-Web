@@ -1,3 +1,15 @@
+/* TYPE:
+ON = Online,
+OFF = Offline,
+MR = Manual Record,
+CT = Closed of turn,
+PEN = from pendings view, manual record with input & output datetime
+
+State:
+DO = Double Output,
+C = Closed (with input, output datetime, and is_input = false)
+*/
+
 var colors = require('colors')
 var Promise = require('bluebird')
 var app = require('../../server/server')
@@ -11,16 +23,20 @@ module.exports = function(Record) {
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
-        ctx.instance.type = "ON"
+        if (ctx.instance.type === undefined) {
+            ctx.instance.type = "ON"
+        }
         if ( ctx.instance.is_input === true ) {
           ctx.instance.input_datetime = new Date()
         } else {
           if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
             findByName(ctx.instance)
             .then(id => saveOutput(id))
-            .catch(err => console.log(err.message))
+            .catch(err => catcher(err, ctx.instance))
           }else {
-            // Visit, find by run
+            findByRut(ctx.instance)
+            .then(id => saveOutput(id))
+            .catch(err => catcher(err, ctx.instance))
           }
         }
       } else {
@@ -36,16 +52,21 @@ module.exports = function(Record) {
           // nothing yet
           break;
         case "V": //Visit
-          // ctx.instance.is_permitted = true;
-          var Company = app.models.Company
-          Company.findOrCreate(
-            {where: {name: ctx.company}},
-            {name: ctx.company, rut: ctx.company_code},
-            function(err, instance, created) {
-              if (err) { console.log(err) }
-              else if (created) console.log("New Company created".green, ctx.location)
-            }
-          )
+          // if register employee as visit.
+          if (ctx.instance.run.length <= 5) { // && card !== 0
+            ctx.instance.profile = "E"
+          } else {
+            ctx.instance.is_permitted = true;
+            var Company = app.models.Company
+            Company.findOrCreate(
+              {where: {name: ctx.company}},
+              {name: ctx.company, rut: ctx.company_code},
+              function(err, instance, created) {
+                if (err) { console.log(err) }
+                else if (created) console.log("New Company created".green, ctx.company)
+              }
+            )
+          }
           break;
         default:
           console.log(ctx.instance.fullname, "without profile".yellow);
@@ -57,11 +78,59 @@ module.exports = function(Record) {
     next();
   });
 
+  function catcher(err, ctx){
+    if (err === 0) {
+      // DO = Double output
+      ctx.status = "DO"
+    }
+  }
+
+  function onBlacklist(ctx) {
+    return new Promise(function (resolve, reject) {
+      var Blacklist = app.models.Blacklist
+      Blacklist.findOne(
+        { where: {or: [{ run: ctx.run}, { card: ctx.card }] },
+        order: 'id DESC'},
+        function (err, recordFinded) {
+          if (err) { reject(err) }
+          if (recordFinded != null) {
+            resolve(ctx.id)
+          } else {
+            resolve(0)
+          }
+        }
+      )}
+    )
+  }
+
   function findByName(ctx) {
     return new Promise(function (resolve, reject) {
       //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
       Record.findOne(
         {where: {fullname: ctx.fullname},
+        order: 'id DESC'},
+        function (err, recordFinded) {
+          if (err) { reject(err) }
+          if (recordFinded != null) {
+            // when register 2 output
+            if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
+              resolve(0)
+            } else { // output after input
+              resolve(recordFinded.id)
+            }
+          } else {
+            resolve(0)
+          }
+        }
+      )}
+    )
+  }
+
+  function findByRut(ctx) {
+    return new Promise(function (resolve, reject) {
+      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
+      Record.findOne(
+        {where: {rut: ctx.rut},
         order: 'id DESC'},
         function (err, recordFinded) {
           if (err) { reject(err) }
@@ -80,20 +149,37 @@ module.exports = function(Record) {
     )
   }
 
-  function saveOutput(id){
+  function setBlacklist(id) {
     return new Promise(function (resolve, reject) {
-      if (id != 0) {
+      if (id !== 0) {
         Record.updateAll(
           { id: id },
-          { output_datetime: new Date(), is_input: false },
+          { blacklist: true },
           function(err) {
             if (err) { reject(err) }
             else { resolve() }
           }
         )
+      }
+    })
+  }
+
+  function saveOutput(id){
+    return new Promise(function (resolve, reject) {
+      if (id !== 0) {
+        Record.updateAll(
+          { id: id },
+          { output_datetime: new Date(), is_input: false, state: "C" },
+          function(err) {
+            if (err) { reject(err) }
+            else {
+              resolve()
+            }
+          }
+        )
       } else {
-        //double output.
-        console.log("double output", id);
+        //double output an online record
+        reject(0)
       }
     })
   }
@@ -107,7 +193,6 @@ module.exports = function(Record) {
   }
 
   function updateFullname(run, newName) {
-    var app = require('../../server/server')
     var People = app.models.People
     People.updateAll(
       { run: run },
@@ -127,15 +212,18 @@ module.exports = function(Record) {
 
   Record.observe('after save', function(ctx, next) {
     var socket = Record.app.io
-    var app = require('../../server/server')
     var People = app.models.People
 
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
-        deleteRecord(ctx.instance.id)
+        if(ctx.instance.status === "DO") { saveOutput(ctx.instance.id) }
+        else { deleteRecord(ctx.instance.id) }
+      } else {
+        onBlacklist(ctx.instance)
+        .then(id => setBlacklist(id))
+        .catch(err => console.log("Error onBlacklist", err))
       }
     }
-
     next()
   })
 
@@ -152,7 +240,6 @@ module.exports = function(Record) {
           console.log(err);
           cb(null, 500)
         } else {
-          console.log(info);
           cb(null, 200);
         }
       }

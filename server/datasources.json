@@ -6,7 +6,7 @@
   "mongoDS": {
     "host": "localhost",
     "port": 27017,
-    "database": "AccessControl2",
+    "database": "AccessControl20",
     "name": "mongoDS",
     "connector": "mongodb",
     "allowExtendedOperators": true

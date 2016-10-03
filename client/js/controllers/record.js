@@ -14,8 +14,8 @@ angular.module("app").filter('findById', function() {
 
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Destination', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
-      $state, Record, Parking, Destination, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Place', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
+      $state, Record, Parking, Place, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -73,26 +73,26 @@ angular
         console.error(err);
       }
 
-        if(rut !== null){
-            var url = 'http://0.0.0.0:3000/people/' + rut;
-            $http({
-                method : 'GET',
-                headers: {
-                    'Accept': "application/json",
-                    'Content-Type': "application/json"
-                },
-                url : url
-            }).then(function mySucces(response) {
-                console.log(JSON.stringify(response));
-                console.log(response.data);
-                $scope.employee = response.data;
-            }, function myError(response) {
-                console.log(response);
-                $scope.employee = response.statusText;
-            });
-        }else{
-            console.log("vacio");
-        }
+      if(rut !== null){
+          var url = 'http://0.0.0.0:3000/people/' + rut;
+          $http({
+              method : 'GET',
+              headers: {
+                  'Accept': "application/json",
+                  'Content-Type': "application/json"
+              },
+              url : url
+          }).then(function mySucces(response) {
+              console.log(JSON.stringify(response));
+              console.log(response.data);
+              $scope.employee = response.data;
+          }, function myError(response) {
+              console.log(response);
+              $scope.employee = response.statusText;
+          });
+      }else{
+          console.log("vacio");
+      }
     }
 
     function getParkings() {
@@ -102,11 +102,11 @@ angular
             $scope.parkings = results;
         });
     }
-    function getDestinations() {
-        Destination.find()
+    function getPlaces() {
+        Place.find()
         .$promise
         .then(function(results) {
-            $scope.destinations = results;
+            $scope.places = results;
         });
     }
     function getEmployees() {
@@ -146,7 +146,6 @@ angular
         .then(function(results) {
             $scope.pendings = results;
             $scope.num_pendings = filterFilter($scope.pendings, {is_input: true}).length;
-            agregaDatePikers();
         })
     }
     function getDennieds() {
@@ -172,13 +171,12 @@ angular
         Record.create(record);
     }
 
-
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
       case 'employees' : getEmployees(); getVehicleType(); break;
-      case 'visits' : getVisits(); break;
-      case 'contractors' : getContractors(); break;
-      case 'dennieds' : getDennieds()(); break;
+      case 'visits' : getVisits(); getVehicleType(); getPlaces(); getParkings(); break;
+      case 'contractors' : getContractors(); getVehicleType(); break;
+      case 'dennieds' : getDennieds(); break;
     }
 
     var f=new Date();
@@ -245,18 +243,26 @@ angular
         })
     };
 
+    $scope.addOutput = function(record) {
+      record.type = "PEN";
+      record.state = "C";
+      record.is_input = false;
+      record.output_datetime = new Date();
+      record.$save();
+      getPendings();
+    }
+
     $scope.addRecord = function(record) {
-      console.log(record);
       var newRecord = record;
-      //newRecord.output_datetime =
       if(record !== undefined)
       Record
         .create(record)
         .$promise
         .then(function(record) {
-          console.log(record);
+          console.log("sacado");
           $scope.newRecord = '';
-          getAll();
+          // getAll();
+          getPendings();
         })
     };
 
@@ -267,7 +273,7 @@ angular
     $scope.update = function(record){
         record.updating=true;
         record.$save(record);
-  	};
+  	}
 
     //Suscribe to Socket.io events
 
@@ -324,10 +330,3 @@ angular
                 method : 'POST'
             }, onRecordCreate);
   }]);
-
-function agregaDatePikers(){
-  $(".dateTimePicker").datepicker({
-    timePicker: true,
-    autoclose: true
-  });
-}

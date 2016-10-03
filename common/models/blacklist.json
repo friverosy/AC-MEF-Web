@@ -7,10 +7,10 @@
     "validateUpsert": true
   },
   "properties": {
-    "credential": {
+    "card": {
       "type": "string"
     },
-    "people_run": {
+    "run": {
       "type": "string",
       "required": true
     }

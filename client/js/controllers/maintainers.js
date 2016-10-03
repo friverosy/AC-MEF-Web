@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, Profile, PubSub) {
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Place', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Place, VehicleType, Profile, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -55,11 +55,11 @@ angular
             $scope.parkings = results;
         });
     }
-    function getDestinations() {
-        Destination.find()
+    function getPlaces() {
+        Place.find()
         .$promise
         .then(function(results) {
-            $scope.destinations = results;
+            $scope.places = results;
         });
     }
     function getProfiles() {
@@ -77,7 +77,7 @@ angular
     //     });
     // }
     getParkings();
-    getDestinations();
+    getPlaces();
     getVehicleType();
     getProfiles();
 
@@ -85,7 +85,7 @@ angular
 
     // Counts
     $scope.num_parkings = Parking.count();
-    $scope.num_destinations = Destination.count();
+    $scope.num_places = Place.count();
     $scope.num_vehicleTypes = VehicleType.count();
     $scope.num_profiles = Profile.count();
     // $scope.num_reasons = Reason.count();
@@ -110,14 +110,15 @@ angular
     //       getReasons();
     //     });
     // };
-    // New Destination
-    $scope.addDestination = function() {
-      Destination
-        .create($scope.newDestination)
+    // New Place
+    $scope.addPlace = function() {
+      console.log($scope.newPlace);
+      Place
+        .create($scope.newPlace)
         .$promise
-        .then(function(destination) {
-          $scope.newDestination = '';
-          getDestinations();
+        .then(function(place) {
+          $scope.newPlace = '';
+          getPlaces();
         });
     };
     // New Profile
@@ -131,18 +132,17 @@ angular
         });
     };
 
-
     // Update Parking
     $scope.updateParking = function(parking){
         parking.updating = 1;
         console.log(parking);
         parking.$save(parking);
   	};
-    // Update Destination
-    $scope.updateDestination = function(destination){
-        destination.updating = 1;
-        console.log(destination);
-        destination.$save(destination);
+    // Update Place
+    $scope.updatePlace = function(place){
+        place.updating = 1;
+        console.log(place);
+        place.$save(place);
   	};
     // Update Reason
     // $scope.updateReason = function(reason){
@@ -166,13 +166,13 @@ angular
           getParkings();
         });
     };
-    // Delete Destination
-    $scope.deleteDestination = function(destination) {
-      Destination
-        .deleteById(destination)
+    // Delete Place
+    $scope.deletePlace = function(place) {
+      Place
+        .deleteById(place)
         .$promise
         .then(function() {
-          getDestinations();
+          getPlaces();
         });
     };
 
@@ -186,7 +186,7 @@ angular
         });
     };
     // Delete Reason
-    // $scope.deleteDestination = function(reason) {
+    // $scope.deletePlace = function(reason) {
     //   Reason
     //     .deleteById(reason)
     //     .$promise
@@ -220,5 +220,256 @@ angular
         console.log(type);
         type.$save(type);
   	};
+
+     //Record Plant
+    $scope.updateReadRecordPlant = function(profile){
+        if(profile.ReadRecordPlant == false){
+          profile.ReadRecordPlant = true;
+        }
+        else{
+          profile.ReadRecordPlant = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteRecordPlant = function(profile){
+        if(profile.WriteRecordPlant == false){
+          profile.WriteRecordPlant = true;
+        }
+        else{
+          profile.WriteRecordPlant = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+       //Record Employees
+    $scope.updateReadRecordEmployees = function(profile){
+        if(profile.RecordEmployees == false){
+          profile.RecordEmployees = true;
+        }
+        else{
+          profile.RecordEmployees = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteRecordEmployees = function(profile){
+        if(profile.RecordEmployees == false){
+          profile.RecordEmployees = true;
+        }
+        else{
+          profile.RecordEmployees = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+         //Record Contractor
+    $scope.updateReadRecordContractor = function(profile){
+        if(profile.RecordContractor == false){
+          profile.RecordContractor = true;
+        }
+        else{
+          profile.RecordContractor = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteRecordContractor = function(profile){
+        if(profile.RecordContractor == false){
+          profile.RecordContractor = true;
+        }
+        else{
+          profile.RecordContractor = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+        //Record Visits
+    $scope.updateReadRecordVisits = function(profile){
+        if(profile.RecordVisits == false){
+          profile.RecordVisits = true;
+        }
+        else{
+          profile.RecordVisits = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteRecordContractor = function(profile){
+        if(profile.RecordVisits == false){
+          profile.RecordVisits = true;
+        }
+        else{
+          profile.RecordVisits = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+       //Manual Record Visits
+    $scope.updateReadManualRecordVisits = function(profile){
+        if(profile.ManualRecordVisits == false){
+          profile.ManualRecordVisits = true;
+        }
+        else{
+          profile.ManualRecordVisits = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteManualRecordVisits = function(profile){
+        if(profile.ManualRecordVisits == false){
+          profile.ManualRecordVisits = true;
+        }
+        else{
+          profile.ManualRecordVisits = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+         //Manual Record Employees
+    $scope.updateReadManualRecordEmployees = function(profile){
+        if(profile.ManualRecordEmployees == false){
+          profile.ManualRecordEmployees = true;
+        }
+        else{
+          profile.ManualRecordEmployees = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteManualRecordEmployees = function(profile){
+        if(profile.ManualRecordEmployees == false){
+          profile.ManualRecordEmployees = true;
+        }
+        else{
+          profile.ManualRecordEmployees = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+
+         //Manual Record Contractor
+    $scope.updateReadManualRecordContractor = function(profile){
+        if(profile.ManualRecordContractor == false){
+          profile.ManualRecordContractor = true;
+        }
+        else{
+          profile.ManualRecordContractor = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteManualRecordContractor = function(profile){
+        if(profile.ManualRecordContractor == false){
+          profile.ManualRecordContractor = true;
+        }
+        else{
+          profile.ManualRecordContractor = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+
+         //Maintainers
+    $scope.updateReadMaintainers = function(profile){
+        if(profile.Maintainers == false){
+          profile.Maintainers = true;
+        }
+        else{
+          profile.Maintainers = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteMaintainers = function(profile){
+        if(profile.Maintainers == false){
+          profile.Maintainers = true;
+        }
+        else{
+          profile.Maintainers = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+      //Profiles
+    $scope.updateReadProfiles = function(profile){
+        if(profile.Profiles == false){
+          profile.Profiles = true;
+        }
+        else{
+          profile.Profiles = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteProfiles = function(profile){
+        if(profile.Profiles == false){
+          profile.Profiles = true;
+        }
+        else{
+          profile.Profiles = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+         //Blacklist
+    $scope.updateReadBlacklist = function(profile){
+        if(profile.Blacklist == false){
+          profile.Blacklist = true;
+        }
+        else{
+          profile.Blacklist = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
+
+     $scope.updateWriteProfiles = function(profile){
+        if(profile.Blacklist == false){
+          profile.Blacklist = true;
+        }
+        else{
+          profile.Blacklist = false;
+        }
+        profile.updating = 1;
+        console.log(profile);
+        profile.$save(profile);
+    };
 
 }]);

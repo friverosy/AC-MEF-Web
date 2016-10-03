@@ -3,7 +3,6 @@ angular
     'ui.router',
     'lbServices',
     'angularUtils.directives.dirPagination',
-    'ui.bootstrap.datetimepicker',
     'frapontillo.bootstrap-switch'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
@@ -58,6 +57,15 @@ angular
           accion : "employees"
         }
       })
+      .state('employee_individual', {
+        url: '/employee_individual',
+        templateUrl: 'views/employee_individual.html',
+        controller: 'EmployeeController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : "employee_individual"
+        }
+      })
       .state('pendings', {
         url: '/pendings',
         templateUrl: 'views/pendings.html',
@@ -73,43 +81,7 @@ angular
         controller: 'RecordController',
         onExit: unSubscribeAll,
         data: {
-          accion : "denieds"
-        }
-      })
-      .state('visit_individual', {
-        url: '/visit_individual',
-        templateUrl: 'views/visit_individual.html',
-        controller: 'RecordController',
-        onExit: unSubscribeAll,
-        data: {
-          accion : ""
-        }
-      })
-      .state('contractorInsert', {
-        url: '/contractor/new',
-        templateUrl: 'views/contractors/insertForm.html',
-        controller: 'ContractorController',
-        onExit: unSubscribeAll,
-        data: {
-          accion : ""
-        }
-      })
-      .state('employeeInsert', {
-        url: '/employee/new',
-        templateUrl: 'views/employees/insertForm.html',
-        controller: 'EmployeeController',
-        onExit: unSubscribeAll,
-        data: {
-          accion : ""
-        }
-      })
-      .state('visit_calendar', {
-        url: '/visit_calendar',
-        templateUrl: 'views/visit_calendar.html',
-        controller: 'RecordController',
-        onExit: unSubscribeAll,
-        data: {
-          accion : ""
+          accion : "dennieds"
         }
       })
       .state('reports', {
@@ -130,16 +102,19 @@ angular
         controller: 'ProfileController',
         onExit: unSubscribeAll
       })
-      .state('profiles', {
-        url: '/profiles',
-        templateUrl: 'views/profiles.html',
-        controller: 'ProfilesController',
-        onExit: unSubscribeAll
-      })
       .state('blacklist', {
         url: '/blacklist',
         templateUrl: 'views/blacklist.html',
         controller: 'BlacklistController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : "blacklist"
+        }
+      })
+      .state('profilesManagement', {
+        url: '/profilesManagement',
+        templateUrl: 'views/profilesManagement.html',
+        controller: 'MaintainersController',
         onExit: unSubscribeAll
       })
       .state('about', {

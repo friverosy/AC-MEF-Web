@@ -1,102 +1,61 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Pendientes
+	Personas ingresadas
   </h1>
   <ol class="breadcrumb">
 	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Pendientes</li>
+	<li class="active">En Planta</li>
   </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-10">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Todos los perfiles</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-              <form role="form" name="recordForm" ng-submit="addRecord()">
-              <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                          <th>Rut</th>
-                          <th>Nombre</th>
-                          <th>Entrada</th>
-                          <th>Perfil</th>
-                          <th>Opción</th>
-                      </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
-                          <td>
-
-                            {{record.people_run}}
-                             <!-- <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.people_run}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.people_run"
-                                disabled> !-->
-
-                          </td>
-                          <td>
-                          {{record.fullname}}
-                             <!-- <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.fullname}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.fullname"
-                                disabled> !-->
-                          </td>
-                          <td>
-                          {{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}
-
-                            <!--
-                              <input type="text"
-                                class="form-control focus"
-                                name="content"
-                                placeholder="{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}"
-                                autocomplete="off"
-                                required
-                                ng-model="newRecord.input_datetime"
-                                disabled> !-->
-                          </td>
-                          <td>
-                  					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-                  					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
-                            <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
-                  				  </td>
-                          <td>
-                            <div>
-                              <div class="dropdown">
-                                  <a class="dropdown-toggle fa fa-exchange" title="Registrar Salida" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#" onclick="return false;"></a>
-                                  <ul class="dropdown-menu" role="menu">
-                                      <datetimepicker data-ng-model="record.output_datetime" 
-                                      data-on-set-time="onTimeSet(newDate, oldDate,record)" 
-                                      data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep:1 }"/>
-                                  </ul>
-                              </div>
-                            </div>
-                          </td>
-                      </tr>
-                </tbody>
-              </table>
-              <dir-pagination-controls
-                 max-size="15"
-                 direction-links="true"
-                 boundary-links="true" >
-              </dir-pagination-controls>
-              </form>
-            </div><!-- /.box-body -->
-          </div><!-- /.box -->
-      </div>
+  <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Todos los perfiles</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example2" class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Perfil</th>
+                    <th>Opción</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                  <td>
+                    <strong ng-if="record.blacklist" class="text-red">*</strong>
+                    {{record.run}}
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td>{{record.place}}</td>
+                  <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                  <td>
+          					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
+          					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
+                    <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
+          				  </td>
+                  <td><a class="fa fa-exchange" href ng-click="addOutput(record)"></a></td>
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="15"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
-

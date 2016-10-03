@@ -10,6 +10,66 @@
     "name": {
       "type": "string",
       "required": true
+    },
+    "readBlacklist": {
+      "type": "boolean"
+    },
+    "writeRecordContractor": {
+      "type": "boolean"
+    },
+    "writeRecordEmployees": {
+      "type": "boolean"
+    },
+    "writeRecordPlant": {
+      "type": "boolean"
+    },
+    "writeManualRecordContractor": {
+      "type": "boolean"
+    },
+    "writeManualRecordEmployees": {
+      "type": "boolean"
+    },
+    "writeManualRecordVisits": {
+      "type": "boolean"
+    },
+    "writeRecordVisits": {
+      "type": "boolean"
+    },
+    "readMaintainers": {
+      "type": "boolean"
+    },
+    "readProfiles": {
+      "type": "boolean"
+    },
+    "readRecordContractor": {
+      "type": "boolean"
+    },
+    "readRecordEmployees": {
+      "type": "boolean"
+    },
+    "readRecordPlant": {
+      "type": "boolean"
+    },
+    "readManualRecordContractor": {
+      "type": "boolean"
+    },
+    "readManualRecordEmployees": {
+      "type": "boolean"
+    },
+    "readManualRecordVisits": {
+      "type": "boolean"
+    },
+    "readRecordVisits": {
+      "type": "boolean"
+    },
+    "writeBlacklist": {
+      "type": "boolean"
+    },
+    "writeMaintainers": {
+      "type": "boolean"
+    },
+    "writeProfiles": {
+      "type": "boolean"
     }
   },
   "validations": [],

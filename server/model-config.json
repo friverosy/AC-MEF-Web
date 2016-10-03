@@ -32,12 +32,6 @@
     "dataSource": "db",
     "public": false
   },
-  "nationality": {
-    "dataSource": "mongoDS",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
   "people": {
     "dataSource": "mongoDS",
     "public": true,
@@ -50,12 +44,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "frequency": {
-    "dataSource": "mongoDS",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
   "company": {
     "dataSource": "mongoDS",
     "public": true,
@@ -63,12 +51,6 @@
     "$resolved": true
   },
   "profile": {
-    "dataSource": "mongoDS",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
-  "position": {
     "dataSource": "mongoDS",
     "public": true,
     "$promise": {},
@@ -89,7 +71,7 @@
     "dataSource": "mongoDS",
     "public": true
   },
-  "destination": {
+  "place": {
     "dataSource": "mongoDS",
     "public": true
   },
@@ -100,12 +82,6 @@
     "$resolved": true
   },
   "vehicleType": {
-    "dataSource": "mongoDS",
-    "public": true,
-    "$promise": {},
-    "$resolved": true
-  },
-  "processPlant": {
     "dataSource": "mongoDS",
     "public": true,
     "$promise": {},

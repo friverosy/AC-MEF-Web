@@ -10,266 +10,102 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-	<div class="col-lg-2 col-xs-6">
-	  <!-- small box -->
-	  <div class="small-box bg-aqua">
-		<div class="inner">
-		  <h3>{{ num_pendings.count }}</h3>
-		  <p>En Planta</p>
-		</div>
-		<div class="icon">
-		  <i class="ion ion-pie-graph"></i>
-		</div>
-		<a href="/#/pendings" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-	  </div>
-	</div><!-- ./col -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-aqua">
+  		<div class="inner">
+  		  <h3>{{ num_pendings.count }}</h3>
+  		  <p>En Planta</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-pie-graph"></i>
+  		</div>
+  		<a href="/#/pendings" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
 
-	<div class="col-lg-2 col-xs-6">
-	  <!-- small box -->
-	  <div class="small-box bg-green">
-		<div class="inner">
-		  <h3>{{ num_employees.count }}</h3>
-		  <p>Empleados</p>
-		</div>
-		<div class="icon">
-		  <i class="ion ion-person-stalker"></i>
-		</div>
-		<a href="/#/employees" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-	  </div>
-	</div><!-- ./col -->
-	<div class="col-lg-2 col-xs-6">
-	  <!-- small box -->
-	  <div class="small-box bg-yellow">
-		<div class="inner">
-		  <h3>{{ num_contractors.count }}</h3>
-		  <p>Contratistas</p>
-		</div>
-		<div class="icon">
-		  <i class="ion ion-person-stalker"></i>
-		</div>
-		<a href="#" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-	  </div>
-	</div><!-- ./col -->
-	<div class="col-lg-2 col-xs-6">
-	  <!-- small box -->
-	  <div class="small-box bg-red">
-		<div class="inner">
-		  <h3>{{ num_visits.count }}</h3>
-		  <p>Visitas en la planta</p>
-		</div>
-		<div class="icon">
-		  <i class="ion ion-person-add"></i>
-		</div>
-		<a href="/#/visits" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-	  </div>
-	</div><!-- ./col -->
-  <!--
-	<div class="col-lg-2 col-xs-6">
-	  <!-- small box >
-	  <div class="small-box bg-red">
-		<div class="inner">
-		  <h3>{{ num_contractors.count }}</h3>
-		  <p>Proveedores</p>
-		</div>
-		<div class="icon">
-		  <i class="ion ion-person-add"></i>
-		</div>
-		<a href="#" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-	  </div>
-	</div><!-- ./col >
-  </div><!-- /.row >
-  !-->
-  <!-- Main row -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-green">
+  		<div class="inner">
+  		  <h3>{{ num_employees.count }}</h3>
+  		  <p>Empleados</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-stalker"></i>
+  		</div>
+  		<a href="/#/employees" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-yellow">
+  		<div class="inner">
+  		  <h3>{{ num_contractors.count }}</h3>
+  		  <p>Contratistas</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-stalker"></i>
+  		</div>
+  		<a href="/#/contractors" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-red">
+  		<div class="inner">
+  		  <h3>{{ num_visits.count }}</h3>
+  		  <p>Visitas planta</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-add"></i>
+  		</div>
+  		<a href="/#/visits" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+      <div class="col-lg-2 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-purple">
+      <div class="inner">
+        <h3>{{ num_patentsEmployees.count + num_patentsContractors.count + num_patentsVisits.count}}</h3>
+        <p>Vehículos planta</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-model-s"></i>
+      </div>
+      <a class="small-box-footer"><i class="fa fa-car"></i></a>
+      </div>
+    </div><!-- ./col -->
+  </div>
   <div class="row">
-
-    <div class="col-md-12">
+    <div class="col-md-10">
       <!-- Custom Tabs -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#tab_1" data-toggle="tab">AMSA</a></li>
-          <li><a href="#tab_2" data-toggle="tab">FARMING</a></li>
-          <li><a href="#tab_3" data-toggle="tab">ADMINISTRACIÓN</a></li>
-          <li class="pull-right"><a href="/#/dashboard" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+          <li class="active"><a href="#tab_1" data-toggle="tab" ng-click="getPlacesByRut('8')">Salmones Multiexport S.A.</a></li>
+          <li><a href="#tab_2" data-toggle="tab" ng-click="getPlacesByRut('2')">Alimentos Multiexport S.A.</a></li>
+          <li><a href="#tab_3" data-toggle="tab" ng-click="getPlacesByRut('3')">Multiexport Pacific Farms S.A.</a></li>
         </ul>
         <div class="tab-content">
+
           <div class="tab-pane active" id="tab_1">
-			<table class="table">
-				<thead>
-				<tr>
-					<th>Administracion</th>
-					<th>Planta Ahumado</th>
-					<th>Planta Fresco</th>
-				</tr>
-				</thead>
-				<tbody class="text-muted">
-					<tr>
-						<td><span class="label label-primary">0</span> Abastecimiento</td>
-						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Administracion</td>
-						<td><span class="label label-primary">0</span> Mantención</td>
-						<td><span class="label label-primary">0</span> Bodega</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Comercial Ahumado</td>
-						<td><span class="label label-primary">0</span> Opt. y Control</td>
-						<td><span class="label label-primary">0</span> Frigorífico</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Comercial F&C</td>
-						<td><span class="label label-primary">0</span> Producción</td>
-						<td><span class="label label-primary">0</span> Gestión</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Logística</td>
-						<td></td>
-						<td><span class="label label-primary">0</span> Laboratorio</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Personal</td>
-						<td></td>
-						<td><span class="label label-primary">0</span> Mantención</td>
-					</tr>
-					<tr>
-						<td><span class="label label-primary">0</span> Seguridad</td>
-						<td></td>
-						<td><span class="label label-primary">0</span> Opt. y Control</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td><span class="label label-primary">0</span> Patio</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td><span class="label label-primary">0</span> Producción</td>
-					</tr>
-				</tbody>
-			</table>
+            <table class="table">
+              <thead>
+                <td>Departamento</td>
+                <td>Personas</td>
+              </thead>
+              <tbody class="text-muted">
+                <!-- <tr ng-repeat="place in places | filter:{name: '!AREA'}"> -->
+                <tr ng-repeat="place in places | filter:{name: '!AREA'} | orderBy:'name'">
+                  <td>{{place.name}}</td>
+                  <td><span class="label label-primary">{{records}}</span></td>
+                </tr>
+              </tbody>
+            </table>
           </div><!-- /.tab-pane -->
-          <div class="tab-pane" id="tab_2">
-              <table class="table">
-  				<thead>
-  				<tr>
-  					<th>Administracion</th>
-  					<th>Planta Ahumado</th>
-  					<th>Planta Fresco</th>
-  				</tr>
-  				</thead>
-  				<tbody class="text-muted">
-  					<tr>
-  						<td><span class="label label-primary">0</span> Abastecimiento</td>
-  						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-  						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Administracion</td>
-  						<td><span class="label label-primary">0</span> Mantención</td>
-  						<td><span class="label label-primary">0</span> Bodega</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Comercial Ahumado</td>
-  						<td><span class="label label-primary">0</span> Opt. y Control</td>
-  						<td><span class="label label-primary">0</span> Frigorífico</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Comercial F&C</td>
-  						<td><span class="label label-primary">0</span> Producción</td>
-  						<td><span class="label label-primary">0</span> Gestión</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Logística</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Laboratorio</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Personal</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Mantención</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Seguridad</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Opt. y Control</td>
-  					</tr>
-  					<tr>
-  						<td></td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Patio</td>
-  					</tr>
-  					<tr>
-  						<td></td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Producción</td>
-  					</tr>
-  				</tbody>
-  			</table>
-          </div><!-- /.tab-pane -->
-          <div class="tab-pane" id="tab_3">
-              <table class="table">
-  				<thead>
-  				<tr>
-  					<th>Administracion</th>
-  					<th>Planta Ahumado</th>
-  					<th>Planta Fresco</th>
-  				</tr>
-  				</thead>
-  				<tbody class="text-muted">
-  					<tr>
-  						<td><span class="label label-primary">0</span> Abastecimiento</td>
-  						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-  						<td><span class="label label-primary">0</span> Aseg. Calidad</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Administracion</td>
-  						<td><span class="label label-primary">0</span> Mantención</td>
-  						<td><span class="label label-primary">0</span> Bodega</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Comercial Ahumado</td>
-  						<td><span class="label label-primary">0</span> Opt. y Control</td>
-  						<td><span class="label label-primary">0</span> Frigorífico</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Comercial F&C</td>
-  						<td><span class="label label-primary">0</span> Producción</td>
-  						<td><span class="label label-primary">0</span> Gestión</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Logística</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Laboratorio</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Personal</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Mantención</td>
-  					</tr>
-  					<tr>
-  						<td><span class="label label-primary">0</span> Seguridad</td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Opt. y Control</td>
-  					</tr>
-  					<tr>
-  						<td></td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Patio</td>
-  					</tr>
-  					<tr>
-  						<td></td>
-  						<td></td>
-  						<td><span class="label label-primary">0</span> Producción</td>
-  					</tr>
-  				</tbody>
-  			</table>
-          </div><!-- /.tab-pane -->
+
         </div><!-- /.tab-content -->
       </div><!-- nav-tabs-custom -->
     </div><!-- /.col -->
-
   </div><!-- /.row (main row) -->
-
 </section><!-- /.content -->

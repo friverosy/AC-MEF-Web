@@ -1,8 +1,8 @@
 angular
   .module('app')
-  .controller('DashboardController', ['$scope', '$state', 'Record', '$http', '$window', '$resource', 'PubSub',
+  .controller('DashboardController', ['$scope', '$state', 'Record', '$http', '$window', '$resource', 'PubSub','Company', 'Place','People',
     function($scope,
-      $state, Record, $http, $window, $resource, PubSub) {
+      $state, Record, $http, $window, $resource, PubSub, Company, Place, People) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -46,7 +46,6 @@ angular
           localStorage.clear();
           $window.location.href = '/login';
     };
-
 
     function getNumPendings() {
         Record.count({
@@ -120,12 +119,95 @@ angular
       });
     };
 
+    function getNumPatentsEmployees() {
+      //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
+      Record.count({
+        where: { and:
+          [
+            {is_input: true},
+            {output_datetime: undefined},
+            {profile: "E"},
+            {is_permitted: true},
+            {input_patent: {neq: null}}
+          ]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_patentsEmployees = result;
+      });
+    };
+
+    function getNumPatentsVisits() {
+      //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
+      Record.count({
+        where: { and:
+          [
+            {is_input: true},
+            {output_datetime: undefined},
+            {profile: "V"},
+            {is_permitted: true},
+            {input_patent: {neq: null}}
+          ]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_patentsVisits = result;
+      });
+    };
+
+    function getNumPatentsContractors() {
+      //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
+      Record.count({
+        where: { and:
+          [
+            {is_input: true},
+            {output_datetime: undefined},
+            {profile: "C"},
+            {is_permitted: true},
+            {input_patent: {neq: null}}
+          ]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_patentsContractors = result;
+      });
+    };
+
+    function getCompany() {
+      Company.find({filter: {where: {or:
+        [{rut: '2'},
+        {rut: '3'},
+        {rut: '8'}]
+      }}})
+      .$promise
+      .then(function(results) {
+        $scope.companies = results;
+      });
+    }
+
+    function getDefaultPlace() {
+      Place.find({filter: {where: {and: [{companyId: 8},{name: {nlike: '/AREA/'}}]}}})
+      .$promise
+      .then(function(results) {
+        $scope.places = results;
+      })
+      //falta mostrar contador de record por place
+    }
+
     //Count
     getNumPendings();
     getNumEmployes();
     getNumVisits();
     getNumContractos();
     getRejected();
+    getNumPatentsEmployees();
+    getNumPatentsVisits();
+    getNumPatentsContractors();
+    getDefaultPlace();
+    getCompany();
 
     var onRecordCreate = function(data) {
           getNumPendings();
@@ -133,10 +215,47 @@ angular
           getNumVisits();
           getNumContractos();
           getRejected();
+          getNumPatentsEmployees();
+          getNumPatentsContractors();
+          getNumPatentsVisits();
+          getCompany();
     }
 
     PubSub.subscribe({
                 collectionName: 'Record',
                 method : 'POST'
             }, onRecordCreate);
+
+    function countByPlace(place) {
+      Record.find({
+          filter: {
+            where: {
+              and: [{place: place}, {is_input: true}]
+            }
+          }
+        },
+        function(list) {
+          $scope.records = list.length;
+        },
+        function(errorResponse) { console.log(errorResponse) }
+      );
+    }
+
+    $scope.getPlacesByRut = function(rut) {
+      console.log(rut);
+      Place.find({
+        filter: {
+          where: {
+            companyId: rut
+          }
+        }
+      })
+      .$promise
+      .then(function(results) {
+        angular.forEach(results, function(value, key) {
+          countByPlace(value.name)
+        });
+      })
+    }
+
   }]);

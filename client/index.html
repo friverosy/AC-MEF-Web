@@ -8,7 +8,6 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -26,8 +25,6 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/select2.min.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- fullCalendar 2.2.5-->
   <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
   <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
@@ -40,12 +37,10 @@
   <![endif]-->
   <style>
   img.axxezo {
-      height: 200px;
-      width: 400px;
       display: block;
-      margin-left: auto;
-      margin-right: auto;
-      max-width:100%;
+      margin-left: 30%;
+      max-width:20%;
+      max-height: 20%;
       /*opacity: 0.5;
       filter:  alpha(opacity=50);*/
   }
@@ -134,6 +129,10 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- daterangepicker -->
@@ -159,10 +158,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="bootstrap/js/bootstrap-switch.js"></script>
-<script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
 <script src="vendor/angular/angular.js"></script>
-<script src="vendor/angular/datetimepicker.js"></script>
-<script src="vendor/angular/datetimepicker.templates.js"></script>
+<!-- <script src="vendor/angular/datetimepicker.js"></script>
+<script src="vendor/angular/datetimepicker.templates.js"></script> -->
 <script src="bootstrap/js/angular-bootstrap-switch.js"></script>
 <script src="vendor/angular-resource/angular-resource.js"></script>
 <script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
@@ -178,7 +176,7 @@
 <script src="js/controllers/maintainers.js"></script>
 <script src="js/controllers/profiles.js"></script>
 <script src="js/controllers/accounts.js"></script>
-<script src="js/controllers/brawler.js"></script>
+<script src="js/controllers/blacklist.js"></script>
 <script src="pubsub.js"></script>
 <script src="vendor/socketio/socketio.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>

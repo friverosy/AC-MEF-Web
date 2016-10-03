@@ -1,82 +1,214 @@
 angular.module('app')
-  .controller('EmployeeController', ['$scope', '$http', 'Record', 'People', 'PubSub', 
-  	function($scope, $http, Record, People, PubSub) {
+  .controller('EmployeeController', ['$scope', '$http', '$window', 'Record', 'People', 'PubSub', 'Place', 'Parking', 'VehicleType',
+  	function($scope, $http, $window, Record, People, PubSub, Place, Parking, VehicleType) {
 
   	$scope.is_saved = false;
 
   	$scope.employee = {};
   	$scope.employee.is_input = true;
+    $scope.employee.unselectParking = true;
   	$scope.employee.authorized_by = localStorage.getItem("email");
   	$scope.employee.profile = "E";
+    $scope.employee.checkboxCar = false;
+    $scope.peoples = {};
+    $scope.record = {};
 
   	$scope.employee.searchEmployee = function() {
-
-      var url = 'http://127.0.0.1:3000/api/people/' + $scope.employee.people_run;
-      $http({
-        method : 'GET',
-        headers: {
-          'Accept': "application/json",
-          'Content-Type': "application/json"
-        },
-        url : url
-      }).then(function mySucces(record) {
-        record = record.data;
-        if(record){
-          if(record.run == $scope.employee.people_run && record.profile == "E"){
-            $scope.employee.people_run = record.run;
-            $scope.employee.is_input = true;
-            $scope.employee.authorized_by = localStorage.getItem("email");
-            $scope.employee.is_permitted = ((typeof record.is_permited == "undefined")? true : record.is_permitted);
-            $scope.employee.fullname = record.fullname;
-          }else{
-            //todo si no existe
-          }
+      //Search for RUT
+      if ($scope.employee.people_run === undefined) {
+        alert("Ingrese RUT o tarjeta");
+      } else {
+        if($scope.employee.people_run.length >= 8){
+          console.log("RUT");
+          People.find( { filter: { where: { run: $scope.employee.people_run} } } )
+          .$promise
+          .then(function mySucces(results) {
+            $scope.peoples = results;
+            record = results;
+            console.log(record);
+            console.log(results[0].fullname);
+            if (record != "") {
+              if ((record[0].run == $scope.employee.people_run || angular.equals(record[0].card,parseInt($scope.employee.people_run)))  && record[0].profile == "E") {
+                $scope.employee.people_run = record[0].run;
+                $scope.employee.card = record[0].card;
+                $scope.employee.place = record[0].place;
+                $scope.employee.company_code = record[0].company_code;
+                $scope.employee.is_permitted = record[0].is_permitted;
+                $scope.employee.company = record[0].company;
+                $scope.employee.is_input = true;
+                $scope.employee.fullname = record[0].fullname;
+                console.log($scope.employee.fullname);
+              }
+            } else {
+              $scope.employee.fullname = "";
+              alert("El RUT ingresado no existe en los registros de Empleados");
+            }
+          }, function myError(response) {
+            $scope.employee.fullname = "";
+            alert("El RUT ingresado no existe en los registros de Empleados");
+          })
+        } else if ($scope.employee.people_run.length <= 5 && $scope.employee.people_run.length >=3){
+          console.log("CARD");
+          People.find( { filter: { where: { card: $scope.employee.people_run} } } )
+          .$promise
+          .then(function mySucces(results) {
+            $scope.peoples = results;
+            record = results;
+            console.log(record);
+            if (record != "") {
+              $scope.employee.fullname = record[0].fullname;
+              $scope.employee.people_run = record[0].run;
+              $scope.employee.card = record[0].card;
+              $scope.employee.company_code = record[0].company_code;
+              $scope.employee.is_permitted = record[0].is_permitted;
+              $scope.employee.company = record[0].company;
+              $scope.employee.is_input = true;
+            } else {
+              $scope.employee.fullname = "";
+              alert("El Card ingresado no existe en los registros de Empleados");
+            }
+          }, function myError(response) {
+            $scope.employee.fullname = "";
+            alert("El card ingresado no existe en los registros de Empleados");
+          })
         }
-      }, function myError(response) {
-        console.log(response)
-      });
+      }
     };
 
     $scope.employee.addEmployee = function() {
-    	if(typeof $scope.employee.people_run == "undefined" || $scope.employee.people_run == ""){
-    		alert("Debe ingresar el identificador de empleado");
-    		return;
-    	}else if(typeof $scope.employee.fullname == "undefined" || $scope.employee.fullname == ""){
-    		alert("Debe ingresar el nombre del empleado");
+    	if(typeof $scope.employee.fullname == "undefined" || $scope.employee.fullname == ""){
+    		alert("Debe ingresar el indentificador del empleado");
     		return;
     	}else if(typeof $scope.employee.is_input == "undefined"){
-    		alert("Debe seleccionar el tipo de registro");
+    		alert("");
     		return;
-    	}else if($scope.employee.is_input && (typeof $scope.employee.input_patent == "undefined" || $scope.employee.input_patent == "") ) {
+        // INPUT FILTERS
+    	}else if($scope.employee.is_input && ((($scope.employee.input_patent == undefined || $scope.employee.input_patent == "") && $scope.employee.checkboxCar))) {
         alert("Debe ingresar la patente de entrada");
         return;
-      }else if($scope.employee.is_input && (typeof $scope.employee.input_patent_type == "undefined" || $scope.employee.input_patent_type == "") ) {
-        alert("Debe ingresar el tipo de patente de entrada");
-        return;
-      }else if($scope.employee.is_input && (typeof $scope.employee.input_datetime == "undefined" || $scope.employee.input_datetime == "") ) {
-    		alert("Debe ingresar la fecha/hora de entrada");
-    		return;
-    	}else if(!$scope.employee.is_input && (typeof $scope.employee.output_datetime == "undefined" || $scope.employee.output_datetime == "") ) {
-    		alert("Debe ingresar la fecha/hora de salida");
-    		return;
-    	}else if(!$scope.employee.is_input && (typeof $scope.employee.output_patent == "undefined" || $scope.employee.output_patent == "") ) {
+      }else if(!$scope.employee.is_input && ((($scope.employee.output_patent == undefined || $scope.employee.output_patent == "") && $scope.employee.checkboxCar))) {
         alert("Debe ingresar la patente de salida");
         return;
-      }else if(!$scope.employee.is_input && (typeof $scope.employee.output_patent_type == "undefined" || $scope.employee.output_patent_type == "") ) {
-        alert("Debe ingresar el tipo de patente de salida");
+      }
+      if(typeof $scope.employee.is_input && ($scope.employee.selectedOptionPlaces.name == "undefined" || $scope.employee.selectedOptionPlaces.name == "")){
+        alert("Debe seleccionar el el destino");
         return;
       }
+      else{
 
-    	if($scope.employee.is_input){
-    		$scope.employee.input_datetime = Date();
-    	}else{
-    		$scope.employee.output_datetime = Date();
-    	}
+      //Building the record for save.
+      $scope.record.run =  $scope.employee.people_run;
+      $scope.record.fullname = $scope.employee.fullname;
+      $scope.record.is_input = $scope.employee.is_input;
+      //Place (is_input)
+      if($scope.employee.is_input){
+          $scope.record.place =  $scope.employee.selectedOptionPlaces.name;
+      }
+      //car or not
+      if($scope.employee.checkboxCar){
+        //INPUT OR OUTPUT
+        if($scope.record.is_input){
+          $scope.record.input_patent = $scope.employee.input_patent;
+          $scope.record.input_patent_type = $scope.employee.selectedOptionVehicleTypes.id;
+          $scope.record.parking =  $scope.employee.selectedOptionParkings.name;
+        } else{
+          $scope.record.output_patent = $scope.employee.output_patent;
+          $scope.record.output_patent_type = $scope.employee.selectedOptionVehicleTypes.id;
+        }
+      }
 
-    	Record.create($scope.employee, function(err,model){
-    		$scope.is_saved = false;
-    	});
-      
+      $scope.record.type = "MR";
+      $scope.record.profile = "E";
+
+      if($scope.record.is_input){
+          $scope.record.comment = $scope.employee.comment;
+      }
+
+      $scope.record.card = $scope.employee.card;
+      $scope.record.company_code = $scope.employee.company_code;
+      $scope.record.is_permitted = $scope.employee.is_permitted;
+      $scope.record.company = $scope.employee.company;
+      $scope.record.bus=false;
+
+      console.log($scope.record);
+      Record.create($scope.record, function(err, model){
+        alert("Empleado Registrado con exito");
+        $scope.is_saved = true;
+        // $window.place.reload();
+        // location.reload();
+      });
+
+      }
+
     };
-    
+
+    function getPlaces() {
+        Place.find()
+        .$promise
+        .then(function(results) {
+            $scope.places = results;
+            $scope.employee.selectedOptionPlaces = $scope.places[0];
+        });
+    }
+
+  function getParkings() {
+        Parking.find()
+        .$promise
+        .then(function(results) {
+            $scope.parkings = results;
+            $scope.employee.selectedOptionParkings = $scope.parkings[0];
+        });
+    }
+
+ $scope.getPeople = function(run){
+  console.log(run);
+        People.find( { filter: { where: { run: run.people_run} } } )
+        .$promise
+        .then(function(results) {
+            $scope.peoples = results;
+
+
+        })
+    }
+
+    function getVehicleType() {
+        VehicleType.find()
+        .$promise
+        .then(function(results) {
+            $scope.vehicleTypes = results;
+            $scope.employee.selectedOptionVehicleTypes= $scope.vehicleTypes[0];
+        });
+    }
+
+    //CHECK OUTPUT PARKING
+  $scope.outputParkingCheck = function(){
+      if($scope.employee.output_patent != undefined &&  $scope.employee.output_patent != ""){
+          $scope.employee.unselectParking = false;
+      }
+      else if($scope.employee.output_patent == undefined){
+            $scope.employee.unselectParking = true;
+      }
+      else if($scope.employee.output_patent == ""){
+            $scope.employee.unselectParking = true;
+      }
+
+  }
+
+    //CHECK INPUT PARKING
+  $scope.inputParkingCheck = function(){
+      if($scope.employee.input_patent != undefined  && $scope.employee.input_patent != ""){
+          $scope.employee.unselectParking = false;
+      }
+      else if($scope.employee.input_patent == undefined){
+            $scope.employee.unselectParking = true;
+      }
+      else if($scope.employee.input_patent == ""){
+            $scope.employee.unselectParking = true;
+      }
+  }
+
+  getVehicleType();
+  getPlaces();
+  getParkings();
+
 }]);
