@@ -1,9 +1,9 @@
 angular
   .module('app')
-  .controller('DashboardController', ['$scope', '$state', 'Record', '$http', '$window', '$resource', 'PubSub','Company', 'Place','People',
+  .controller('DashboardController', ['$scope', '$state', '$filter', 'Record', '$http', '$window', '$resource', 'PubSub','Company', 'Place','People',
     function($scope,
-      $state, Record, $http, $window, $resource, PubSub, Company, Place, People) {
-
+      $state, $filter, Record, $http, $window, $resource, PubSub, Company, Place, People) {
+      
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
         if (localStorage.password !== "CB3rZin5") $window.location.href = '/login';
@@ -41,7 +41,8 @@ angular
       default:
         $window.location.href = '/login';
     }
-
+    $scope.arregloPeople = {};
+    $scope.RecordsAll = {};
     $scope.logout = function() {
           localStorage.clear();
           $window.location.href = '/login';
@@ -188,6 +189,14 @@ angular
       });
     }
 
+    function getRecords() {
+      Record.find()
+      .$promise
+      .then(function(results) {
+        $scope.RecordsAll = results;
+      });
+    }
+
     function getDefaultPlace() {
       Place.find({filter: {where: {and: [{companyId: 8},{name: {nlike: '/AREA/'}}]}}})
       .$promise
@@ -208,6 +217,8 @@ angular
     getNumPatentsContractors();
     getDefaultPlace();
     getCompany();
+    getRecords();
+   
 
     var onRecordCreate = function(data) {
           getNumPendings();
@@ -219,6 +230,8 @@ angular
           getNumPatentsContractors();
           getNumPatentsVisits();
           getCompany();
+          getRecords();
+          
     }
 
     PubSub.subscribe({
@@ -235,14 +248,15 @@ angular
           }
         },
         function(list) {
-          $scope.records = list.length;
+          console.log(list);
+          $scope.records = list;
         },
         function(errorResponse) { console.log(errorResponse) }
       );
     }
 
     $scope.getPlacesByRut = function(rut) {
-      console.log(rut);
+      //console.log(rut);
       Place.find({
         filter: {
           where: {
@@ -252,10 +266,47 @@ angular
       })
       .$promise
       .then(function(results) {
-        angular.forEach(results, function(value, key) {
-          countByPlace(value.name)
-        });
+        //console.log(results);
+        $scope.places = results;
+       // angular.forEach(results, function(value, key) {
+          //console.log(value.name);
+         // countByPlace(value.name);
+        //});
       })
+    }
+
+$scope.getRecordsByRut = function(rut) {
+      //console.log(rut);
+      Place.find({
+        filter: {
+          where: {
+            companyId: rut
+          }
+        }
+      })
+      .$promise
+      .then(function(results) {
+   
+        var arreglo = results;
+          var contador =0;
+          var contadorFilter = 0;
+          var arreglo2 = $scope.RecordsAll;
+          $scope.arregloPeople={};
+          angular.forEach(arreglo, function(value, key) {
+           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
+           $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
+           contadorFilter++;
+           
+     
+
+         });
+            
+            
+            
+       
+        
+      })
+     
     }
 
   }]);
