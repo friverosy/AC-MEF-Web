@@ -114,7 +114,7 @@ angular
         .$promise
         .then(function(results) {
             $scope.employees = results;
-            $scope.num_employees = filterFilter($scope.employees, {is_input: true, output_datetime: undefined, profile: "E"}).length;
+            $scope.num_employees = filterFilter($scope.employees, {is_input: true, profile: "E", is_permitted: true}).length;
         })
     }
     function getContractors() {
@@ -122,7 +122,7 @@ angular
         .$promise
         .then(function(results) {
             $scope.contractors = results;
-            $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, output_datetime: undefined, profile: "C"}).length;
+            $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, profile: "C", is_permitted: true}).length;
         })
     }
     function getAll() {
@@ -137,15 +137,15 @@ angular
         .$promise
         .then(function(results) {
             $scope.visits = results;
-            $scope.num_visits = filterFilter($scope.visits, {is_input: true, output_datetime: undefined, profile: "V"}).length;
+            $scope.num_visits = filterFilter($scope.visits, {is_input: true, profile: "V"}).length;
         })
     }
     function getPendings() {
-        Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.pendings = results;
-            $scope.num_pendings = filterFilter($scope.pendings, {is_input: true}).length;
+            $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
         })
     }
     function getDennieds() {
