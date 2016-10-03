@@ -156,6 +156,6 @@ angular
 
 //Function for unsubscribing..
 var unSubscribeAll = function(PubSub){
-    //Unsubscribe all listeners..
-    PubSub.unSubscribeAll();
+    //Unsubscribe all listeners..
+    PubSub.unSubscribeAll();
 }
