@@ -134,7 +134,7 @@ angular
     }
 
     function getManualRecords() {
-        Record.find( { filter: { where: { reviewed: true }, order: ['input_datetime DESC'] } } )
+        Record.find( { filter: { where: { type:"MR", reviewed: true }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.manualrecords = results;
