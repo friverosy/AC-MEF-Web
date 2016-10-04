@@ -190,7 +190,13 @@ angular
     }
 
     function getRecords() {
-      Record.find()
+      Record.find({
+        where: { and:
+          [
+            {is_input: true}
+          ]
+        }
+      })
       .$promise
       .then(function(results) {
         $scope.RecordsAll = results;
