@@ -8,6 +8,10 @@ PEN = from pendings view, manual record with input & output datetime
 State:
 DO = Double Output,
 C = Closed (with input, output datetime, and is_input = false)
+
+Reviewed:
+true = showable on manualRecords view
+false = dont showable on manualRecords view (admin mark as reviewed)
 */
 
 var colors = require('colors')
@@ -22,6 +26,7 @@ module.exports = function(Record) {
   Record.observe('before save', function(ctx, next) {
     var People = app.models.People
     if (ctx.instance) {
+      ctx.instance.reviewed = true;
       if (ctx.instance.is_permitted === false) {
         slack = new Slack();
         slack.setWebhook("https://hooks.slack.com/services/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");
