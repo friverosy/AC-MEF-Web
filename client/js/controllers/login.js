@@ -1,43 +1,8 @@
-angular.module('app')
-  .controller('LoginController', ['$scope', '$state', 'User', function($scope, $state, User) {
+if(localStorage.email == "cberzins@multiexportfoods.com" && localStorage.password == "CB3rZin5"){
+    location="/#/dashboard"
+}
 
-
-  $scope.login = {};
-
-  $scope.login.userPass = function (user, pass) {
-          console.log(user);
-          console.log(pass);
-
-          User.find({
-          where: { and:
-            [
-              {name: name},
-              {base: pass}
-            ]
-          }
-        })
-        .$promise
-        .then(function mySucces(results) {
-          record = result;
-          if(record!=""){
-              localStorage.setItem("email", user);
-              localStorage.setItem("password", pass);
-              location="/#/dashboard"
-          }
-        },function myError(response) {
-          localStorage.setItem("email", "");
-          localStorage.setItem("password", "");
-          location="/#/login";
-       });
-  }
-
-
-//function pasuser(form) {
-   // console.log(form.password.value);
-    //console.log(form.email.value);
-
-
-    /*
+function pasuser(form) {
     switch (form.email.value) {
       case "cberzins@multiexportfoods.com":
         if (form.password.value == "CB3rZin5"){
@@ -129,7 +94,6 @@ angular.module('app')
   	      else alert("Invalid Password")
           break;
       default:
-        alert("Invalid user")*/
-
-//}
-}]);
+        alert("Invalid user")
+    }
+}
