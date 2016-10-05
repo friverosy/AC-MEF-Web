@@ -76,6 +76,9 @@
     },
     "status": {
       "type": "string"
+    },
+    "reviewed": {
+      "type": "boolean"
     }
   },
   "validations": [],

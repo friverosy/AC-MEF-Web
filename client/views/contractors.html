@@ -57,8 +57,8 @@
                           <td>{{record.company}}</td>
                           <td>{{record.place}}</td>
                           <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
-                          <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
-                          <td>{{record.output_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>
+                          <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                          <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                           <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="__.__.__" class="form-control"></td>
                           <td>
                               <select

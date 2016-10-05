@@ -13,6 +13,9 @@
     "run": {
       "type": "string",
       "required": true
+    },
+    "reason": {
+      "type": "string"
     }
   },
   "validations": [],

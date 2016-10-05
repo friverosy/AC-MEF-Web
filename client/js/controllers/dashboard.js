@@ -3,7 +3,7 @@ angular
   .controller('DashboardController', ['$scope', '$state', '$filter', 'Record', '$http', '$window', '$resource', 'PubSub','Company', 'Place','People',
     function($scope,
       $state, $filter, Record, $http, $window, $resource, PubSub, Company, Place, People) {
-      
+
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
         if (localStorage.password !== "CB3rZin5") $window.location.href = '/login';
@@ -224,7 +224,7 @@ angular
     getDefaultPlace();
     getCompany();
     getRecords();
-   
+
 
     var onRecordCreate = function(data) {
           getNumPendings();
@@ -237,7 +237,7 @@ angular
           getNumPatentsVisits();
           getCompany();
           getRecords();
-          
+
     }
 
     PubSub.subscribe({
@@ -292,7 +292,6 @@ $scope.getRecordsByRut = function(rut) {
       })
       .$promise
       .then(function(results) {
-   
         var arreglo = results;
           var contador =0;
           var contadorFilter = 0;
@@ -302,17 +301,8 @@ $scope.getRecordsByRut = function(rut) {
            var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
            $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
            contadorFilter++;
-           
-     
-
          });
-            
-            
-            
-       
-        
       })
-     
     }
 
   }]);

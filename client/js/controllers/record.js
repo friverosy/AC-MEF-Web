@@ -133,6 +133,16 @@ angular
             $scope.todayall = results;
         })
     }
+
+    function getManualRecords() {
+        Record.find( { filter: { where: { reviewed: true }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.manualrecords = results;
+            $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: true}).length;
+        })
+    }
+
     function getVisits() {
         Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
         .$promise
@@ -187,6 +197,7 @@ angular
       case 'visits' : getVisits(); getVehicleType(); getPlaces(); getParkings(); break;
       case 'contractors' : getContractors(); getVehicleType(); break;
       case 'dennieds' : getDennieds(); break;
+      case 'manualRecords': getManualRecords(); break;
     }
 
     var f=new Date();
@@ -281,7 +292,6 @@ angular
     }
 
     $scope.update = function(record){
-      console.log(record);
         record.updating=true;
         record.$save(record);
   	}
@@ -297,7 +307,12 @@ angular
         record.output_patent = item;
         record.updating=true;
         record.$save(record);
+  	}
 
+    $scope.updateManualRecord = function(record) {
+      record.reviewed = false;
+      record.$save(record)
+      getManualRecords();
     }
 
     //Suscribe to Socket.io events
