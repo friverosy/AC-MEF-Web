@@ -61,6 +61,7 @@ angular
     };
 
     $scope.records = [];
+    $scope.recordsForPatents ={};
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
@@ -161,6 +162,15 @@ angular
         .$promise
         .then(function(results) {
             $scope.vehicleTypes = results;
+        });
+    }
+
+     function getRecords() {
+        Record.find( )
+        .$promise
+        .then(function(results) {
+            $scope.recordsForPatents = results;
+            console.log($scope.recordsForPatents);
         });
     }
 
@@ -271,9 +281,24 @@ angular
     }
 
     $scope.update = function(record){
+      console.log(record);
         record.updating=true;
         record.$save(record);
   	}
+
+ $scope.updateInputPatent = function(record, item){
+        record.input_patent = item;
+        record.updating=true;
+        record.$save(record);
+
+    }
+
+ $scope.updateOutputPatent = function(record, item){
+        record.output_patent = item;
+        record.updating=true;
+        record.$save(record);
+
+    }
 
     //Suscribe to Socket.io events
 
@@ -324,6 +349,7 @@ angular
         }
         updatingInformation = false;
     }
+    getRecords();
 
     PubSub.subscribe({
                 collectionName: 'Record',

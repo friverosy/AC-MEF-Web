@@ -3,7 +3,9 @@ angular
     'ui.router',
     'lbServices',
     'angularUtils.directives.dirPagination',
-    'frapontillo.bootstrap-switch'
+    'frapontillo.bootstrap-switch',
+    'ngAnimate',
+    'ui.bootstrap'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
       $urlRouterProvider,$locationProvider) {
