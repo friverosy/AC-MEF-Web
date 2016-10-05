@@ -180,8 +180,15 @@ angular
         .$promise
         .then(function(results) {
             $scope.recordsForPatents = results;
-            console.log($scope.recordsForPatents);
         });
+    }
+      function getInputPatents() {
+        Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.inputPatents = results;
+            
+        })
     }
 
     $scope.onTimeSet = function (newDate, oldDate, record) {
@@ -365,6 +372,7 @@ angular
         updatingInformation = false;
     }
     getRecords();
+    getInputPatents();
 
     PubSub.subscribe({
                 collectionName: 'Record',
