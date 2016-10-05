@@ -3,7 +3,9 @@ angular
     'ui.router',
     'lbServices',
     'angularUtils.directives.dirPagination',
-    'frapontillo.bootstrap-switch'
+    'frapontillo.bootstrap-switch',
+    'ngAnimate',
+    'ui.bootstrap'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
       $urlRouterProvider,$locationProvider) {
@@ -151,6 +153,15 @@ angular
         onExit: unSubscribeAll,
         data: {
           accion : "manualRecords"
+        }
+      })
+      .state('inputPatents', {
+        url: '/inputPatents',
+        templateUrl: 'views/inputPatents.html',
+        controller: 'RecordController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : "pendings"
         }
       })
       .state('about', {

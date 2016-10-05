@@ -61,6 +61,7 @@ angular
     };
 
     $scope.records = [];
+    $scope.recordsForPatents ={};
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
@@ -181,6 +182,22 @@ angular
         });
     }
 
+     function getRecords() {
+        Record.find( )
+        .$promise
+        .then(function(results) {
+            $scope.recordsForPatents = results;
+        });
+    }
+      function getInputPatents() {
+        Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
+        .$promise
+        .then(function(results) {
+            $scope.inputPatents = results;
+            
+        })
+    }
+
     $scope.onTimeSet = function (newDate, oldDate, record) {
         record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
         record.is_input = false;
@@ -287,7 +304,20 @@ angular
     }
 
     $scope.update = function(record){
-        record.updating = true;
+        record.updating=true;
+        record.$save(record);
+  	}
+
+ $scope.updateInputPatent = function(record, item){
+        record.input_patent = item;
+        record.updating=true;
+        record.$save(record);
+
+    }
+
+ $scope.updateOutputPatent = function(record, item){
+        record.output_patent = item;
+        record.updating=true;
         record.$save(record);
   	}
 
@@ -346,6 +376,8 @@ angular
         }
         updatingInformation = false;
     }
+    getRecords();
+    getInputPatents();
 
     PubSub.subscribe({
                 collectionName: 'Record',
