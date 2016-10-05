@@ -181,20 +181,19 @@ angular
             $scope.vehicleTypes = results;
         });
     }
-
-     function getRecords() {
-        Record.find( )
-        .$promise
-        .then(function(results) {
-            $scope.recordsForPatents = results;
-        });
+    function getRecords() {
+      Record.find( { filter: { where: { input_patent: {neq: null} }}})
+      .$promise
+      .then(function(results) {
+        $scope.recordsForPatents = results;
+      });
     }
-      function getInputPatents() {
+    function getInputPatents() {
         Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
         .$promise
         .then(function(results) {
             $scope.inputPatents = results;
-            
+
         })
     }
 
