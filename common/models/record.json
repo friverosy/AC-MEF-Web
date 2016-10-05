@@ -79,6 +79,9 @@
     },
     "reviewed": {
       "type": "boolean"
+    },
+    "destination": {
+      "type": "string"
     }
   },
   "validations": [],

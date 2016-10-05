@@ -27,22 +27,7 @@ module.exports = function(Record) {
     var People = app.models.People
     if (ctx.instance) {
       ctx.instance.reviewed = true;
-      if (ctx.instance.is_permitted === false) {
-        slack = new Slack();
-        slack.setWebhook("https://hooks.slack.com/services/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");
-        slack.webhook({
-          channel: "#multiexportfoods",
-          username: "Multi-Boot",
-          text: "Person dennied detected!.",
-          icon_emoji: ":robot_face:",
-          attachments: [
-            {
-                "title": ctx.instance.run + " - " + ctx.instance.fullname,
-                "color": "danger"
-            }
-          ]
-        }, function(err, response) {});
-      }
+      notification(ctx.instance);
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
         if (ctx.instance.type === undefined) {
@@ -230,6 +215,28 @@ module.exports = function(Record) {
         if (err) { console.error(err) }
       }
     )
+  }
+
+  function sendSlackMessage(run, fullname, message){
+    slack = new Slack();
+    slack.setWebhook("https://hooks.slack.com/services/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");
+    slack.webhook({
+      channel: "#multiexportfoods",
+      username: "Multi-Boot",
+      text: message,
+      icon_emoji: ":robot_face:",
+      attachments: [
+        {
+            "title": run + " - " + fullname,
+            "color": "danger"
+        }
+      ]
+    }, function(err, response) {});
+  }
+
+  function notification(ctx) {
+    if (ctx.is_permitted === false) sendSlackMessage(ctx.run, ctx.fullname, "Person dennied detected!.")
+    if (ctx.blacklist === true) sendSlackMessage(ctx.run, ctx.fullname, "Person blacklist detected!.")
   }
 
   Record.observe('after save', function(ctx, next) {

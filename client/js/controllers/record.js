@@ -14,8 +14,8 @@ angular.module("app").filter('findById', function() {
 
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Place', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
-      $state, Record, Parking, Place, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
+  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
+      $state, Record, Parking, Place, Destination, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -109,6 +109,13 @@ angular
             $scope.places = results;
         });
     }
+    function getDestination() {
+        Destination.find()
+        .$promise
+        .then(function(results) {
+            $scope.destinations = results;
+        });
+    }
     function getEmployees() {
         Record.find( { filter: { where: { profile: "E", is_permitted: true }, order: ['input_datetime DESC'] } } )
         .$promise
@@ -184,8 +191,8 @@ angular
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
       case 'employees' : getEmployees(); getVehicleType(); break;
-      case 'visits' : getVisits(); getVehicleType(); getPlaces(); getParkings(); break;
-      case 'contractors' : getContractors(); getVehicleType(); break;
+      case 'visits' : getVisits(); getVehicleType(); getDestination(); getParkings(); break;
+      case 'contractors' : getContractors(); getVehicleType(); getDestination(); break;
       case 'dennieds' : getDennieds(); break;
       case 'manualRecords': getManualRecords(); break;
     }
@@ -212,7 +219,6 @@ angular
                 }
             }
         } else if (column === 'pastWeek') {
-            //need logic
             //curr_date - 7 dias
             $scope.dateRange = "";
             $scope.filterByDate = function(input){
@@ -222,7 +228,6 @@ angular
                 }
             }
         } else if (column === 'pastMonth') {
-            //need logic
             //curr_month - 1
             $scope.filterByDate = function(input){
                 return function(item){

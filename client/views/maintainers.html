@@ -12,7 +12,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Estacionamientos</h3>
@@ -46,17 +46,17 @@
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Destinos</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <form name="placeForm" novalidate ng-submit="addPlace()">
+                    <form name="destinationForm" novalidate ng-submit="addDestination()">
                       <div class="form-group">
                         <input type="text" class="form-control focus" name="name"
                             placeholder="Nombre" autocomplete="off" required
-                            ng-model="newPlace.name">
+                            ng-model="newDestination.name">
                       </div>
                       <button class="btn btn-info">Agregar</button>
                     </form>
@@ -66,20 +66,21 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng:repeat="place in places">
+                            <tr ng:repeat="destination in destinations">
                                 <td>{{$index + 1}}</td>
-                                <td><input type="text" ng-model="place.name" ng-change="updatePlace(place)"  class="form-control"></td>
-                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deletePlace(place)"></a></td>
+                                <td><input type="text" ng-model="destination.name" ng-change="updateDestination(destination)"  class="form-control"></td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteDestination(destination)"></a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Tipo de vehiculos</h3>
@@ -113,7 +114,7 @@
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Perfiles</h3>

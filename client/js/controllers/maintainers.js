@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Place', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Place, VehicleType, Profile, PubSub) {
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, Profile, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -55,11 +55,11 @@ angular
             $scope.parkings = results;
         });
     }
-    function getPlaces() {
-        Place.find()
+    function getDestination() {
+        Destination.find()
         .$promise
         .then(function(results) {
-            $scope.places = results;
+            $scope.destinations = results;
         });
     }
     function getProfiles() {
@@ -77,7 +77,7 @@ angular
     //     });
     // }
     getParkings();
-    getPlaces();
+    getDestination();
     getVehicleType();
     getProfiles();
 
@@ -85,7 +85,7 @@ angular
 
     // Counts
     $scope.num_parkings = Parking.count();
-    $scope.num_places = Place.count();
+    $scope.num_destinations = Destination.count();
     $scope.num_vehicleTypes = VehicleType.count();
     $scope.num_profiles = Profile.count();
     // $scope.num_reasons = Reason.count();
@@ -110,15 +110,14 @@ angular
     //       getReasons();
     //     });
     // };
-    // New Place
-    $scope.addPlace = function() {
-      console.log($scope.newPlace);
-      Place
-        .create($scope.newPlace)
+    // New Destination
+    $scope.addDestination = function() {
+      Destination
+        .create($scope.newDestination)
         .$promise
         .then(function(place) {
-          $scope.newPlace = '';
-          getPlaces();
+          $scope.newDestination = '';
+          getDestination();
         });
     };
     // New Profile
@@ -138,25 +137,17 @@ angular
         console.log(parking);
         parking.$save(parking);
   	};
-    // Update Place
-    $scope.updatePlace = function(place){
-        place.updating = 1;
-        console.log(place);
-        place.$save(place);
+    // Update Destination
+    $scope.updateDestination = function(destination){
+        destination.updating = 1;
+        destination.$save(place);
   	};
-    // Update Reason
-    // $scope.updateReason = function(reason){
-    //     reason.updating = 1;
-    //     console.log(reason);
-    //     reason.$save(reason);
-  	// };
      // Update Profile
     $scope.updateProfile = function(profile){
         profile.updating = 1;
         console.log(profile);
         profile.$save(profile);
     };
-
     // Delete Parking
     $scope.deleteParking = function(parking) {
       Parking
@@ -167,15 +158,14 @@ angular
         });
     };
     // Delete Place
-    $scope.deletePlace = function(place) {
-      Place
-        .deleteById(place)
+    $scope.deleteDestination = function(destination) {
+      Destination
+        .deleteById(destination)
         .$promise
         .then(function() {
-          getPlaces();
+          getDestination();
         });
     };
-
     // Delete Profile
     $scope.deleteProfile = function(profile) {
       Profile
@@ -185,16 +175,6 @@ angular
           getProfiles();
         });
     };
-    // Delete Reason
-    // $scope.deletePlace = function(reason) {
-    //   Reason
-    //     .deleteById(reason)
-    //     .$promise
-    //     .then(function() {
-    //       getReasons();
-    //     });
-    // };
-
     // New VehicleType
     $scope.addVehicleType = function() {
       VehicleType

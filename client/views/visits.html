@@ -33,8 +33,7 @@
                           <th>Rut</th>
                           <th>Nombre</th>
                           <th>Empresa</th>
-                          <th>Motivo</th>
-                          <th>Destino</th>
+                          <th>Área</th>
                           <th>Entrada</th>
                           <th>Salida</th>
                           <th>Patente Entrada</th>
@@ -51,11 +50,10 @@
                           <td><strong>{{record.run}}<strong></td>
                           <td><input type="text" ng-model="record.fullname" ng-change="update(record)" placeholder="Nombre Completo" class="form-control"></td>
                           <td><input type="text" ng-model="record.company" ng-change="update(record)" placeholder="Empresa" class="form-control"></td>
-                          <td><input type="text" ng-model="record.reason" ng-change="update(record)" placeholder="Motivo" class="form-control"></td>
                           <td>
                               <select
-                                  ng-model="record.place"
-                                  ng-options="place.id as place.name for place in places"
+                                  ng-model="record.destination"
+                                  ng-options="destination.id as destination.name for destination in destinations"
                                   ng-change="update(record)"
                               ></select>
                           </td>

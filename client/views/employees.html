@@ -25,7 +25,7 @@
             		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
                   <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
                 </ul>
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="example2" class="table table-bordered table-condensed">
                 <thead>
                     <tr>
                         <th>Rut</th>
@@ -51,14 +51,10 @@
                           <strong>{{record.run}}</strong>
                         </td>
                         <td>{{record.fullname}}</td>
-
                         <td>{{record.place}}</td>
-
                         <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
                         <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-
                         <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="__.__.__" class="form-control"></td>
-
                         <td>
                             <select
                                 ng-if="record.input_patent != undefined"
@@ -67,13 +63,10 @@
                                 ng-change="update(record)"
                             ></select>
                         </td>
-
                         <td ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                         <td ng-if="record.output_datetime == undefined"></td>
                         <td ng-if="record.type == 'CT'">No registrado</td>
-
                         <td><input type="text" ng-if="record.output_datetime != undefined" ng-model="record.output_patent" ng-change="update(record)" placeholder="__.__.__" class="form-control"></td>
-
                         <td>
                           <select
                               ng-if="record.output_patent != undefined"
@@ -82,7 +75,6 @@
                               ng-change="update(record)"
                           ></select>
                         </td>
-
                         <td>
                             <input type="text" ng-model="record.comment" ng-change="update(record)" class="form-control">
                             <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->

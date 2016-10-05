@@ -41,6 +41,7 @@ angular
       default:
         $window.location.href = '/login';
     }
+    
     $scope.arregloPeople = {};
     $scope.RecordsAll = {};
     $scope.logout = function() {
@@ -204,7 +205,7 @@ angular
     }
 
     function getDefaultPlace() {
-      Place.find({filter: {where: {and: [{companyId: 8},{name: {nlike: '/AREA/'}}]}}})
+      Place.find({filter: {where: {companyId: 8}}})
       .$promise
       .then(function(results) {
         $scope.places = results;
