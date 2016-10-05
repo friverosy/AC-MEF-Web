@@ -1,0 +1,31 @@
+/*
+ * Axxezo theme for AdminLte
+ *
+ */
+
+/*Logo dashboard*/
+img.axxezo {
+    display: block;
+    margin-left: 30%;
+    max-width:20%;
+    max-height: 20%;
+    /*opacity: 0.5;
+    filter:  alpha(opacity=50);*/
+}
+td.fullname {
+   width: 340px;
+}
+td.department {
+   width: 400px;
+}
+td.datetime {
+   width: 220;
+}
+input.patent {
+   width: 10;
+}
+
+/*tbody tr:hover {
+  background: #7badc9;
+  color: white;
+}*/
