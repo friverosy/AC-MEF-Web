@@ -41,13 +41,14 @@ angular
       default:
         $window.location.href = '/login';
     }
-    
+
     $scope.arregloPeople = {};
     $scope.RecordsAll = {};
-    $scope.logout = function() {
-          localStorage.clear();
-          $window.location.href = '/login';
-    };
+
+    function logout() {
+      localStorage.clear();
+      $window.location.href = '/login';
+    }
 
     function getNumPendings() {
         Record.count({
@@ -226,7 +227,6 @@ angular
     getCompany();
     getRecords();
 
-
     var onRecordCreate = function(data) {
           getNumPendings();
           getNumEmployes();
@@ -238,7 +238,6 @@ angular
           getNumPatentsVisits();
           getCompany();
           getRecords();
-
     }
 
     PubSub.subscribe({

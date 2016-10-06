@@ -21,7 +21,10 @@ angular
         url: '/dashboard',
         templateUrl: 'views/record.html',
         controller: 'DashboardController',
-        onExit: unSubscribeAll
+        onExit: unSubscribeAll,
+        data: {
+          accion : "dashboard"
+        }
       })
       .state('todayall', {
         url: '/todayall',
