@@ -24,7 +24,7 @@
       "type": "string"
     },
     "company_code": {
-      "type": "number"
+      "type": "string"
     },
     "company": {
       "type": "string",
