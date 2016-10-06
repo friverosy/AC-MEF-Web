@@ -19,14 +19,12 @@ angular.module('app')
         alert("Ingrese RUT o tarjeta");
       } else {
         if($scope.employee.people_run.length >= 8){
-          console.log("RUT");
+          console.log("RUT", $scope.employee.people_run);
           People.find( { filter: { where: { run: $scope.employee.people_run} } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
             record = results;
-            console.log(record);
-            console.log(results[0].fullname);
             if (record != "") {
               if ((record[0].run == $scope.employee.people_run || angular.equals(record[0].card,parseInt($scope.employee.people_run)))  && record[0].profile == "E") {
                 $scope.employee.people_run = record[0].run;
@@ -37,7 +35,6 @@ angular.module('app')
                 $scope.employee.company = record[0].company;
                 $scope.employee.is_input = true;
                 $scope.employee.fullname = record[0].fullname;
-                console.log($scope.employee.fullname);
               }
             } else {
               $scope.employee.fullname = "";
@@ -48,14 +45,14 @@ angular.module('app')
             alert("El RUT ingresado no existe en los registros de Empleados");
           })
         } else if ($scope.employee.people_run.length <= 5 && $scope.employee.people_run.length >=3){
-          console.log("CARD");
-          People.find( { filter: { where: { card: $scope.employee.people_run} } } )
+          console.log("CARD", $scope.employee.people_run);
+          People.find( { filter: { where: { card: parseInt($scope.employee.people_run) } } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
             record = results;
             console.log(record);
-            if (record != "") {
+            if (record.length > 0) {
               $scope.employee.fullname = record[0].fullname;
               $scope.employee.people_run = record[0].run;
               $scope.employee.card = record[0].card;
@@ -65,12 +62,14 @@ angular.module('app')
               $scope.employee.is_input = true;
             } else {
               $scope.employee.fullname = "";
-              alert("El Card ingresado no existe en los registros de Empleados");
+              alert("La tarjeta ingresada no existe en los registros de Empleados");
             }
           }, function myError(response) {
             $scope.employee.fullname = "";
-            alert("El card ingresado no existe en los registros de Empleados");
+            alert("La tarjeta ingresada no existe en los registros de Empleados");
           })
+        } else {
+          alert("Rut o tarjeta no valido");
         }
       }
     };
