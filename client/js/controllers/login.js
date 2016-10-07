@@ -2,6 +2,13 @@ if(localStorage.email == "cberzins@multiexportfoods.com" && localStorage.passwor
     location="/#/dashboard"
 }
 
+function logout(){
+  console.log("Local Storage Clear... Redireccionando");
+  localStorage.clear();
+  //$window.location.href = '/login';
+  location="/login"
+};
+
 function pasuser(form) {
   switch (form.email.value) {
     case "cberzins@multiexportfoods.com":

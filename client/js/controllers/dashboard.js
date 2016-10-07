@@ -194,13 +194,13 @@ angular
     }
 
     function getRecords() {
-      Record.find({
-        where: { and:
+      Record.find({filter:
+        {where: { and:
           [
             {is_input: true},
-            {output_datetime: undefined}
+            {is_permitted: true}
           ]
-        }
+        }}
       })
       .$promise
       .then(function(results) {
