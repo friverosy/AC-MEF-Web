@@ -43,24 +43,24 @@ angular
     }
 
     $scope.logout = function() {
-          localStorage.clear();
-          $window.location.href = '/login';
+      localStorage.clear();
+      $window.location.href = '/login';
     };
 
     function getBlacklist() {
-        Blacklist.find()
-        .$promise
-        .then(function(results) {
-            $scope.Blacklist = results;
-        });
+      Blacklist.find()
+      .$promise
+      .then(function(results) {
+          $scope.Blacklist = results;
+      });
     }
 
     function getNumBlacklist() {
-        Blacklist.count()
-        .$promise
-        .then(function(result){
-          $scope.num_blacklist = result;
-        });
+      Blacklist.count()
+      .$promise
+      .then(function(result){
+        $scope.num_blacklist = result;
+      });
     };
 
     //Count

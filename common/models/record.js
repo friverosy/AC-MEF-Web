@@ -31,7 +31,7 @@ module.exports = function(Record) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
         // Online Record
         if (ctx.instance.type === undefined) {
-            ctx.instance.type = "ON"
+          ctx.instance.type = "ON"
         }
         if ( ctx.instance.is_input === true ) {
           ctx.instance.input_datetime = new Date()
@@ -227,8 +227,8 @@ module.exports = function(Record) {
       icon_emoji: ":robot_face:",
       attachments: [
         {
-            "title": run + " - " + fullname,
-            "color": "danger"
+          "title": run + " - " + fullname,
+          "color": "danger"
         }
       ]
     }, function(err, response) {});

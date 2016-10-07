@@ -2,18 +2,16 @@ angular
   .module('app')
   .controller('ProfilesManagementController', ['$scope', '$state', 'Profile', 'PubSub', function($scope, $state, Profile, PubSub) {
 
-	function getProfiles() {
-        Profile.find()
-        .$promise
-        .then(function(results) {
-            $scope.profiles = results;
-        });
+  	function getProfiles() {
+      Profile.find()
+      .$promise
+      .then(function(results) {
+          $scope.profiles = results;
+      });
     }
 
-        getProfiles();
+    getProfiles();
 
-     $scope.num_profiles = Profile.count();
+    $scope.num_profiles = Profile.count();
 
-
-
-  	}]);
+  }]);

@@ -26,14 +26,14 @@
                      <form role="form" name="searchEmployeeForm" onsubmit="return false;">
                         <div class="form-group">
                             <div class="input-group">
-                            <label>Nombre Completo de la visita*</label><br>
-                              <input type="text" name="peolpleId" ng-model="employee.fullname" class="form-control" placeholder="Nombre Visita" required>
-                              <label>RUT de la visita*</label><br>
-                              <input type="text" name="visit_RUT" ng-model="employee.people_run" class="form-control" placeholder="RUT Visita" required>
-                               <label>Nombre de Empresa de Origen*</label><br>
+                            <label>Nombre Completo*</label><br>
+                              <input type="text" name="peolpleId" ng-model="employee.fullname" class="form-control" placeholder="Nombre completo" required>
+                              <label>RUT*</label><br>
+                              <input type="text" name="visit_RUT" ng-model="employee.people_run" class="form-control" placeholder="RUT" required>
+                               <label>Nombre Empresa de Origen*</label><br>
                               <input type="text" name="visita_company_name" ng-model="employee.company" class="form-control" placeholder="Nombre de la compañía de origen de la visita" required>
-                              <label>RUT de compañía de origen de la visita*</label><br>
-                              <input type="number" name="visit_company_id" ng-model="employee.company_code" class="form-control" placeholder="RUT de la compañía de origen de la visita" required>
+                              <label>RUT de Empresa de origen de la visita</label><br>
+                              <input type="number" name="visit_company_id" ng-model="employee.company_code" class="form-control" placeholder="RUT de la empresa de origen de la visita" required>
                             </div>
                        </div>
                     </form>
@@ -61,7 +61,7 @@
                               <br>
                            </div>
 
-                          <label ng-show="employee.is_input">Destino *</label>
+                          <label ng-show="employee.is_input">Destino</label>
                          <select class="form-control" ng-model="employee.selectedOptionLocations" ng-options="place.name for place in places" ng-show="employee.is_input"></select>
                           <label>¿La visita utiliza vehículo?</label>
                           <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
@@ -95,7 +95,7 @@
                            </div>
 -->
                            <div class="form-group">
-                           <label>Autorizado por:</label >
+                           <label>Autorizado por:*</label >
                             <input type="text" name="authorized" ng-model="employee.authorized_by" class="form-control" placeholder="Nombre de la persona que autoriza la visita" required>
                            </div>
                       </div>

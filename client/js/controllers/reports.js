@@ -42,9 +42,8 @@ angular
     }
 
     $scope.logout = function() {
-          localStorage.clear();
-          $window.location.href = '/login';
+      localStorage.clear();
+      $window.location.href = '/login';
     };
-
 
   }]);

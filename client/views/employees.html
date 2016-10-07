@@ -1,99 +1,113 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-	Empleados
-  </h1>
+  <h1>Empleados</h1>
   <ol class="breadcrumb">
-	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Empleados</li>
+    <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Empleados</li>
   </ol>
-
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Registro de empleados ({{num_employees}} en planta)</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-                <ul class="nav nav-tabs">
-                    <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
-            		<li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
-                    <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
-            		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
-                  <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
-                </ul>
-              <table id="example2" class="table table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th>Rut</th>
-                        <th>Nombre</th>
-                        <th>Departamento</th>
-                        <th>Entrada</th>
-                        <th>Patente Entrada</th>
-                        <th>Tipo Vehiculo</th>
-                        <th>Salida</th>
-                        <th>Patente Salida</th>
-                        <th>Tipo Vehiculo</th>
-                        <th>Comentario</th>
-                      </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
-                        <td ng-if="record.is_permitted" class="text-green">
-                          <strong ng-if="record.blacklist" class="text-red">*</strong>
-                          <strong>{{record.run}}</strong>
-                        </td>
-                        <td ng-if="record.is_permitted == false" class="text-red">
-                          <strong ng-if="record.blacklist" class="text-red">*</strong>
-                          <strong>{{record.run}}</strong>
-                        </td>
-                        <td>{{record.fullname}}</td>
-                        <td>{{record.place}}</td>
-                        <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
-                        <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                        <td>
-                          <input type="text" ng-if="record.input_datetime != undefined" ng-model="record.input_patent" typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
-                        </td>
-                        <td>
-                            <select
-                                ng-if="record.input_patent != undefined"
-                                ng-model="record.input_patent_type"
-                                ng-options="type.id as type.name for type in vehicleTypes"
-                                ng-change="update(record)"
-                            ></select>
-                        </td>
-                        <td ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                        <td ng-if="record.output_datetime == undefined"></td>
-                        <td ng-if="record.type == 'CT'">No registrado</td>
-                        <td>
-                          <input type="text" ng-if="record.output_datetime != undefined" ng-model="record.output_patent" typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/>
-                        </td>
-                        <td>
-                          <select
-                              ng-if="record.output_patent != undefined"
-                              ng-model="record.output_patent_type"
-                              ng-options="type.id as type.name for type in vehicleTypes"
-                              ng-change="update(record)"
-                          ></select>
-                        </td>
-                        <td>
-                            <input type="text" ng-model="record.comment" ng-change="update(record)" class="form-control">
-                            <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
-                        </td>
-                    </tr>
-                </tbody>
-              </table>
-              <dir-pagination-controls
-                 max-size="15"
-                 direction-links="true"
-                 boundary-links="true" >
-              </dir-pagination-controls>
-            </div><!-- /.box-body -->
-          </div><!-- /.box -->
-      </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Registro de empleados ({{num_employees}} en planta)</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <ul class="nav nav-tabs">
+            <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all')">Todos</a></li>
+            <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+          </ul>
+          <table id="example2" class="table table-bordered table-condensed table-striped">
+            <thead>
+              <tr>
+                <th>Rut</th>
+                <th class="fullname">Nombre</th>
+                <th class="department">Departamento</th>
+                <th class="datetime">Entrada</th>
+                <th>Patente Entrada</th>
+                <th>Tipo Vehiculo</th>
+                <th>Salida</th>
+                <th>Patente Salida</th>
+                <th>Tipo Vehiculo</th>
+                <th>Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                <td ng-if="record.is_permitted" class="text-green">
+                  <strong ng-if="record.blacklist" class="text-red">*</strong>
+                  <strong>{{record.run}}</strong>
+                </td>
+                <td ng-if="record.is_permitted == false" class="text-red">
+                  <strong ng-if="record.blacklist" class="text-red">*</strong>
+                  <strong>{{record.run}}</strong>
+                </td>
+                <td><small>{{record.fullname}}</small></td>
+                <td><small>{{record.place}}</small></td>
+                <td ng-if="record.input_datetime == false" class="text-red"><small>No registrado</small></td>
+                <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.input_datetime != undefined"
+                    ng-model="record.input_patent"
+                    typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"
+                    typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
+                </td>
+                <td>
+                  <select
+                    ng-if="record.input_patent != undefined"
+                    ng-model="record.input_patent_type"
+                    ng-options="type.id as type.name for type in vehicleTypes"
+                    ng-change="update(record)">
+                  </select>
+                </td>
+                <td
+                  ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                <td ng-if="record.output_datetime == undefined"></td>
+                <td ng-if="record.type == 'CT'">No registrado</td>
+                <td>
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.output_datetime != undefined" ng-model="record.output_patent"
+                    typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue"
+                    typeahead-on-select="updateOutputPatent(record, $item.output_patent)"
+                    ng-change="update(record)"/>
+                </td>
+                <td>
+                  <select
+                    ng-if="record.output_patent != undefined"
+                    ng-model="record.output_patent_type"
+                    ng-options="type.id as type.name for type in vehicleTypes"
+                    ng-change="update(record)">
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    ng-model="record.comment"
+                    ng-change="update(record)"
+                    class="form-control">
+                      <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <dir-pagination-controls
+            max-size="15"
+            direction-links="true"
+            boundary-links="true" >
+          </dir-pagination-controls>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
   </div><!-- /.row -->
 </section><!-- /.content -->

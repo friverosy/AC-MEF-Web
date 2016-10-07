@@ -56,8 +56,8 @@ angular
     }
 
     $scope.logout = function() {
-          localStorage.clear();
-          $window.location.href = '/login';
+      localStorage.clear();
+      $window.location.href = '/login';
     };
 
     $scope.records = [];
@@ -74,113 +74,120 @@ angular
         console.error(err);
       }
 
-      if(rut !== null){
-          var url = 'http://0.0.0.0:3000/people/' + rut;
-          $http({
-              method : 'GET',
-              headers: {
-                  'Accept': "application/json",
-                  'Content-Type': "application/json"
-              },
-              url : url
-          }).then(function mySucces(response) {
-              console.log(JSON.stringify(response));
-              console.log(response.data);
-              $scope.employee = response.data;
-          }, function myError(response) {
-              console.log(response);
-              $scope.employee = response.statusText;
-          });
-      }else{
+      if (rut !== null){
+        var url = 'http://0.0.0.0:3000/people/' + rut;
+        $http({
+          method : 'GET',
+          headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json"
+          },
+          url : url
+        }).then(function mySucces(response) {
+          $scope.employee = response.data;
+        }, function myError(response) {
+          console.log(response);
+          $scope.employee = response.statusText;
+        });
+      } else {
           console.log("vacio");
       }
     }
 
     function getParkings() {
-        Parking.find()
-        .$promise
-        .then(function(results) {
-            $scope.parkings = results;
-        });
+      Parking.find()
+      .$promise
+      .then(function(results) {
+          $scope.parkings = results;
+      });
     }
+
     function getPlaces() {
-        Place.find()
-        .$promise
-        .then(function(results) {
-            $scope.places = results;
-        });
+      Place.find()
+      .$promise
+      .then(function(results) {
+          $scope.places = results;
+      });
     }
+
     function getDestination() {
-        Destination.find()
-        .$promise
-        .then(function(results) {
-            $scope.destinations = results;
-        });
+      Destination.find()
+      .$promise
+      .then(function(results) {
+          $scope.destinations = results;
+      });
     }
+
     function getEmployees() {
-        Record.find( { filter: { where: { profile: "E", is_permitted: true }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.employees = results;
-            $scope.num_employees = filterFilter($scope.employees, {is_input: true, profile: "E", is_permitted: true}).length;
-        })
+      Record.find( { filter: { where: { profile: "E", is_permitted: true }, order:  ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.employees = results;
+        $scope.num_employees = filterFilter($scope.employees, {is_input: true, profile: "E", is_permitted: true}).length;
+      })
     }
+
     function getContractors() {
-        Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.contractors = results;
-            $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, profile: "C", is_permitted: true}).length;
-        })
+      Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.contractors = results;
+        $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, profile: "C", is_permitted: true}).length;
+      })
     }
+
     function getAll() {
-        Record.find({ filter: { order: ['id ASC'] } })
-        .$promise
-        .then(function(results) {
-            $scope.todayall = results;
-        })
+      Record.find({ filter: { order: ['id ASC'] } })
+      .$promise
+      .then(function(results) {
+        $scope.todayall = results;
+      })
     }
 
     function getManualRecords() {
-        Record.find( { filter: { where: { type:"MR", reviewed: true }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.manualrecords = results;
-            $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: true}).length;
-        })
+      Record.find( { filter: { where: { type:"MR", reviewed: true }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.manualrecords = results;
+        $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: true}).length;
+      })
     }
 
     function getVisits() {
-        Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.visits = results;
-            $scope.num_visits = filterFilter($scope.visits, {is_input: true, profile: "V"}).length;
-        })
+      Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.visits = results;
+        $scope.num_visits = filterFilter($scope.visits, {is_input: true, profile: "V"}).length;
+      })
     }
+
     function getPendings() {
-        Record.find( { filter: { where: { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.pendings = results;
-            $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
-        })
+      Record.find( { filter: { where: { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.pendings = results;
+        $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
+      })
     }
+
     function getDennieds() {
-        Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.dennieds = results;
-            $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
-        });
+      Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.dennieds = results;
+        $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
+      });
     }
+
     function getVehicleType() {
-        VehicleType.find( )
-        .$promise
-        .then(function(results) {
-            $scope.vehicleTypes = results;
-        });
+      VehicleType.find( )
+      .$promise
+      .then(function(results) {
+        $scope.vehicleTypes = results;
+      });
     }
+
     function getRecords() {
       Record.find( { filter: { where: { input_patent: {neq: null} }}})
       .$promise
@@ -188,20 +195,20 @@ angular
         $scope.recordsForPatents = results;
       });
     }
-    function getInputPatents() {
-        Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
-        .$promise
-        .then(function(results) {
-            $scope.inputPatents = results;
 
-        })
+    function getInputPatents() {
+      Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.inputPatents = results;
+      })
     }
 
     $scope.onTimeSet = function (newDate, oldDate, record) {
-        record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
-        record.is_input = false;
-        delete record.id;
-        Record.create(record);
+      record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
+      record.is_input = false;
+      delete record.id;
+      Record.create(record);
     }
 
     switch($state.current.data.accion) {
@@ -219,52 +226,52 @@ angular
     var dia = f.getDate();
 
     $scope.filterByDate = function(input){
-        return function(item){
-            var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
-        }
+      return function(item){
+        var INPUT = new Date(item.input_datetime)
+        return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+      }
     }
 
     $scope.eventDateFilter = function(column) {
-        if(column === 'today') {
-            $scope.dateRange = "";
-            $scope.filterByDate = function(input){
-                return function(item){
-                    var INPUT = new Date(item.input_datetime)
-                    return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
-                }
-            }
-        } else if (column === 'pastWeek') {
-            //curr_date - 7 dias
-            $scope.dateRange = "";
-            $scope.filterByDate = function(input){
-                return function(item){
-                    var INPUT = new Date(item.input_datetime)
-                    return INPUT.getTime() >= Date.now()-ONE_WEEK;
-                }
-            }
-        } else if (column === 'pastMonth') {
-            //curr_month - 1
-            $scope.filterByDate = function(input){
-                return function(item){
-                    var INPUT = new Date(item.input_datetime)
-                    return INPUT.getTime() >= Date.now()-ONE_MONTH;
-                }
-            }
-        } else {
-            $scope.filterByDate = function(input){
-                return function(item){
-                    var INPUT = new Date(item.input_datetime)
-                    return INPUT.getTime() <= Date.now();
-                }
-            }
+      if(column === 'today') {
+        $scope.dateRange = "";
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+          }
         }
+      } else if (column === 'pastWeek') {
+        //curr_date - 7 dias
+        $scope.dateRange = "";
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= Date.now()-ONE_WEEK;
+          }
+        }
+      } else if (column === 'pastMonth') {
+        //curr_month - 1
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= Date.now()-ONE_MONTH;
+          }
+        }
+      } else {
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() <= Date.now();
+          }
+        }
+      }
     }
 
     $scope.addVisit = function() {
-        $scope.newRecord.profile = "V";
-        $scope.newRecord.is_permitted = true;
-        $scope.newRecord.is_input = true;
+      $scope.newRecord.profile = "V";
+      $scope.newRecord.is_permitted = true;
+      $scope.newRecord.is_input = true;
       Record
         .create($scope.newRecord)
         .$promise
@@ -307,17 +314,16 @@ angular
         record.$save(record);
   	}
 
- $scope.updateInputPatent = function(record, item){
-        record.input_patent = item;
-        record.updating=true;
-        record.$save(record);
-
+    $scope.updateInputPatent = function(record, item){
+      record.input_patent = item;
+      record.updating=true;
+      record.$save(record);
     }
 
- $scope.updateOutputPatent = function(record, item){
-        record.output_patent = item;
-        record.updating=true;
-        record.$save(record);
+    $scope.updateOutputPatent = function(record, item){
+      record.output_patent = item;
+      record.updating=true;
+      record.$save(record);
   	}
 
     $scope.updateManualRecord = function(record) {
@@ -327,59 +333,65 @@ angular
     }
 
     //Suscribe to Socket.io events
-
     var onRecordCreate = function(data) {
-      if(!updatingInformation){
-          updatingInformation = true;
-          if(data.instance.is_input == true) {
-            $scope.pendings.push(data.instance)
-          }else{
-            var index = $filter("findById")($scope.pendings,data._id)
-            $scope.pendings.splice(index,1);
-          }
+      if (!updatingInformation){
+        updatingInformation = true;
+        if (data.instance.is_input == true) {
+          $scope.pendings.push(data.instance)
+        } else {
+          var index = $filter("findById")($scope.pendings,data._id)
+          $scope.pendings.splice(index,1);
+        }
 
-          if(data.instance.is_input == true) {
-            switch(data.instance.profile){
-            case 'E' : if(typeof $scope.employees != "undefined"){
-                          $scope.employees.push(data.instance);
-                       }
-                       break;
-            case 'V' : if(typeof $scope.visits != "undefined"){
-                          $scope.visits.push(data.instance);
-                       }
-                       break;
-            case 'C' : if(typeof $scope.contractors != "undefined"){
-                          $scope.contractors.push(data.instance)
-                       };
-                       break;
+        if (data.instance.is_input == true) {
+          switch (data.instance.profile) {
+          case 'E' :
+            if (typeof $scope.employees != "undefined") {
+              $scope.employees.push(data.instance);
             }
-          } else {
-            switch(data.instance.profile){
-            case 'E' : if(typeof $scope.employees != "undefined"){
-                          var index = $filter("findById")($scope.employees,data._id);
-                          $scope.employees.splice(index,1);
-                       }
-                       break;
-            case 'V' : if(typeof $scope.visits != "undefined") {
-                          var index = $filter("findById")($scope.visits,data._id);
-                          $scope.visits.splice(index,1);
-                       }
-                       break;
-            case 'C' : if(typeof $scope.contractors != "undefined"){
-                           var index = $filter("findById")($scope.contractors,data._id)
-                           $scope.contractors.splice(index,1);
-                       };
-                       break;
+            break;
+          case 'V' :
+            if(typeof $scope.visits != "undefined"){
+              $scope.visits.push(data.instance);
             }
+            break;
+          case 'C' :
+            if(typeof $scope.contractors != "undefined"){
+              $scope.contractors.push(data.instance)
+            };
+            break;
+          }
+        } else {
+          switch(data.instance.profile){
+          case 'E' :
+            if(typeof $scope.employees != "undefined"){
+              var index = $filter("findById")($scope.employees,data._id);
+              $scope.employees.splice(index,1);
+            }
+            break;
+          case 'V' :
+            if(typeof $scope.visits != "undefined") {
+              var index = $filter("findById")($scope.visits,data._id);
+              $scope.visits.splice(index,1);
+            }
+            break;
+          case 'C' :
+            if(typeof $scope.contractors != "undefined"){
+              var index = $filter("findById")($scope.contractors,data._id)
+              $scope.contractors.splice(index,1);
+            };
+            break;
           }
         }
-        updatingInformation = false;
+      }
+      updatingInformation = false;
     }
+
     getRecords();
     getInputPatents();
 
     PubSub.subscribe({
-                collectionName: 'Record',
-                method : 'POST'
-            }, onRecordCreate);
+       collectionName: 'Record',
+       method : 'POST'
+    }, onRecordCreate);
   }]);

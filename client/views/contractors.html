@@ -27,12 +27,12 @@
             		<li><a href ng-click="eventDateFilter('all')">Todos</a></li>
                   <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
                 </ul>
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="example2" class="table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
                           <th>Rut</th>
-                          <th>Nombre</th>
-                          <th>Empresa</th>
+                          <th class="fullname">Nombre</th>
+                          <th class="department">Empresa</th>
                           <th>Área</th>
                           <th>Entrada</th>
                           <th>Salida</th>
@@ -65,7 +65,7 @@
                           <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
                           <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                           <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                          <td><input type="text" ng-if="record.input_datetime != undefined" ng-model="record.input_patent" typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
+                          <td><input type="text" class="patent" ng-if="record.input_datetime != undefined" ng-model="record.input_patent" typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
                           <td>
                               <select
                                   ng-if="record.input_patent != undefined"
@@ -74,7 +74,7 @@
                                   ng-change="update(record)"
                               ></select>
                           </td>
-                          <td><input type="text" ng-if="record.output_datetime != undefined" ng-model="record.output_patent" typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/></td>
+                          <td><input type="text" class="patent" ng-if="record.output_datetime != undefined" ng-model="record.output_patent" typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/></td>
                           <td>
                             <select
                                 ng-if="record.output_patent != undefined"

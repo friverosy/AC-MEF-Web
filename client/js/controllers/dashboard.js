@@ -51,16 +51,16 @@ angular
     }
 
     function getNumPendings() {
-        Record.count({
-          where: { and:
-              [{is_input: true},
-              {output_datetime: undefined}]
-          }
-        })
-        .$promise
-        .then(function(result){
-          $scope.num_pendings = result;
-        });
+      Record.count({
+        where: { and:
+          [{is_input: true},
+          {output_datetime: undefined}]
+        }
+      })
+      .$promise
+      .then(function(result){
+        $scope.num_pendings = result;
+      });
     };
 
     function getNumEmployes() {
@@ -181,9 +181,11 @@ angular
 
     function getCompany() {
       Company.find({filter: {where: {or:
-        [{rut: '2'},
-        {rut: '3'},
-        {rut: '8'}]
+        [
+          {rut: '2'},
+          {rut: '3'},
+          {rut: '8'}
+        ]
       }}})
       .$promise
       .then(function(results) {
@@ -195,7 +197,8 @@ angular
       Record.find({
         where: { and:
           [
-            {is_input: true}
+            {is_input: true},
+            {output_datetime: undefined}
           ]
         }
       })
@@ -228,37 +231,41 @@ angular
     getRecords();
 
     var onRecordCreate = function(data) {
-          getNumPendings();
-          getNumEmployes();
-          getNumVisits();
-          getNumContractos();
-          getRejected();
-          getNumPatentsEmployees();
-          getNumPatentsContractors();
-          getNumPatentsVisits();
-          getCompany();
-          getRecords();
+      getNumPendings();
+      getNumEmployes();
+      getNumVisits();
+      getNumContractos();
+      getRejected();
+      getNumPatentsEmployees();
+      getNumPatentsContractors();
+      getNumPatentsVisits();
+      getCompany();
+      getRecords();
     }
 
     PubSub.subscribe({
-                collectionName: 'Record',
-                method : 'POST'
-            }, onRecordCreate);
+      collectionName: 'Record',
+      method : 'POST'
+    }, onRecordCreate);
 
     function countByPlace(place) {
       Record.find({
-          filter: {
-            where: {
-              and: [{place: place}, {is_input: true}]
-            }
+        filter: {
+          where: {
+            and: [
+              {place: place},
+              {is_input: true}
+            ]
           }
-        },
-        function(list) {
-          console.log(list);
-          $scope.records = list;
-        },
-        function(errorResponse) { console.log(errorResponse) }
-      );
+        }
+      },
+      function(list) {
+        console.log(list);
+        $scope.records = list;
+      },
+      function(errorResponse) {
+        console.log(errorResponse)
+      });
     }
 
     $scope.getPlacesByRut = function(rut) {
@@ -281,7 +288,7 @@ angular
       })
     }
 
-$scope.getRecordsByRut = function(rut) {
+    $scope.getRecordsByRut = function(rut) {
       //console.log(rut);
       Place.find({
         filter: {
@@ -293,15 +300,15 @@ $scope.getRecordsByRut = function(rut) {
       .$promise
       .then(function(results) {
         var arreglo = results;
-          var contador =0;
-          var contadorFilter = 0;
-          var arreglo2 = $scope.RecordsAll;
-          $scope.arregloPeople={};
-          angular.forEach(arreglo, function(value, key) {
-           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
-           $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
-           contadorFilter++;
-         });
+        var contador =0;
+        var contadorFilter = 0;
+        var arreglo2 = $scope.RecordsAll;
+        $scope.arregloPeople={};
+        angular.forEach(arreglo, function(value, key) {
+          var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
+          $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
+          contadorFilter++;
+        });
       })
     }
 

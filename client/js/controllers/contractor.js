@@ -14,29 +14,29 @@ angular.module('app')
     $scope.record = {};
 
   	$scope.employee.searchContractor = function() {
-        People.find( { filter: { where: { run: $scope.employee.people_run} } } )
-        .$promise
-        .then(function mySucces(results) {
-            $scope.peoples = results;
-            record = results;
-            console.log(record);
-            if(record!=""){
-              if(record[0].run == $scope.employee.people_run  && record[0].profile == "C"){
-                $scope.employee.people_run = record[0].run;
-                $scope.employee.card = record[0].card;
-                $scope.employee.company_code = record[0].company_code;
-                $scope.employee.is_permitted = record[0].is_permitted;
-                $scope.employee.company = record[0].company;
-                $scope.employee.is_input = true;
-                //$scope.employee.authorized_by = localStorage.getItem("email");
-                $scope.employee.fullname = record[0].fullname;
-              }
-            }else{
-              $scope.employee.fullname = "";
-              alert("El RUT ingresado no existe en los registros de Contratistas");
-           }}, function myError(response) {
-        $scope.employee.fullname = "";
-        alert("El RUT ingresado no existe en los registros de Contratistas");
+      People.find( { filter: { where: { run: $scope.employee.people_run} } } )
+      .$promise
+      .then(function mySucces(results) {
+          $scope.peoples = results;
+          record = results;
+          console.log(record);
+          if(record!=""){
+            if(record[0].run == $scope.employee.people_run  && record[0].profile == "C"){
+              $scope.employee.people_run = record[0].run;
+              $scope.employee.card = record[0].card;
+              $scope.employee.company_code = record[0].company_code;
+              $scope.employee.is_permitted = record[0].is_permitted;
+              $scope.employee.company = record[0].company;
+              $scope.employee.is_input = true;
+              //$scope.employee.authorized_by = localStorage.getItem("email");
+              $scope.employee.fullname = record[0].fullname;
+            }
+          }else{
+            $scope.employee.fullname = "";
+            alert("El RUT ingresado no existe en los registros de Contratistas");
+         }}, function myError(response) {
+      $scope.employee.fullname = "";
+      alert("El RUT ingresado no existe en los registros de Contratistas");
      });
     };
 
@@ -67,32 +67,27 @@ angular.module('app')
       $scope.record.is_input = $scope.employee.is_input;
       //Place (is_input)
       if($scope.employee.is_input){
-          $scope.record.place =  $scope.employee.selectedOptionPlaces.name;
-
+        $scope.record.place =  $scope.employee.selectedOptionPlaces.name;
       }
       //car or not
       if($scope.employee.checkboxCar){
-            //INPUT OR OUTPUT
-          if($scope.record.is_input){
-              $scope.record.input_patent = $scope.employee.input_patent;
-              $scope.record.input_patent_type = $scope.employee.selectedOptionVehicleTypes.name;
-              $scope.record.parking =  $scope.employee.selectedOptionParkings.name;
-          }
-          else{
-                $scope.record.output_patent = $scope.employee.output_patent;
-                $scope.record.output_patent_type = $scope.employee.selectedOptionVehicleTypes.name;
-          }
-
-
+        //INPUT OR OUTPUT
+        if($scope.record.is_input){
+          $scope.record.input_patent = $scope.employee.input_patent;
+          $scope.record.input_patent_type = $scope.employee.selectedOptionVehicleTypes.name;
+          $scope.record.parking =  $scope.employee.selectedOptionParkings.name;
+        }
+        else{
+          $scope.record.output_patent = $scope.employee.output_patent;
+          $scope.record.output_patent_type = $scope.employee.selectedOptionVehicleTypes.name;
+        }
       }
-
-
 
       $scope.record.type = "MR";
       $scope.record.profile = "C";
+      $scope.record.reviewed = false;
       if($scope.record.is_input){
-          $scope.record.comment = $scope.employee.comment;
-
+        $scope.record.comment = $scope.employee.comment;
       }
       $scope.record.is_permitted = $scope.employee.is_permitted;
       $scope.record.card = $scope.employee.card;
@@ -110,71 +105,69 @@ angular.module('app')
       }
     };
 
-  function getVehicleType() {
-    VehicleType.find()
-    .$promise
-    .then(function(results) {
-      $scope.vehicleTypes = results;
-      $scope.employee.selectedOptionVehicleTypes= $scope.vehicleTypes[0];
-    });
-  }
+    function getVehicleType() {
+      VehicleType.find()
+      .$promise
+      .then(function(results) {
+        $scope.vehicleTypes = results;
+        $scope.employee.selectedOptionVehicleTypes= $scope.vehicleTypes[0];
+      });
+    }
 
-  function getPlaces() {
-    Place.find()
-    .$promise
-    .then(function(results) {
-      $scope.places = results;
-      $scope.employee.selectedOptionPlaces = $scope.places[0];
-    });
-  }
+    function getPlaces() {
+      Place.find()
+      .$promise
+      .then(function(results) {
+        $scope.places = results;
+        $scope.employee.selectedOptionPlaces = $scope.places[0];
+      });
+    }
 
-  function getParkings() {
-    Parking.find()
-    .$promise
-    .then(function(results) {
-      $scope.parkings = results;
-      $scope.employee.selectedOptionParkings = $scope.parkings[0];
-    });
-  }
+    function getParkings() {
+      Parking.find()
+      .$promise
+      .then(function(results) {
+        $scope.parkings = results;
+        $scope.employee.selectedOptionParkings = $scope.parkings[0];
+      });
+    }
 
-  $scope.getPeople = function(run){
-    console.log(run);
-    People.find( { filter: { where: { run: run.people_run} } } )
-    .$promise
-    .then(function(results) {
+    $scope.getPeople = function(run){
+      console.log(run);
+      People.find( { filter: { where: { run: run.people_run} } } )
+      .$promise
+      .then(function(results) {
         $scope.peoples = results;
-    })
-  }
+      })
+    }
 
-  getVehicleType();
-  getPlaces();
-  getParkings();
+    getVehicleType();
+    getPlaces();
+    getParkings();
 
-    //CHECK OUTPUT PARKING
-  $scope.outputParkingCheck = function(){
-    if($scope.employee.output_patent != undefined &&  $scope.employee.output_patent != ""){
-      $scope.employee.unselectParking = false;
+      //CHECK OUTPUT PARKING
+    $scope.outputParkingCheck = function(){
+      if($scope.employee.output_patent != undefined &&  $scope.employee.output_patent != ""){
+        $scope.employee.unselectParking = false;
+      }
+      else if($scope.employee.output_patent == undefined){
+        $scope.employee.unselectParking = true;
+      }
+      else if($scope.employee.output_patent == ""){
+        $scope.employee.unselectParking = true;
+      }
     }
-    else if($scope.employee.output_patent == undefined){
-      $scope.employee.unselectParking = true;
-    }
-    else if($scope.employee.output_patent == ""){
-      $scope.employee.unselectParking = true;
-    }
-  }
 
-    //CHECK INPUT PARKING
-  $scope.inputParkingCheck = function(){
-    if($scope.employee.input_patent != undefined  && $scope.employee.input_patent != ""){
-      $scope.employee.unselectParking = false;
+      //CHECK INPUT PARKING
+    $scope.inputParkingCheck = function(){
+      if($scope.employee.input_patent != undefined  && $scope.employee.input_patent != ""){
+        $scope.employee.unselectParking = false;
+      }
+      else if($scope.employee.input_patent == undefined){
+        $scope.employee.unselectParking = true;
+      }
+      else if($scope.employee.input_patent == ""){
+        $scope.employee.unselectParking = true;
+      }
     }
-    else if($scope.employee.input_patent == undefined){
-      $scope.employee.unselectParking = true;
-    }
-    else if($scope.employee.input_patent == ""){
-      $scope.employee.unselectParking = true;
-    }
-  }
-
-
 }]);

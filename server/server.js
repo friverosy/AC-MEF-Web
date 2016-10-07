@@ -30,6 +30,7 @@ app.get('/status', function(req, res){
 app.get(record.path, function(req, res){
   record.get(req,res);
 });
+
 app.post(record.path, function(req, res){
   record.post(req,res);
 });

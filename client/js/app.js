@@ -8,7 +8,7 @@ angular
     'ui.bootstrap'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
-      $urlRouterProvider,$locationProvider) {
+    $urlRouterProvider,$locationProvider) {
     $urlRouterProvider.otherwise('dashboard');
     $stateProvider
       .state('accounts', {

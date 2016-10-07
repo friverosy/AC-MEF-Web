@@ -5,24 +5,28 @@
 
 /*Logo dashboard*/
 img.axxezo {
-    display: block;
-    margin-left: 30%;
-    max-width:20%;
-    max-height: 20%;
-    /*opacity: 0.5;
-    filter:  alpha(opacity=50);*/
+  display: block;
+  margin-left: 30%;
+  max-width:20%;
+  max-height: 20%;
+  /*opacity: 0.5;
+  filter:  alpha(opacity=50);*/
 }
-td.fullname {
-   width: 340px;
+
+th.fullname {
+  width: 300px;
 }
-td.department {
-   width: 400px;
+th.department {
+  width: 300px;
 }
-td.datetime {
-   width: 220;
+th.datetime {
+  width: 200;
 }
 input.patent {
-   width: 10;
+  width: 55px;
+}
+input.fullname {
+  /*width: 50px;*/
 }
 
 /*tbody tr:hover {
