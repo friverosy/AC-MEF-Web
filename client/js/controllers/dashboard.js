@@ -77,7 +77,19 @@ angular
       .$promise
       .then(function(result){
         //$scope.num_employees = result;
-        $scope.num_employees = $filter('unique')(result,'run').length;
+        var contador=0;
+        var num_employees=0;
+        var employeeFiltered = $filter('unique')(result,'fullname');
+         angular.forEach(employeeFiltered, function(value, key) {
+          if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true && 
+            employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
+            employeeFiltered[contador].place != "No encontrado"){
+            num_employees++
+
+          }
+          contador++;
+        });
+        $scope.num_employees = num_employees
       });
     };
 
@@ -93,7 +105,19 @@ angular
       .$promise
       .then(function(result){
         //$scope.num_visits = result;
-        $scope.num_visits = $filter('unique')(result,'run').length;
+        var contador=0;
+        var num_visits=0;
+        var visitFiltered = $filter('unique')(result,'run');
+        angular.forEach(visitFiltered, function(value, key) {
+          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true && 
+            visitFiltered[contador].place!="" && visitFiltered[contador].place !=undefined && 
+            visitFiltered[contador].place != "No encontrado"){
+           num_visits++
+
+          }
+          contador++;
+        });
+        $scope.num_visits = num_visits;
       });
     };
 
@@ -102,13 +126,26 @@ angular
        { where: { and:
           [{is_input: true},
           {output_datetime: undefined},
-          {profile: "C"}]
+          {profile: "C"},
+          {is_permitted: true}]
         }}
       })
       .$promise
       .then(function(result){
         //$scope.num_contractors = result;
-        $scope.num_contractors = $filter('unique')(result,'run').length;
+        var contador=0;
+        var num_contractors=0;
+        var contractorFiltered = $filter('unique')(result,'fullname');
+        angular.forEach(contractorFiltered, function(value, key) {
+          if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true && 
+            contractorFiltered[contador].place!="" && contractorFiltered[contador].place !=undefined && 
+            contractorFiltered[contador].place != "No encontrado"){
+            num_contractors++
+
+          }
+          contador++;
+        });
+        $scope.num_contractors = num_contractors;
       });
     };
 
