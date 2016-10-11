@@ -64,47 +64,51 @@ angular
     };
 
     function getNumEmployes() {
-      Record.count({
-        where: { and:
+      Record.find({filter:
+       { where: { and:
           [
             {is_input: true},
             {output_datetime: undefined},
             {profile: "E"},
             {is_permitted: true}
           ]
-        }
+        }}
       })
       .$promise
       .then(function(result){
-        $scope.num_employees = result;
+        //$scope.num_employees = result;
+        $scope.num_employees = $filter('unique')(result,'run').length;
       });
     };
 
     function getNumVisits() {
-      Record.count({
-        where: { and:
+      //Filtered by run (not fullname)
+      Record.find({filter:
+       { where: { and:
           [{is_input: true},
           {output_datetime: undefined},
           {profile: "V"}]
-        }
+        }}
       })
       .$promise
       .then(function(result){
-        $scope.num_visits = result;
+        //$scope.num_visits = result;
+        $scope.num_visits = $filter('unique')(result,'run').length;
       });
     };
 
     function getNumContractos() {
-      Record.count({
-        where: { and:
+      Record.find({filter:
+       { where: { and:
           [{is_input: true},
           {output_datetime: undefined},
           {profile: "C"}]
-        }
+        }}
       })
       .$promise
       .then(function(result){
-        $scope.num_contractors = result;
+        //$scope.num_contractors = result;
+        $scope.num_contractors = $filter('unique')(result,'run').length;
       });
     };
 
@@ -302,7 +306,7 @@ angular
         var arreglo = results;
         var contador =0;
         var contadorFilter = 0;
-        var arreglo2 = $scope.RecordsAll;
+        var arreglo2 = $filter('unique')($scope.RecordsAll,'run');
         $scope.arregloPeople={};
         angular.forEach(arreglo, function(value, key) {
           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});

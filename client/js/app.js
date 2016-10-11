@@ -5,6 +5,7 @@ angular
     'angularUtils.directives.dirPagination',
     'frapontillo.bootstrap-switch',
     'ngAnimate',
+    'angular.filter',
     'ui.bootstrap'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
