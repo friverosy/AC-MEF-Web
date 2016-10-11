@@ -112,17 +112,33 @@ angular
       });
     };
 
+    var f=new Date();
+    var ano = f.getFullYear();
+    var mes = f.getMonth()+1;
+    var dia = f.getDate();
+
     function getRejected() {
-      Record.count({
-        where: { and :
+      Record.find({ filter:
+       { where: { and :
           [{is_input: true},
           {output_datetime: undefined},
           {is_permitted : false}]
-        }
+        }}
       })
       .$promise
       .then(function(result){
-        $scope.rejected = result;
+        var contador=0;
+        $scope.Dennied = 0;
+        angular.forEach(result, function(value, key) {
+          var INPUT = new Date(result[contador].input_datetime)
+          if(INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia)){
+            $scope.Dennied++;
+
+          }
+          contador++
+        });
+        
+        
       });
     };
 
