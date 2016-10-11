@@ -145,11 +145,11 @@ angular
     }
 
     function getManualRecords() {
-      Record.find( { filter: { where: { type:"MR", reviewed: true }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where: { type:"PEN", reviewed: false }, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
-        $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: true}).length;
+        $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
       })
     }
 
@@ -285,6 +285,7 @@ angular
     $scope.addOutput = function(record) {
       record.type = "PEN";
       record.state = "C";
+      record.reviewed = false;
       record.is_input = false;
       record.output_datetime = new Date();
       record.$save();
@@ -327,7 +328,7 @@ angular
   	}
 
     $scope.updateManualRecord = function(record) {
-      record.reviewed = false;
+      record.reviewed = true;
       record.$save(record)
       getManualRecords();
     }
