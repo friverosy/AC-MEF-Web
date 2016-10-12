@@ -170,6 +170,15 @@ angular
         $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
       })
     }
+ function getInPlant() {
+      Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.inPlant = results;
+        //$scope.inPlant = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
+      })
+    }
+
 
     function getDennieds() {
       Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
@@ -390,6 +399,7 @@ angular
 
     getRecords();
     getInputPatents();
+    getInPlant();
 
     PubSub.subscribe({
        collectionName: 'Record',

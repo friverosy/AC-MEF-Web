@@ -168,6 +168,15 @@ angular
           accion : "pendings"
         }
       })
+     .state('inPlant', {
+        url: '/inPlant',
+        templateUrl: 'views/inPlant.html',
+        controller: 'RecordController',
+        onExit: unSubscribeAll,
+        data: {
+          accion : "pendings"
+        }
+      })
       .state('about', {
           //we'll get to this in a bit
       })
