@@ -24,7 +24,7 @@ module.exports = function(Record) {
   Record.disableRemoteMethod('deleteById', true);
 
   Record.observe('before save', function(ctx, next) {
-    var People = app.models.People
+    //var People = app.models.People
     if (ctx.instance) {
       ctx.instance.reviewed = true;
       notification(ctx.instance);
@@ -47,9 +47,9 @@ module.exports = function(Record) {
           }
         }
       } else if (ctx.instance.type !== "MR") {
-          // Offline record
-          ctx.instance.type = "OFF"
-        }
+        // Offline record
+        ctx.instance.type = "OFF"
+      }
 
       switch (ctx.instance.profile) {
         case "E": //Employee
@@ -64,16 +64,17 @@ module.exports = function(Record) {
             ctx.instance.profile = "E"
           } else {
             ctx.instance.is_permitted = true;
-            var Company = app.models.Company
-            Company.findOrCreate(
-              {where: {name: ctx.company}},
-              {name: ctx.company, rut: ctx.company_code},
+            var People = app.models.People
+            People.findOrCreate(
+              {where: {run: ctx.instance.run}},
+              {data},
               function(err, instance, created) {
                 if (err) { console.log(err) }
-                else if (created) console.log("New Company created".green, ctx.company)
+                else if (created) console.log("New visit created".green, ctx.company)
               }
             )
           }
+
           break;
         default:
           console.log(ctx.instance.fullname, "without profile".yellow);
@@ -241,7 +242,7 @@ module.exports = function(Record) {
 
   Record.observe('after save', function(ctx, next) {
     var socket = Record.app.io
-    var People = app.models.People
+    //var People = app.models.People
 
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
