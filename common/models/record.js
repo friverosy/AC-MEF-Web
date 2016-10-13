@@ -46,10 +46,10 @@ module.exports = function(Record) {
             .catch(err => catcher(err, ctx.instance))
           }
         }
-      } else {
-        // Offline record
-        ctx.instance.type = "OFF"
-      }
+      } else if (ctx.instance.type !== "MR") {
+          // Offline record
+          ctx.instance.type = "OFF"
+        }
 
       switch (ctx.instance.profile) {
         case "E": //Employee
