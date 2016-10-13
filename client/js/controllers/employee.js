@@ -11,11 +11,11 @@ angular.module('app')
     $scope.employee.checkboxCar = false;
     $scope.peoples = {};
     $scope.record = {};
+
     //for date in calendar
     $scope.employee.valuationDate = new Date();
-    $scope.employee.formatDate='dd-MMMM-yyyy-HH-mm-ss';
+    $scope.employee.formatDate='dd/MM/yy HH:mm:ss';
     $scope.employee.valuationDatePickerIsOpen = false;
-   
 
   	$scope.employee.searchEmployee = function() {
       //Search for RUT
@@ -126,7 +126,7 @@ angular.module('app')
         if ($scope.record.is_input){
             $scope.record.comment = $scope.employee.comment;
         }
- 
+
         //validation for datetime (input_datetime and outputdatetime)
         if ($scope.record.is_input){
             $scope.record.input_datetime = $scope.employee.valuationDate;
