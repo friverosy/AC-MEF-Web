@@ -67,10 +67,12 @@ module.exports = function(Record) {
             var People = app.models.People
             People.findOrCreate(
               {where: {run: ctx.instance.run}},
-              {data},
+              {fullname: ctx.instance.fullname, run: ctx.instance.run, 
+               company: ctx.instance.company, company_code: ctx.instance.company_code,
+               profile: ctx.instance.profile},
               function(err, instance, created) {
                 if (err) { console.log(err) }
-                else if (created) console.log("New visit created".green, ctx.company)
+                else if (created) console.log("New visit created".green, ctx.instance.fullname)
               }
             )
           }
@@ -241,9 +243,25 @@ module.exports = function(Record) {
   }
 
   Record.observe('after save', function(ctx, next) {
-    var socket = Record.app.io
+    var socket = Record.app.io;
     //var People = app.models.People
+    if(ctx.instance.updating!=undefined && ctx.instance.updating!=""){
+      if(ctx.instance.profile === "V"){
+          var People = app.models.People
+          People.upsert(
+          {fullname: ctx.instance.fullname,  
+           company: ctx.instance.company,
+           run: ctx.instance.run,
+           company_code: ctx.instance.company_code,
+           profile: ctx.instance.profile},
+          function(err, instance, created) {
+                if (err) { console.log(err) }
+                else if (created) console.log("Visit Updated".green, ctx.instance.fullname)
+             }
+          )
 
+      }
+    }
     if (ctx.instance) {
       if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
         if(ctx.instance.status === "DO") { saveOutput(ctx.instance.id) }
@@ -255,7 +273,7 @@ module.exports = function(Record) {
       }
     }
     next()
-  })
+  });
 
   // Closed of turn, mark like a output (is_input=false) each record with more than 12 hours without output.
   Record.closedTurn = function(msg, cb) {
