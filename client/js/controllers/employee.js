@@ -13,7 +13,7 @@ angular.module('app')
     $scope.record = {};
     //for date in calendar
     $scope.employee.valuationDate = new Date();
-    $scope.employee.formatDate='dd-MMMM-yyyy-HH-mm-ss';
+    $scope.employee.formatDate='dd/MM/yy HH:mm:ss';
     $scope.employee.valuationDatePickerIsOpen = false;
    
 
