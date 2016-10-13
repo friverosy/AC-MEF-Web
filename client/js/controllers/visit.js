@@ -11,6 +11,10 @@ angular.module('app')
     $scope.employee.checkboxCar = false;
     $scope.peoples = {};
     $scope.record = {};
+    //for date in calendar
+    $scope.employee.valuationDate = new Date();
+    $scope.employee.formatDate='dd-MMMM-yyyy HH:mm:ss';
+    $scope.employee.valuationDatePickerIsOpen = false;
 
     $scope.employee.addEmployee = function() {
 
@@ -72,12 +76,24 @@ angular.module('app')
         $scope.record.authorized_by = $scope.employee.authorized_by;
         $scope.record.bus=false;
 
+        //validation for datetime (input_datetime and outputdatetime)
+        if ($scope.record.is_input){
+            $scope.record.input_datetime = $scope.employee.valuationDate;
+        } else {
+            $scope.record.output_datetime = $scope.employee.valuationDate;
+        }
+
         console.log($scope.record);
         Record.create($scope.record, function(err,model) {
           alert("Visita Registrada con exito");
           $window.location.reload();
         });
       }
+    };
+
+    $scope.employee.valuationDatePickerOpen = function () {
+      $scope.employee.valuationDatePickerIsOpen = true;
+      $scope.employee.valuationDate = new Date();
     };
 
     function getPlaces() {

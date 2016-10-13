@@ -61,6 +61,18 @@
                               <br>
                            </div>
 
+                          <div  class="form-group">
+                                <p class="input-group">
+                                  <input type="text" class="form-control"
+                                         datepicker-popup="{{employee.formatDate}}"
+                                         is-open="employee.valuationDatePickerIsOpen"
+                                         ng-model="employee.valuationDate" />
+                                  <span class="input-group-btn">
+                                     <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()""><i class="glyphicon glyphicon-calendar"></i></button>
+                                  </span>
+                               </p>
+                          </div>
+
                           <label>¿El Empleado utiliza vehículo?</label>
                           <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
                           <!--Div that show or hide the car information -->

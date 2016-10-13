@@ -16,6 +16,7 @@ angular
   .module('app')
   .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
       $state, Record, Parking, Place, Destination, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
+  
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -396,6 +397,7 @@ angular
       }
       updatingInformation = false;
     }
+
 
     getRecords();
     getInputPatents();

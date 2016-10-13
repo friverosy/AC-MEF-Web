@@ -12,6 +12,10 @@ angular.module('app')
     $scope.employee.checkboxCar = false;
     $scope.peoples = {};
     $scope.record = {};
+    //for date in calendar
+    $scope.employee.valuationDate = new Date();
+    $scope.employee.formatDate='dd-MMMM-yyyy HH:mm:ss';
+    $scope.employee.valuationDatePickerIsOpen = false;
 
   	$scope.employee.searchContractor = function() {
       People.find( { filter: { where: { run: $scope.employee.people_run} } } )
@@ -103,6 +107,11 @@ angular.module('app')
         $window.location.reload();
       });
       }
+    };
+
+    $scope.employee.valuationDatePickerOpen = function () {
+      $scope.employee.valuationDatePickerIsOpen = true;
+      $scope.employee.valuationDate = new Date();
     };
 
     function getVehicleType() {

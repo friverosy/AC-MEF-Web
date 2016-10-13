@@ -11,6 +11,11 @@ angular.module('app')
     $scope.employee.checkboxCar = false;
     $scope.peoples = {};
     $scope.record = {};
+    //for date in calendar
+    $scope.employee.valuationDate = new Date();
+    $scope.employee.formatDate='dd-MMMM-yyyy-HH-mm-ss';
+    $scope.employee.valuationDatePickerIsOpen = false;
+   
 
   	$scope.employee.searchEmployee = function() {
       //Search for RUT
@@ -121,13 +126,19 @@ angular.module('app')
         if ($scope.record.is_input){
             $scope.record.comment = $scope.employee.comment;
         }
+ 
+        //validation for datetime (input_datetime and outputdatetime)
+        if ($scope.record.is_input){
+            $scope.record.input_datetime = $scope.employee.valuationDate;
+        } else {
+            $scope.record.output_datetime = $scope.employee.valuationDate;
+        }
 
         $scope.record.card = $scope.employee.card;
         $scope.record.company_code = $scope.employee.company_code;
         $scope.record.is_permitted = $scope.employee.is_permitted;
         $scope.record.company = $scope.employee.company;
         $scope.record.bus=false;
-
         console.log($scope.record);
         Record.create($scope.record, function(err, model){
           alert("Empleado Registrado con exito");
@@ -136,6 +147,11 @@ angular.module('app')
           // location.reload();
         });
       }
+    };
+
+    $scope.employee.valuationDatePickerOpen = function () {
+      $scope.employee.valuationDatePickerIsOpen = true;
+      $scope.employee.valuationDate = new Date();
     };
 
     function getPlaces() {
