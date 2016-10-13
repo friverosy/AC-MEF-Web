@@ -40,9 +40,15 @@
                   <td>{{record.place}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                   <td>
-          					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-          					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
-                    <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
+                    <!-- Visits labels -->
+                    <span ng-if="record.profile == 'V' && (record.type == 'ON' || record.type == 'OFF')" class="label label-success label-mini">Visita</span>
+          					<span ng-if="record.profile == 'V' && (record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Visita</span>
+                    <!-- Employee labels -->
+          					<span ng-if="record.profile == 'E' && (record.type == 'ON' || record.type == 'OFF')" class="label label-success label-mini">Empleado</span>
+                    <span ng-if="record.profile == 'E' && (record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Empleado</span>
+                    <!-- Contractor labels -->
+                    <span ng-if="record.profile == 'C' && (record.type == 'ON' || record.type == 'OFF')" class="label label-success label-mini">Contratista</span>
+                    <span ng-if="record.profile == 'C' && (record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Contratista</span>
                 </tr>
               </tbody>
             </table>
