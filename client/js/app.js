@@ -178,6 +178,12 @@ angular
           accion : "pendings"
         }
       })
+     .state('visitsMaintainers', {
+        url: '/visitsMaintainers',
+        templateUrl: 'views/visitsMaintainers.html',
+        controller: 'MaintainersController',
+        onExit: unSubscribeAll
+      })
       .state('about', {
           //we'll get to this in a bit
       })

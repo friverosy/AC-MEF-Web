@@ -1,6 +1,6 @@
 angular
   .module('app')
-  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, Destination, VehicleType, Profile, PubSub) {
+  .controller('MaintainersController', ['$scope', '$state', 'Parking', 'People', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, People, Destination, VehicleType, Profile, PubSub) {
 
     switch (localStorage.email) {
       case "cberzins@multiexportfoods.com":
@@ -39,6 +39,8 @@ angular
       default:
         $window.location.href = '/login';
     }
+    $scope.newPeople={};
+    $scope.people={};
 
     function getVehicleType() {
       VehicleType.find()
@@ -72,10 +74,19 @@ angular
       });
     }
 
+    function getPeople() {
+      People.find()
+      .$promise
+      .then(function(results) {
+        $scope.peoples = results;
+      });
+    }
+
     getParkings();
     getDestination();
     getVehicleType();
     getProfiles();
+    getPeople();
 
     // Counts
     $scope.num_parkings = Parking.count();
@@ -423,6 +434,32 @@ angular
       profile.updating = 1;
       console.log(profile);
       profile.$save(profile);
+    };
+    //Visits maintainers
+    $scope.addVisit = function() {
+      if(($scope.newPeople.fullname == undefined || $scope.newPeople.fullname == "")
+        || ($scope.newPeople.run == undefined || $scope.newPeople.run == "")
+        || ($scope.newPeople.company == undefined || $scope.newPeople.company == "")){
+          
+          alert("Debe ingesar todos los datos solicitados");
+        
+        }
+      else{
+          $scope.newPeople.profile = "V";
+          People.create($scope.newPeople, function(err, model){
+            getPeople();
+            $scope.newPeople.fullname = "";
+            $scope.newPeople.run = "";
+            $scope.newPeople.company = "";
+        });
+          
+      }
+    };
+
+    $scope.clearVisit = function() {
+        $scope.newPeople.fullname = "";
+            $scope.newPeople.run = "";
+            $scope.newPeople.company = "";
     };
 
 }]);
