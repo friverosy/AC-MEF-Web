@@ -27,9 +27,6 @@ angular.module('app')
     	} else if (typeof $scope.employee.company == "undefined" || $scope.employee.company =="") {
         alert("Debe ingresar el nombre de la compañía de origen de la visita");
         return;
-      } else if (typeof $scope.employee.company_code == "undefined" || $scope.employee.company_code =="" || !angular.isNumber($scope.employee.company_code)) {
-        alert("Debe ingresar el RUT de la compañía de origen de la visita (solo digitos)");
-        return;
       } else if (typeof $scope.employee.authorized_by == "undefined" || $scope.employee.authorized_by =="") {
         alert("Debe ingresar el nombre de la persona que autoriza la visita");
         return;
@@ -72,7 +69,6 @@ angular.module('app')
         $scope.record.reviewed = false;
 
         $scope.record.company = $scope.employee.company;
-        $scope.record.company_code = $scope.employee.company_code;
         $scope.record.authorized_by = $scope.employee.authorized_by;
         $scope.record.bus=false;
 

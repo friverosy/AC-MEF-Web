@@ -68,7 +68,7 @@ module.exports = function(Record) {
             People.findOrCreate(
               {where: {run: ctx.instance.run}},
               {fullname: ctx.instance.fullname, run: ctx.instance.run, 
-               company: ctx.instance.company, company_code: ctx.instance.company_code,
+               company: ctx.instance.company,
                profile: ctx.instance.profile},
               function(err, instance, created) {
                 if (err) { console.log(err) }
@@ -252,7 +252,6 @@ module.exports = function(Record) {
           {fullname: ctx.instance.fullname,  
            company: ctx.instance.company,
            run: ctx.instance.run,
-           company_code: ctx.instance.company_code,
            profile: ctx.instance.profile},
           function(err, instance, created) {
                 if (err) { console.log(err) }
