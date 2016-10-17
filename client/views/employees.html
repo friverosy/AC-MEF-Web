@@ -15,7 +15,7 @@
         <div class="box-header">
           <h3 class="box-title">Registro de empleados ({{num_employees}} en planta)</h3>
         </div><!-- /.box-header -->
-        <div class="box-body">
+        <div class="box-body" id="asdf">
           <ul class="nav nav-tabs">
             <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
             <li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
@@ -110,4 +110,5 @@
       </div><!-- /.box -->
     </div>
   </div><!-- /.row -->
+  <button ng-click="exportData()">Exportar a .xls</button>
 </section><!-- /.content -->

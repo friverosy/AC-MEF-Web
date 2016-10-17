@@ -216,6 +216,8 @@ angular.module('app')
       }
     }
 
+
+
     getVehicleType();
     getPlaces();
     getParkings();
