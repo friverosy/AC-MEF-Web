@@ -7,7 +7,7 @@ angular
     'ngAnimate',
     'angular.filter',
     'ui.bootstrap',
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
     $urlRouterProvider,$locationProvider) {
