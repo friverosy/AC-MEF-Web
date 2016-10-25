@@ -65,7 +65,8 @@ if(localStorage.verificador){ //Primera vez que entra del login.
             {is_input: true},
             {output_datetime: undefined},
             {profile: "E"},
-            {is_permitted: true}
+            {is_permitted: true},
+            {company_code: {neq: null}}
           ]
         }}
       })
@@ -76,18 +77,20 @@ if(localStorage.verificador){ //Primera vez que entra del login.
         var num_employees=0;
         var employeeFiltered = $filter('unique')(result,'fullname');
          angular.forEach(employeeFiltered, function(value, key) {
-          if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true && 
-            employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
-            employeeFiltered[contador].place != "No encontrado"){
-            num_employees++
+          var newTemp = $filter("filter")($scope.placesFiltered, {name: employeeFiltered[contador].place});
+          if(newTemp.length){
+            if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true && 
+              employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
+              employeeFiltered[contador].place != "No encontrado"){
+              num_employees++
 
-          }
+            }}
           contador++;
         });
-        $scope.num_employees = num_employees
+        $scope.num_employees = num_employees;
       });
     };
-
+       //   var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
     function getNumVisits() {
       //Filtered by run (not fullname)
       Record.find({filter:
@@ -122,7 +125,8 @@ if(localStorage.verificador){ //Primera vez que entra del login.
           [{is_input: true},
           {output_datetime: undefined},
           {profile: "C"},
-          {is_permitted: true}]
+          {is_permitted: true},
+          {company_code: {neq: null}}]
         }}
       })
       .$promise
@@ -132,12 +136,11 @@ if(localStorage.verificador){ //Primera vez que entra del login.
         var num_contractors=0;
         var contractorFiltered = $filter('unique')(result,'fullname');
         angular.forEach(contractorFiltered, function(value, key) {
-          if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true && 
-            contractorFiltered[contador].place!="" && contractorFiltered[contador].place !=undefined && 
-            contractorFiltered[contador].place != "No encontrado"){
-            num_contractors++
-
-          }
+            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true && 
+              contractorFiltered[contador].place!="" && contractorFiltered[contador].place !=undefined && 
+              contractorFiltered[contador].place != "No encontrado"){
+              num_contractors++
+            }
           contador++;
         });
         $scope.num_contractors = num_contractors;
@@ -269,6 +272,14 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       //falta mostrar contador de record por place
     }
 
+    function getAllPlacesFiltered() {
+      Place.find()
+      .$promise
+      .then(function(results) {
+        $scope.placesFiltered = $filter('unique')(results,'name');
+      })
+    }
+
     //Count
     getNumPendings();
     getNumEmployes();
@@ -281,6 +292,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
     getDefaultPlace();
     getCompany();
     getRecords();
+    getAllPlacesFiltered();
 
     var onRecordCreate = function(data) {
       getNumPendings();
@@ -351,16 +363,19 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(results) {
+        var contadorsupremo =0;
         var arreglo = results;
         var contador =0;
         var contadorFilter = 0;
-        var arreglo2 = $filter('unique')($scope.RecordsAll,'run');
+        var arreglo2 = $filter('unique')($scope.RecordsAll,'fullname');
         $scope.arregloPeople={};
         angular.forEach(arreglo, function(value, key) {
           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
           $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
           contadorFilter++;
+          contadorsupremo = newTemp.length + contadorsupremo;
         });
+        console.log(contadorsupremo);
       })
     }
 
