@@ -1,6 +1,6 @@
 angular.module('app')
-  .controller('VisitController', ['$scope', '$http', '$window', 'Record', 'People', 'PubSub', 'Place', 'Parking', 'VehicleType',
-  	function($scope, $http, $window, Record, People, PubSub, Place, Parking, VehicleType) {
+  .controller('VisitController', ['$scope', '$http', '$window', 'Record', 'People', 'PubSub', 'Place','Destination','Parking', 'VehicleType',
+  	function($scope, $http, $window, Record, People, PubSub, Place, Destination, Parking, VehicleType) {
 
   	$scope.is_saved = false;
 
@@ -48,7 +48,7 @@ angular.module('app')
         $scope.record.is_input = $scope.employee.is_input;
         //Place (is_input)
         if ($scope.employee.is_input) {
-          $scope.record.lepartment =  $scope.employee.selectedOptionPlaces.name;
+          $scope.record.destination =  $scope.employee.selectedOptionPlaces.name;
         }
         //car or not
         if ($scope.employee.checkboxCar) {
@@ -93,7 +93,7 @@ angular.module('app')
     };
 
     function getPlaces() {
-      Place.find()
+      Destination.find()
       .$promise
       .then(function(results) {
         $scope.lepartments = results;

@@ -22,15 +22,17 @@ angular.module('app')
       if ($scope.employee.people_run === undefined) {
         alert("Ingrese RUT o tarjeta");
       } else {
-        if($scope.employee.people_run.length >= 8){
+        if($scope.employee.people_run.length >= 7){
           console.log("RUT", $scope.employee.people_run);
           People.find( { filter: { where: { run: $scope.employee.people_run} } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
+            console.log(results);
             record = results;
             if (record != "") {
-              if ((record[0].run == $scope.employee.people_run || angular.equals(record[0].card,parseInt($scope.employee.people_run)))  && record[0].profile == "E") {
+              if (record[0].run == $scope.employee.people_run && record[0].profile == "E") {
+                $scope.employee.fullname = record[0].fullname;
                 $scope.employee.people_run = record[0].run;
                 $scope.employee.card = record[0].card;
                 $scope.employee.place = record[0].place;
@@ -38,7 +40,10 @@ angular.module('app')
                 $scope.employee.is_permitted = record[0].is_permitted;
                 $scope.employee.company = record[0].company;
                 $scope.employee.is_input = true;
-                $scope.employee.fullname = record[0].fullname;
+              }
+              else{
+                $scope.employee.fullname = "";
+                alert("El RUT ingresado no existe en los registros de Empleados");
               }
             } else {
               $scope.employee.fullname = "";
@@ -60,6 +65,7 @@ angular.module('app')
               $scope.employee.fullname = record[0].fullname;
               $scope.employee.people_run = record[0].run;
               $scope.employee.card = record[0].card;
+              $scope.employee.place = record[0].place;
               $scope.employee.company_code = record[0].company_code;
               $scope.employee.is_permitted = record[0].is_permitted;
               $scope.employee.company = record[0].company;
@@ -93,18 +99,14 @@ angular.module('app')
         alert("Debe ingresar la patente de salida");
         return;
       }
-
-      if (typeof $scope.employee.is_input && ($scope.employee.selectedOptionPlaces.name == "undefined" || $scope.employee.selectedOptionPlaces.name == "")){
-        alert("Debe seleccionar el el destino");
-        return;
-      } else {
+     else {
         //Building the record for save.
         $scope.record.run =  $scope.employee.people_run;
         $scope.record.fullname = $scope.employee.fullname;
         $scope.record.is_input = $scope.employee.is_input;
         //Place (is_input)
         if($scope.employee.is_input){
-            $scope.record.place =  $scope.employee.selectedOptionPlaces.name;
+            $scope.record.place =  $scope.employee.place;
         }
         //car or not
         if ($scope.employee.checkboxCar){
@@ -143,8 +145,8 @@ angular.module('app')
         Record.create($scope.record, function(err, model){
           alert("Empleado Registrado con exito");
           $scope.is_saved = true;
-          // $window.place.reload();
-          // location.reload();
+           //$window.place.reload();
+           location.reload();
         });
       }
     };

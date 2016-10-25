@@ -26,14 +26,18 @@ angular.module('app')
           console.log(record);
           if(record!=""){
             if(record[0].run == $scope.employee.people_run  && record[0].profile == "C"){
+              $scope.employee.place = record[0].place;
               $scope.employee.people_run = record[0].run;
               $scope.employee.card = record[0].card;
               $scope.employee.company_code = record[0].company_code;
               $scope.employee.is_permitted = record[0].is_permitted;
               $scope.employee.company = record[0].company;
               $scope.employee.is_input = true;
-              //$scope.employee.authorized_by = localStorage.getItem("email");
               $scope.employee.fullname = record[0].fullname;
+            }
+            else{
+              $scope.employee.fullname = "";
+              alert("El RUT ingresado no existe en los registros de Contratistas");
             }
           }else{
             $scope.employee.fullname = "";
@@ -71,7 +75,7 @@ angular.module('app')
       $scope.record.is_input = $scope.employee.is_input;
       //Place (is_input)
       if($scope.employee.is_input){
-        $scope.record.place =  $scope.employee.selectedOptionPlaces.name;
+        $scope.record.place =  $scope.employee.place;
       }
       //car or not
       if($scope.employee.checkboxCar){

@@ -72,7 +72,7 @@
                           </div>
 
                           <label ng-show="employee.is_input">Destino</label>
-                         <select class="form-control" ng-model="employee.selectedOptionLocations" ng-options="place.name for place in lepartments" ng-show="employee.is_input"></select>
+                         <select class="form-control" ng-model="employee.selectedOptionPlaces" ng-options="place.name for place in lepartments" ng-show="employee.is_input"></select>
                           <label>¿La visita utiliza vehículo?</label>
                           <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
                           <!--Div that show or hide the car information -->
