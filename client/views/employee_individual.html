@@ -68,7 +68,7 @@
                                          is-open="employee.valuationDatePickerIsOpen"
                                          ng-model="employee.valuationDate" />
                                   <span class="input-group-btn">
-                                     <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()""><i class="glyphicon glyphicon-calendar"></i></button>
+                                     <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
                                   </span>
                                </p>
                           </div>
@@ -84,8 +84,6 @@
                             <label>Tipo de Patente de Entrada</label >
                              <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
                           </div>
-
-
 
                           <div class="form-group" show-errors='{ showSuccess: true }' ng-show="!employee.is_input">
                              <label>Patente de salida</label>
