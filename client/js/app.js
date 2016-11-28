@@ -184,6 +184,15 @@ angular
         controller: 'MaintainersController',
         onExit: unSubscribeAll
       })
+     .state('manualOutputs', {
+        url: '/manualOutputs',
+        templateUrl: 'views/manualOutputs.html',
+        controller: 'RecordController',
+        onExit: unSubscribeAll,
+         data: {
+          accion : ""
+        }
+      })
       .state('about', {
           //we'll get to this in a bit
       })

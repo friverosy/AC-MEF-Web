@@ -24,32 +24,9 @@ module.exports = function(Record) {
   Record.disableRemoteMethod('deleteById', true);
 
   Record.observe('before save', function(ctx, next) {
-    //var People = app.models.People
     if (ctx.instance) {
       ctx.instance.reviewed = true;
       notification(ctx.instance);
-      if (ctx.instance.input_datetime === undefined && ctx.instance.output_datetime === undefined) {
-        // Online Record
-        if (ctx.instance.type === undefined) {
-          ctx.instance.type = "ON"
-        }
-        if ( ctx.instance.is_input === true ) {
-          ctx.instance.input_datetime = new Date()
-        } else {
-          if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
-            findByName(ctx.instance)
-            .then(id => saveOutput(id))
-            .catch(err => catcher(err, ctx.instance))
-          }else {
-            findByRut(ctx.instance)
-            .then(id => saveOutput(id))
-            .catch(err => catcher(err, ctx.instance))
-          }
-        }
-      } else if (ctx.instance.type !== "MR") {
-        // Offline record
-        ctx.instance.type = "OFF"
-      }
 
       switch (ctx.instance.profile) {
         case "E": //Employee
@@ -59,15 +36,14 @@ module.exports = function(Record) {
           // nothing yet
           break;
         case "V": //Visit
-          // if register employee as visit.
-          if (ctx.instance.run.length <= 5) { // && card !== 0
-            ctx.instance.profile = "E"
-          } else {
-            ctx.instance.is_permitted = true;
+          ctx.instance.is_permitted=true;
+          // Add visit on people.
+          if (ctx.instance.run.length >= 5) { // && card !==0
             var People = app.models.People
+            //ctx.instance.is_permitted = true;
             People.findOrCreate(
               {where: {run: ctx.instance.run}},
-              {fullname: ctx.instance.fullname, run: ctx.instance.run, 
+              {fullname: ctx.instance.fullname, run: ctx.instance.run,
                company: ctx.instance.company,
                profile: ctx.instance.profile},
               function(err, instance, created) {
@@ -76,7 +52,6 @@ module.exports = function(Record) {
               }
             )
           }
-
           break;
         default:
           console.log(ctx.instance.fullname, "without profile".yellow);
@@ -84,15 +59,96 @@ module.exports = function(Record) {
           console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
           break;
       }
+
+      if (ctx.instance.type !== "MR") {
+        ctx.instance.type == "ON";
+      }
+
+      // Update input with output.
+      if ( ctx.instance.is_input === false ) {
+        console.log("salida");
+        if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
+          findByName(ctx.instance)
+          .then(id => saveOutput(id, ctx))
+          .catch(err => catcher(err, ctx.instance))
+        } else {
+          console.log("visita");
+          findByRut(ctx.instance)
+          .then(id => saveOutput(id, ctx))
+          .catch(err => catcher(err, ctx.instance))
+        }
+      }
     }
     next();
   });
 
-  function catcher(err, ctx){
-    if (err === 0) {
-      // DO = Double output
-      ctx.status = "DO"
-    }
+  function findByName(ctx) {
+    return new Promise(function (resolve, reject) {
+      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
+      Record.findOne(
+        {where: {fullname: ctx.fullname},
+        order: 'id DESC'},
+        function (err, recordFinded) {
+          if (err) { reject(err) }
+          if (recordFinded != null) {
+            // when register 2 output
+            if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
+              resolve(0)
+            } else { // output after input
+              resolve(recordFinded.id, ctx)
+            }
+          } else {
+            resolve(0)
+          }
+        }
+      )}
+    )
+  }
+
+  function findByRut(ctx) {
+    return new Promise(function (resolve, reject) {
+      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
+      Record.findOne(
+        { where: {run: ctx.run},
+        order: 'id DESC'},
+        function (err, recordFinded) {
+          if (err) { reject(err) }
+          //console.log("visit finded",recordFinded);
+          if (recordFinded !== null) {
+            // when register 2 output
+            if (recordFinded.output_datetime !== undefined) {
+              resolve(0)
+            } else { // output after input
+              resolve(recordFinded.id, ctx)
+            }
+          } else {
+            resolve(0)
+          }
+        }
+      )}
+    )
+  }
+
+  function saveOutput(id, ctx){
+    return new Promise(function (resolve, reject) {
+      console.log("id for save out", id);
+      //console.log("ctx",ctx.instance);
+      if (id !== 0) {
+        Record.updateAll(
+          { id: id },
+          { output_datetime: ctx.instance.output_datetime, is_input: false, state: "C" },
+          function(err) {
+            if (err) { reject(err) }
+            else {
+              resolve()
+            }
+          }
+        )
+      } else {
+        //double output an online record
+        reject(0)
+      }
+    })
   }
 
   function onBlacklist(ctx) {
@@ -113,50 +169,11 @@ module.exports = function(Record) {
     )
   }
 
-  function findByName(ctx) {
-    return new Promise(function (resolve, reject) {
-      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
-      Record.findOne(
-        {where: {fullname: ctx.fullname},
-        order: 'id DESC'},
-        function (err, recordFinded) {
-          if (err) { reject(err) }
-          if (recordFinded != null) {
-            // when register 2 output
-            if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
-              resolve(0)
-            } else { // output after input
-              resolve(recordFinded.id)
-            }
-          } else {
-            resolve(0)
-          }
-        }
-      )}
-    )
-  }
-
-  function findByRut(ctx) {
-    return new Promise(function (resolve, reject) {
-      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
-      Record.findOne(
-        {where: {rut: ctx.rut},
-        order: 'id DESC'},
-        function (err, recordFinded) {
-          if (err) { reject(err) }
-          if (recordFinded != null) {
-            // when register 2 output
-            if (recordFinded.output_datetime !== undefined) {
-              resolve(0)
-            } else { // output after input
-              resolve(recordFinded.id)
-            }
-          } else {
-            resolve(0)
-          }
-        }
-      )}
-    )
+  function catcher(err, ctx){
+    if (err === 0) {
+      // DO = Double output
+      ctx.status = "DO"
+    }
   }
 
   function setBlacklist(id) {
@@ -170,26 +187,6 @@ module.exports = function(Record) {
             else { resolve() }
           }
         )
-      }
-    })
-  }
-
-  function saveOutput(id){
-    return new Promise(function (resolve, reject) {
-      if (id !== 0) {
-        Record.updateAll(
-          { id: id },
-          { output_datetime: new Date(), is_input: false, state: "C" },
-          function(err) {
-            if (err) { reject(err) }
-            else {
-              resolve()
-            }
-          }
-        )
-      } else {
-        //double output an online record
-        reject(0)
       }
     })
   }
@@ -245,23 +242,23 @@ module.exports = function(Record) {
   Record.observe('after save', function(ctx, next) {
     var socket = Record.app.io;
     //var People = app.models.People
-    if(ctx.instance.updating!=undefined && ctx.instance.updating!=""){
-      if(ctx.instance.profile === "V"){
-          var People = app.models.People
-          People.upsert(
-          {fullname: ctx.instance.fullname,  
-           company: ctx.instance.company,
-           run: ctx.instance.run,
-           profile: ctx.instance.profile},
-          function(err, instance, created) {
-                if (err) { console.log(err) }
-                else if (created) console.log("Visit Updated".green, ctx.instance.fullname)
-             }
-          )
-
-      }
-    }
     if (ctx.instance) {
+      if(ctx.instance.updating !== undefined && ctx.instance.updating !== ""){
+        if(ctx.instance.profile === "V"){
+            var People = app.models.People
+            People.upsert(
+            {fullname: ctx.instance.fullname,
+             company: ctx.instance.company,
+             run: ctx.instance.run,
+             profile: ctx.instance.profile},
+            function(err, instance, created) {
+                  if (err) { console.log(err) }
+                  else if (created) console.log("Visit Updated".green, ctx.instance.fullname)
+               }
+            )
+
+        }
+      }
       if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
         if(ctx.instance.status === "DO") { saveOutput(ctx.instance.id) }
         else { deleteRecord(ctx.instance.id) }
@@ -302,3 +299,4 @@ module.exports = function(Record) {
     }
   );
 };
+

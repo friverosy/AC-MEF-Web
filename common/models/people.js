@@ -130,12 +130,22 @@ module.exports = function(People) {
       var parseString = require('xml2js').parseString;
       var xml2js = require('xml2js');
       var parser = new xml2js.Parser(xml2js.defaults["0.2"]);
+      //console.log("profile",profile);
       if (profile === "E") {
-        // need to look for the newest file
-        var xml = '/Users/cristtopher/Desktop/xmls/EMPLEADOS_20160926_104534.xml';
+         // need to look for the newest file
+         var text = fs.readFileSync('/opt/marcasmef/lastEmployees.txt','utf8');        
+         var lines = text.trim().split('\n');
+         var lastEmployee = lines[lines.length -1];
+	 var xml = lastEmployee; //ROUTE TO XML (EMPLOYEE OPT/MARCASMEF/NAMEXML)
+         // console.log(xml);
       } else if (profile === "C") {
-        // need to look for the newest file
-        var xml = '/Users/cristtopher/Desktop/xmls/SUBCONTRATISTAS_20160927_104142.xml';
+         // need to look for the newest file
+         var text = fs.readFileSync('/opt/marcasmef/lastContractors.txt','utf8');
+         //console.log(text);
+         var lines = text.trim().split('\n');
+         var lastContractor = lines[lines.length -1];
+         var xml = lastContractor; //ROUTE TO XML (CONTRACTOR OPT/MARCASMEF/NAMEXM$
+         // console.log(xml);
       }
 
       fs.readFile(xml, function(err, data) {
@@ -144,8 +154,12 @@ module.exports = function(People) {
           cb(null, 404);
         } else {
           parser.parseString(data, function (err, result) {
-            cb(null, JSON.stringify(result.EMPLEADOS_MEF.FECHA_ACTUALIZACION) );
-          });
+            if (profile === "E") {
+                cb(null, JSON.stringify(result.EMPLEADOS_MEF.$.FECHA_ACTUALIZACION));
+            } else if (profile === "C") {
+                cb(null, JSON.stringify(result.SUBCONTRATISTAS.$.FECHA_ACTUALIZACION));
+            }
+          })
         }
       });
     }

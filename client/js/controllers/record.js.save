@@ -1,0 +1,544 @@
+var updatingInformation = false;
+
+angular.module("app").filter('findById', function() {
+
+  return function(list, _id) {
+    for(var i = 0; i < list.length; i++){
+      if(list[i]._id == _id){
+        return i;
+      }
+    }
+    return -1;
+  };
+})
+
+angular
+  .module('app')
+  .controller('RecordController', ['$scope', '$state', '$filter', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', 'Blacklist','$http', '$window', '$resource','PubSub', 'filterFilter' , function($scope,
+      $state, $filter, Record, Parking, Place, Destination, VehicleType, Blacklist, $http, $window, $resource, PubSub, filterFilter) {
+
+    //for blacklist
+     $scope.blacklist = {};
+     $scope.verificador_noencontrado = false;
+     //for records
+      $scope.visits_input_undefined = [];
+      $scope.employees_input_undefined = [];
+      $scope.contractors_input_undefined = [];
+
+    $scope.logout = function() {
+      localStorage.clear();
+      $window.location.href = '/login';
+    };
+
+    $scope.records = [];
+    $scope.recordsForPatents ={};
+    ONE_DAY = 24 * 60 * 60 * 1000;
+    ONE_WEEK = ONE_DAY * 7;
+    ONE_MONTH = ONE_WEEK * 4;
+    FILTER = '';
+
+    $scope.searchEmployee = function() {
+      try {
+        var rut = $scope.employee.run;
+      } catch (err) {
+        console.error(err);
+      }
+
+      if (rut !== null){
+        var url = 'http://0.0.0.0:3000/people/' + rut;
+        $http({
+          method : 'GET',
+          headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json"
+          },
+          url : url
+        }).then(function mySucces(response) {
+          $scope.employee = response.data;
+        }, function myError(response) {
+          console.log(response);
+          $scope.employee = response.statusText;
+        });
+      } else {
+          console.log("vacio");
+      }
+    }
+
+    function getParkings() {
+      Parking.find()
+      .$promise
+      .then(function(results) {
+          $scope.parkings = results;
+      });
+    }
+
+    function getPlaces() {
+      Place.find()
+      .$promise
+      .then(function(results) {
+          $scope.places = results;
+      });
+    }
+
+    function getDestination() {
+      Destination.find()
+      .$promise
+      .then(function(results) {
+          $scope.destinations = results;
+      });
+    }
+
+    function getEmployees() {
+      Record.find( { filter: { where: { profile: "E", is_permitted: true }, order:  ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.employees = results;
+      })
+    }
+
+    function getNumEmployes() {
+      Record.find({filter:
+       { where: { and:
+          [
+            {is_input: true},
+            {output_datetime: undefined},
+            {profile: "E"},
+            {is_permitted: true},
+            {company_code: {neq: null}}
+          ]
+        }}
+      })
+      .$promise
+      .then(function(result){
+        //$scope.num_employees = result;
+        var contador=0;
+        var num_employees=0;
+        var employeeFiltered = $filter('unique')(result,'fullname');
+         angular.forEach(employeeFiltered, function(value, key) {
+          var newTemp = $filter("filter")($scope.placesFiltered, {name: employeeFiltered[contador].place});
+          if(newTemp.length){
+            if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true && 
+              employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
+              employeeFiltered[contador].place != "No encontrado"){
+              num_employees++
+
+            }}
+          contador++;
+        });
+        $scope.num_employees = num_employees;
+      });
+    };
+
+    function getAllPlacesFiltered() {
+      Place.find()
+      .$promise
+      .then(function(results) {
+        $scope.placesFiltered = $filter('unique')(results,'name');
+      })
+    }
+
+    function getContractors() {
+      Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.contractors = results;
+        //$scope.num_contractors = filterFilter($scope.contractors, {is_input: true, profile: "C", is_permitted: true}).length;
+      })
+    }
+
+    function getNumContractors() {
+      Record.find({filter:
+       { where: { and:
+          [{is_input: true},
+          {output_datetime: undefined},
+          {profile: "C"},
+          {is_permitted: true},
+          {company_code: {neq: null}}]
+        }}
+      })
+      .$promise
+      .then(function(result){
+        //$scope.num_contractors = result;
+        var contador=0;
+        var num_contractors=0;
+        var contractorFiltered = $filter('unique')(result,'fullname');
+        angular.forEach(contractorFiltered, function(value, key) {
+            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true && 
+              contractorFiltered[contador].place!="" && contractorFiltered[contador].place !=undefined && 
+              contractorFiltered[contador].place != "No encontrado"){
+              num_contractors++
+            }
+          contador++;
+        });
+        $scope.num_contractors = num_contractors;
+      });
+    };
+
+    function getAll() {
+      Record.find({ filter: { order: ['id ASC'] } })
+      .$promise
+      .then(function(results) {
+        $scope.todayall = results;
+      })
+    }
+
+    function getManualRecords() {
+      Record.find( { filter: { where: { type:"PEN", reviewed: false }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.manualrecords = results;
+        $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
+      })
+    }
+
+    function getVisits() {
+      Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.visits = results;
+        //$scope.num_visits = filterFilter($scope.visits, {is_input: true, profile: "V"}).length;
+      })
+    }
+
+    function getNumVisits() {
+      //Filtered by run (not fullname)
+      Record.find({filter:
+       { where: { and:
+          [{is_input: true},
+          {output_datetime: undefined},
+          {profile: "V"}]
+        }}
+      })
+      .$promise
+      .then(function(result){
+        //$scope.num_visits = result;
+        var contador=0;
+        var num_visits=0;
+        var visitFiltered = $filter('unique')(result,'run');
+        angular.forEach(visitFiltered, function(value, key) {
+          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true && 
+            visitFiltered[contador].destination!="" && visitFiltered[contador].destination !=undefined && 
+            visitFiltered[contador].destination != "No encontrado"){
+           num_visits++
+
+          }
+          contador++;
+        });
+        $scope.num_visits = num_visits;
+      });
+    };
+
+    function getPendings() {
+      Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC']  } } )
+      .$promise
+      .then(function(results) {
+        $scope.pendings = results;
+        console.log($scope.pendings);
+        $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
+      })
+    }
+     function getInPlant() {
+      Record.find( { filter: { where: { is_input: true, fullname: {neq: null} }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.inPlant = results;
+        //$scope.inPlant = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
+      })
+    }
+
+
+    function getDennieds() {
+      Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.dennieds = results; 
+        $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
+      }); 
+    }
+
+    function getVehicleType() {
+      VehicleType.find( )
+      .$promise
+      .then(function(results) {
+        $scope.vehicleTypes = results;
+      });
+    }
+
+    function getRecords() {
+      Record.find( { filter: { where: { input_patent: {neq: null} }}})
+      .$promise
+      .then(function(results) {
+        $scope.recordsForPatents = results;
+      });
+    }
+
+    function getInputPatents() {
+      Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        $scope.inputPatents = results;
+      })
+    }
+
+    $scope.onTimeSet = function (newDate, oldDate, record) {
+      record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
+      record.is_input = false;
+      delete record.id;
+      Record.create(record);
+    }
+
+    switch($state.current.data.accion) {
+      case 'pendings' : getPendings(); break;
+      case 'employees' : getEmployees(); getVehicleType(); break;
+      case 'visits' : getVisits(); getVehicleType(); getDestination(); getParkings(); break;
+      case 'contractors' : getContractors(); getVehicleType(); getDestination(); break;
+      case 'dennieds' : getDennieds(); break;
+      case 'manualRecords': getManualRecords(); break;
+    }
+
+    var f=new Date();
+    var ano = f.getFullYear();
+    var mes = f.getMonth()+1;
+    var dia = f.getDate();
+
+    $scope.filterByDate = function(input){
+      return function(item){
+        var INPUT = new Date(item.input_datetime)
+        return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+      }
+    }
+
+    $scope.notFindInputDate = function(){
+        $scope.verificador_noencontrado = true; //for not find input_datime in table
+    }
+
+    $scope.eventDateFilter = function(column) {
+      $scope.verificador_noencontrado = false; //for not find input_datime in table
+      if(column === 'today') {
+        $scope.dateRange = "";
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+          }
+        }
+      } else if (column === 'pastWeek') {
+        //curr_date - 7 dias
+        $scope.dateRange = "";
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= Date.now()-ONE_WEEK;
+          }
+        }
+      } else if (column === 'pastMonth') {
+        //curr_month - 1
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() >= Date.now()-ONE_MONTH;
+          }
+        }
+      } else {
+        $scope.filterByDate = function(input){
+          return function(item){
+            var INPUT = new Date(item.input_datetime)
+            return INPUT.getTime() <= Date.now();
+          }
+        }
+      }
+    }
+
+    $scope.addVisit = function() {
+      $scope.newRecord.profile = "V";
+      $scope.newRecord.is_permitted = true;
+      $scope.newRecord.is_input = true;
+      Record
+        .create($scope.newRecord)
+        .$promise
+        .then(function(record) {
+          $scope.newRecord = '';
+          $scope.visitForm.run.$setPristine();
+          $('.focus').focus();
+        })
+    };
+
+    $scope.addOutput = function(record) {
+      record.type = "PEN";
+      record.state = "C";
+      record.reviewed = false;
+      record.is_input = false;
+      var dateinput = new Date (record.input_datetime);
+      record.output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
+      record.updated = new Date();
+      record.user = localStorage.email;
+      record.$save();
+      getPendings();
+    }
+
+    $scope.pendingToBlacklist = function(record) {
+      //save flag in record
+      record.to_blacklist = true;
+      record.$update();  
+      //save in blacklist
+       $scope.blacklist.run = record.run;
+       Blacklist.create($scope.blacklist, function(err, model){
+        });  
+      getDennieds(); 
+    }
+
+    $scope.addRecord = function(record) {
+      var newRecord = record;
+      if(record !== undefined)
+      Record
+        .create(record)
+        .$promise
+        .then(function(record) {
+          console.log("sacado");
+          $scope.newRecord = '';
+          // getAll();
+          getPendings();
+        })
+    };
+
+    $scope.registrarSalida = function(record){
+      //Date picker
+    }
+
+    $scope.update = function(record){
+        record.updating=true;
+        record.$save(record);
+  	}
+
+    $scope.updateInputPatent = function(record, item){
+      record.input_patent = item;
+      record.updating=true;
+      record.$save(record);
+    }
+
+    $scope.updateOutputPatent = function(record, item){
+      record.output_patent = item;
+      record.updating=true;
+      record.$save(record);
+  	}
+
+    $scope.updateManualRecord = function(record) {
+      record.reviewed = true;
+      record.$save(record)
+      getManualRecords();
+    }
+
+    //Suscribe to Socket.io events
+    var onRecordCreate = function(data) {
+      if (!updatingInformation){
+        updatingInformation = true;
+        if (data.instance.is_input == true) {
+          $scope.pendings.push(data.instance)
+        } else {
+          var index = $filter("findById")($scope.pendings,data._id)
+          $scope.pendings.splice(index,1);
+        }
+
+        if (data.instance.is_input == true) {
+          switch (data.instance.profile) {
+          case 'E' :
+            if (typeof $scope.employees != "undefined") {
+              $scope.employees.push(data.instance);
+            }
+            break;
+          case 'V' :
+            if(typeof $scope.visits != "undefined"){
+              $scope.visits.push(data.instance);
+            }
+            break;
+          case 'C' :
+            if(typeof $scope.contractors != "undefined"){
+              $scope.contractors.push(data.instance)
+            };
+            break;
+          }
+        } else {
+          switch(data.instance.profile){
+          case 'E' :
+            if(typeof $scope.employees != "undefined"){
+              var index = $filter("findById")($scope.employees,data._id);
+              $scope.employees.splice(index,1);
+            }
+            break;
+          case 'V' :
+            if(typeof $scope.visits != "undefined") {
+              var index = $filter("findById")($scope.visits,data._id);
+              $scope.visits.splice(index,1);
+            }
+            break;
+          case 'C' :
+            if(typeof $scope.contractors != "undefined"){
+              var index = $filter("findById")($scope.contractors,data._id)
+              $scope.contractors.splice(index,1);
+            };
+            break;
+          }
+        }
+      }
+      updatingInformation = false;
+    }
+
+    $scope.exportData = function () {
+      console.log("HOLA");
+     /*   var blob = new Blob([document.getElementById('example2').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"
+        });
+        saveAs(blob, "Report.xls");*/
+       // $("#btnExport").click(function (e) {
+    //window.open('data:application/vnd.ms-excel,' + $('#Asdf').html());
+        // e.prev
+        $('#example2').tableExport({type:'excel',escape:'false'});
+    };
+
+
+    getRecords();
+    getInputPatents();
+    getInPlant();
+    getAllPlacesFiltered();
+    getNumEmployes();
+    getNumVisits();
+    getNumContractors();
+
+
+
+    PubSub.subscribe({
+       collectionName: 'Record',
+       method : 'POST'
+    }, onRecordCreate);
+  }]);
+
+
+function getNumVisits() {
+      //Filtered by run (not fullname)
+      Record.find({filter:
+       { where: { and:
+          [{is_input: true},
+          {output_datetime: undefined},
+          {profile: "V"}]
+        }}
+      })
+      .$promise
+      .then(function(result){
+        //$scope.num_visits = result;
+        var contador=0;
+        var num_visits=0;
+        var visitFiltered = $filter('unique')(result,'run');
+        angular.forEach(visitFiltered, function(value, key) {
+          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true 
+            && 
+            visitFiltered[contador].destination != "No encontrado"){
+           num_visits++
+
+          }
+          contador++;
+        });
+        console.log(visitFiltered);
+        $scope.num_visits = num_visits;
+      });
+    };
+

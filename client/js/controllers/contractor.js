@@ -97,6 +97,14 @@ angular.module('app')
       if($scope.record.is_input){
         $scope.record.comment = $scope.employee.comment;
       }
+
+       //validation for datetime (input_datetime and output datetime)
+        if ($scope.record.is_input){
+            $scope.record.input_datetime = $scope.employee.valuationDate;
+        } else {
+            $scope.record.output_datetime = $scope.employee.valuationDate;
+        } 
+
       $scope.record.is_permitted = $scope.employee.is_permitted;
       $scope.record.card = $scope.employee.card;
       $scope.record.company_code = $scope.employee.company_code;

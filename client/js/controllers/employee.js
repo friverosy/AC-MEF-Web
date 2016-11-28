@@ -23,12 +23,10 @@ angular.module('app')
         alert("Ingrese RUT o tarjeta");
       } else {
         if($scope.employee.people_run.length >= 7){
-          console.log("RUT", $scope.employee.people_run);
           People.find( { filter: { where: { run: $scope.employee.people_run} } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
-            console.log(results);
             record = results;
             if (record != "") {
               if (record[0].run == $scope.employee.people_run && record[0].profile == "E") {
@@ -54,13 +52,11 @@ angular.module('app')
             alert("El RUT ingresado no existe en los registros de Empleados");
           })
         } else if ($scope.employee.people_run.length <= 5 && $scope.employee.people_run.length >=3){
-          console.log("CARD", $scope.employee.people_run);
           People.find( { filter: { where: { card: parseInt($scope.employee.people_run) } } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
             record = results;
-            console.log(record);
             if (record.length > 0) {
               $scope.employee.fullname = record[0].fullname;
               $scope.employee.people_run = record[0].run;
@@ -141,7 +137,6 @@ angular.module('app')
         $scope.record.is_permitted = $scope.employee.is_permitted;
         $scope.record.company = $scope.employee.company;
         $scope.record.bus=false;
-        console.log($scope.record);
         Record.create($scope.record, function(err, model){
           alert("Empleado Registrado con exito");
           $scope.is_saved = true;
@@ -175,7 +170,6 @@ angular.module('app')
     }
 
     $scope.getPeople = function(run){
-      console.log(run);
       People.find( { filter: { where: { run: run.people_run} } } )
       .$promise
       .then(function(results) {
@@ -218,10 +212,9 @@ angular.module('app')
       }
     }
 
-
-
     getVehicleType();
     getPlaces();
     getParkings();
 
 }]);
+

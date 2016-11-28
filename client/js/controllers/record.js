@@ -1,61 +1,25 @@
-var updatingInformation = false;
-
-angular.module("app").filter('findById', function() {
-
-  return function(list, _id) {
-    for(var i = 0; i < list.length; i++){
-      if(list[i]._id == _id){
-        return i;
-      }
-    }
-    return -1;
-  };
-})
-
 angular
   .module('app')
-  .controller('RecordController', ['$scope', '$state', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', '$http', '$window', '$resource','PubSub', 'filterFilter' , '$filter' , function($scope,
-      $state, Record, Parking, Place, Destination, VehicleType, $http, $window, $resource, PubSub, filterFilter, $filter) {
+  .controller('RecordController', ['$scope', '$state', '$filter', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', 'Blacklist', 'People', '$http', '$window', '$resource','PubSub', 'filterFilter' , function($scope,
+      $state, $filter, Record, Parking, Place, Destination, VehicleType, Blacklist, People, $http, $window, $resource, PubSub, filterFilter) {
 
-    $scope.logout = function() {
-      localStorage.clear();
-      $window.location.href = '/login';
-    };
+    //for blacklist
+     $scope.blacklist = {};
+     $scope.verificador_noencontrado = false;
+
+    //Manual Outputs
+    $scope.manual_outputs = [];
 
     $scope.records = [];
     $scope.recordsForPatents ={};
+
+    //For Dates.
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    $scope.searchEmployee = function() {
-      try {
-        var rut = $scope.employee.run;
-      } catch (err) {
-        console.error(err);
-      }
-
-      if (rut !== null){
-        var url = 'http://0.0.0.0:3000/people/' + rut;
-        $http({
-          method : 'GET',
-          headers: {
-            'Accept': "application/json",
-            'Content-Type': "application/json"
-          },
-          url : url
-        }).then(function mySucces(response) {
-          $scope.employee = response.data;
-        }, function myError(response) {
-          console.log(response);
-          $scope.employee = response.statusText;
-        });
-      } else {
-          console.log("vacio");
-      }
-    }
-
+   
     function getParkings() {
       Parking.find()
       .$promise
@@ -80,24 +44,6 @@ angular
       });
     }
 
-    function getEmployees() {
-      Record.find( { filter: { where: { profile: "E", is_permitted: true }, order:  ['input_datetime DESC'] } } )
-      .$promise
-      .then(function(results) {
-        $scope.employees = results;
-        $scope.num_employees = filterFilter($scope.employees, {is_input: true, profile: "E", is_permitted: true}).length;
-      })
-    }
-
-    function getContractors() {
-      Record.find( { filter: { where: { profile: "C", is_permitted: true }, order: ['input_datetime DESC'] } } )
-      .$promise
-      .then(function(results) {
-        $scope.contractors = results;
-        $scope.num_contractors = filterFilter($scope.contractors, {is_input: true, profile: "C", is_permitted: true}).length;
-      })
-    }
-
     function getAll() {
       Record.find({ filter: { order: ['id ASC'] } })
       .$promise
@@ -115,25 +61,34 @@ angular
       })
     }
 
-    function getVisits() {
-      Record.find( { filter: { where: { profile: "V" }, order: ['input_datetime DESC'] } } )
-      .$promise
-      .then(function(results) {
-        $scope.visits = results;
-        $scope.num_visits = filterFilter($scope.visits, {is_input: true, profile: "V"}).length;
-      })
-    }
 
     function getPendings() {
-      Record.find( { filter: { where: { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC']  } } )
       .$promise
       .then(function(results) {
         $scope.pendings = results;
+        console.log($scope.pendings);
         $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
       })
     }
- function getInPlant() {
-      Record.find( { filter: { where: { is_input: true }, order: ['input_datetime DESC'] } } )
+
+    function getManualOutputs() {
+      Record.find( { filter: { where:  { is_input: false }, order: ['input_datetime DESC']  } } )
+      .$promise
+      .then(function(results) {
+        var contador_manual_outputs =0;
+        var contador_results = 0;
+         angular.forEach(results, function(value, key) {
+            if(results[contador_results].user != undefined){
+              $scope.manual_outputs[contador_manual_outputs] = results[contador_results];
+              contador_manual_outputs++;
+            }
+          contador_results++;
+        });
+      })
+    }
+     function getInPlant() {
+      Record.find( { filter: { where: { is_input: true, fullname: {neq: null} }, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
         $scope.inPlant = results;
@@ -143,12 +98,11 @@ angular
 
 
     function getDennieds() {
-      Record.find( { filter: { where: { is_permitted: false }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
-        $scope.dennieds = results;
-        $scope.rejected = filterFilter($scope.pendings, {is_permitted : false}).length;
-      });
+        $scope.dennieds = results; 
+      }); 
     }
 
     function getVehicleType() {
@@ -175,18 +129,11 @@ angular
       })
     }
 
-    $scope.onTimeSet = function (newDate, oldDate, record) {
-      record.output_datetime = $filter("date")(record.output_datetime,"yyyy-MM-ddTHH:mm:ss")
-      record.is_input = false;
-      delete record.id;
-      Record.create(record);
-    }
-
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
-      case 'employees' : getEmployees(); getVehicleType(); break;
-      case 'visits' : getVisits(); getVehicleType(); getDestination(); getParkings(); break;
-      case 'contractors' : getContractors(); getVehicleType(); getDestination(); break;
+      case 'employees' : getVehicleType(); break;
+      case 'visits' :  getVehicleType(); getDestination(); getParkings(); break;
+      case 'contractors' : getVehicleType(); getDestination(); break;
       case 'dennieds' : getDennieds(); break;
       case 'manualRecords': getManualRecords(); break;
     }
@@ -203,7 +150,67 @@ angular
       }
     }
 
-    $scope.eventDateFilter = function(column) {
+    //For records tabs (employees, contractors and visits)
+
+    //input_datetime undefined in records
+    $scope.notFindInputDate = function(profile){
+       results_inputNotFind = [];
+       Record.find( { filter: { where: 
+        { profile: profile, 
+        is_permitted: true }, order:  ['input_datetime DESC'] } } )
+      .$promise
+      .then(function(results) {
+        var counter_inputs_undefined =0;
+        var counter_results = 0;
+         angular.forEach(results, function(value, key) {
+            if(results[counter_results].input_datetime == undefined){
+              results_inputNotFind[counter_inputs_undefined] = results[counter_results];
+              counter_inputs_undefined++;
+            }
+          counter_results++;
+        });
+         $scope.records = results_inputNotFind;
+      });
+     }
+     //input_datetime not undefined in records
+    $scope.eventDateFilter = function(column, profile){
+      if(column ==='today'){
+        var today = new Date(ano+"/"+mes+"/"+dia);
+        var date = today.toISOString();
+      }
+      else if(column === 'pastWeek'){
+        var pastWeek = new Date(Date.now()-ONE_WEEK);
+        var date = pastWeek.toISOString();
+      }
+      else if(column === 'pastMonth'){
+        var pastMonth = new Date(Date.now()-ONE_MONTH);
+        var date = pastMonth.toISOString();
+      }
+      else if(column === 'all'){
+        var all = new Date('0000-01-01T00:00:00.000Z');
+        var date = all.toISOString();
+      };
+       Record.find( { filter: 
+        { where: { and:
+         [{ 
+          profile: profile, 
+          is_permitted: true, 
+          input_datetime: {gte:  date}}]
+        }}, 
+          order:  ['input_datetime DESC']})
+      .$promise
+      .then(function(results) {
+        console.log(results);
+        $scope.records = results;
+      });
+    }
+
+    //End: For records tabs (employees, contractors and visits)
+
+    //Dennied view
+    //Dennieds tabs
+   $scope.eventDateFilterDennied = function(column) {
+    getDennieds();
       if(column === 'today') {
         $scope.dateRange = "";
         $scope.filterByDate = function(input){
@@ -238,6 +245,21 @@ angular
         }
       }
     }
+    //End: Dennieds tabs
+
+    //Dennied to Blacklist
+    $scope.denniedToBlacklist = function(record) {
+      //save flag in record
+      record.to_blacklist = true;
+      record.$upsert();  
+      //save in blacklist
+       $scope.blacklist.run = record.run;
+       Blacklist.create($scope.blacklist, function(err, model){
+        });  
+      getDennieds(); 
+    }
+    //End: Dennied to Blacklist
+    //End: Dennied view
 
     $scope.addVisit = function() {
       $scope.newRecord.profile = "V";
@@ -258,9 +280,23 @@ angular
       record.state = "C";
       record.reviewed = false;
       record.is_input = false;
-      record.output_datetime = new Date();
+      var dateinput = new Date (record.input_datetime);
+      record.output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
+      record.updated = new Date();
+      record.user = localStorage.email;
       record.$save();
       getPendings();
+    }
+
+    $scope.denniedToBlacklist = function(record) {
+      //save flag in record
+      record.to_blacklist = true;
+      record.$upsert();  
+      //save in blacklist
+       $scope.blacklist.run = record.run;
+       Blacklist.create($scope.blacklist, function(err, model){
+        });  
+      getDennieds(); 
     }
 
     $scope.addRecord = function(record) {
@@ -304,80 +340,16 @@ angular
       getManualRecords();
     }
 
-    //Suscribe to Socket.io events
-    var onRecordCreate = function(data) {
-      if (!updatingInformation){
-        updatingInformation = true;
-        if (data.instance.is_input == true) {
-          $scope.pendings.push(data.instance)
-        } else {
-          var index = $filter("findById")($scope.pendings,data._id)
-          $scope.pendings.splice(index,1);
-        }
-
-        if (data.instance.is_input == true) {
-          switch (data.instance.profile) {
-          case 'E' :
-            if (typeof $scope.employees != "undefined") {
-              $scope.employees.push(data.instance);
-            }
-            break;
-          case 'V' :
-            if(typeof $scope.visits != "undefined"){
-              $scope.visits.push(data.instance);
-            }
-            break;
-          case 'C' :
-            if(typeof $scope.contractors != "undefined"){
-              $scope.contractors.push(data.instance)
-            };
-            break;
-          }
-        } else {
-          switch(data.instance.profile){
-          case 'E' :
-            if(typeof $scope.employees != "undefined"){
-              var index = $filter("findById")($scope.employees,data._id);
-              $scope.employees.splice(index,1);
-            }
-            break;
-          case 'V' :
-            if(typeof $scope.visits != "undefined") {
-              var index = $filter("findById")($scope.visits,data._id);
-              $scope.visits.splice(index,1);
-            }
-            break;
-          case 'C' :
-            if(typeof $scope.contractors != "undefined"){
-              var index = $filter("findById")($scope.contractors,data._id)
-              $scope.contractors.splice(index,1);
-            };
-            break;
-          }
-        }
-      }
-      updatingInformation = false;
-    }
-
-    $scope.exportData = function () {
-      console.log("HOLA");
-     /*   var blob = new Blob([document.getElementById('example2').innerHTML], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"
-        });
-        saveAs(blob, "Report.xls");*/
-       // $("#btnExport").click(function (e) {
-    //window.open('data:application/vnd.ms-excel,' + $('#Asdf').html());
-        // e.prev
-        $('#example2').tableExport({type:'excel',escape:'false'});
-    };
-
-
+ 
+    //Get Collections
     getRecords();
     getInputPatents();
     getInPlant();
+    getManualOutputs();
 
-    PubSub.subscribe({
-       collectionName: 'Record',
-       method : 'POST'
-    }, onRecordCreate);
+
   }]);
+
+
+
+

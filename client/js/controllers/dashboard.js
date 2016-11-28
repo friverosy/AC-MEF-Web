@@ -5,6 +5,7 @@ angular
       $state, $filter, Record, Login, $http, $window, $resource, PubSub, Company, Place, People) {
 
 
+//Login
 if(localStorage.verificador){ //Primera vez que entra del login.
       Login.find({filter: {where: {and:
         [
@@ -29,35 +30,23 @@ if(localStorage.verificador){ //Primera vez que entra del login.
        $window.location.href = '/login';
 
   }
+  //End: Login
+
+    //Logout Function
+  function logout(){
+    console.log("Local Storage Clear... Redireccionando");
+    localStorage.clear();
+    //$window.location.href = '/login';
+    location="/login"
+    };
+    //End: Logout Function
 
 
     $scope.arregloPeople = {};
     $scope.RecordsAll = {};
 
-
-    function loginCheck() {
-      localStorage.clear();
-      $window.location.href = '/login';
-    }
-
-    function logout() {
-      localStorage.clear();
-      $window.location.href = '/login';
-    }
-
-    function getNumPendings() {
-      Record.count({
-        where: { and:
-          [{is_input: true},
-          {output_datetime: undefined}]
-        }
-      })
-      .$promise
-      .then(function(result){
-        $scope.num_pendings = result;
-      });
-    };
-
+    //Numbers in Dashboard
+    //Number of employees inside
     function getNumEmployes() {
       Record.find({filter:
        { where: { and:
@@ -72,7 +61,6 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(result){
-        //$scope.num_employees = result;
         var contador=0;
         var num_employees=0;
         var employeeFiltered = $filter('unique')(result,'fullname');
@@ -90,7 +78,8 @@ if(localStorage.verificador){ //Primera vez que entra del login.
         $scope.num_employees = num_employees;
       });
     };
-       //   var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
+
+     //Number of visits inside
     function getNumVisits() {
       //Filtered by run (not fullname)
       Record.find({filter:
@@ -102,23 +91,24 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(result){
-        //$scope.num_visits = result;
         var contador=0;
         var num_visits=0;
         var visitFiltered = $filter('unique')(result,'run');
         angular.forEach(visitFiltered, function(value, key) {
-          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true && 
-            visitFiltered[contador].place!="" && visitFiltered[contador].place !=undefined && 
-            visitFiltered[contador].place != "No encontrado"){
+          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true 
+            && 
+            visitFiltered[contador].destination != "No encontrado"){
            num_visits++
 
           }
           contador++;
         });
+        console.log(visitFiltered);
         $scope.num_visits = num_visits;
       });
     };
 
+     //Number of contractors inside
     function getNumContractos() {
       Record.find({filter:
        { where: { and:
@@ -147,38 +137,8 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       });
     };
 
-    var f=new Date();
-    var ano = f.getFullYear();
-    var mes = f.getMonth()+1;
-    var dia = f.getDate();
-
-    function getRejected() {
-      Record.find({ filter:
-       { where: { and :
-          [{is_input: true},
-          {output_datetime: undefined},
-          {is_permitted : false}]
-        }}
-      })
-      .$promise
-      .then(function(result){
-        var contador=0;
-        $scope.Dennied = 0;
-        angular.forEach(result, function(value, key) {
-          var INPUT = new Date(result[contador].input_datetime)
-          if(INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia)){
-            $scope.Dennied++;
-
-          }
-          contador++
-        });
-        
-        
-      });
-    };
-
+    //Number of Employees's Patents
     function getNumPatentsEmployees() {
-      //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
       Record.count({
         where: { and:
           [
@@ -196,6 +156,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       });
     };
 
+    //Number of Contractors's Patents
     function getNumPatentsVisits() {
       //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
       Record.count({
@@ -215,6 +176,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       });
     };
 
+    //Number of visits's Patents
     function getNumPatentsContractors() {
       //$scope.num_patentsEmployees = $filter('countBy')($scope.input_patent,'input_patent');
       Record.count({
@@ -233,8 +195,44 @@ if(localStorage.verificador){ //Primera vez que entra del login.
         $scope.num_patentsContractors = result;
       });
     };
+    //End: Numbers in Dashboard
 
-    function getCompany() {
+    var f=new Date();
+    var ano = f.getFullYear();
+    var mes = f.getMonth()+1;
+    var dia = f.getDate();
+
+    //For dennied number in navbar.
+    function getRejected() {
+      Record.find({ filter:
+       { where: { and :
+          [{is_input: true},
+          {output_datetime: undefined},
+          {is_permitted : false}]
+        }}
+      })
+      .$promise
+      .then(function(result){
+        var contador=0;
+        $scope.Dennied = 0;
+        angular.forEach(result, function(value, key) {
+          var INPUT = new Date(result[contador].input_datetime)
+          if(INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia)){
+           // $scope.Dennied++;
+
+          }
+          contador++
+        });
+        
+        
+      });
+    };
+    //End: For dennied number in navbar
+
+
+    //Table of departments with number of people in dashboard
+    //Get name of companies with id '2', '3' and '8'
+     function getCompany() {
       Company.find({filter: {where: {or:
         [
           {rut: '2'},
@@ -246,9 +244,10 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       .then(function(results) {
         $scope.companies = results;
       });
-    }
+     }
 
-    function getRecords() {
+     //Get all the records of people that are enabled to enter the plant
+     function getRecords() {
       Record.find({filter:
         {where: { and:
           [
@@ -263,15 +262,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       });
     }
 
-    function getDefaultPlace() {
-      Place.find({filter: {where: {companyId: 8}}})
-      .$promise
-      .then(function(results) {
-        $scope.places = results;
-      })
-      //falta mostrar contador de record por place
-    }
-
+    //Get all the places
     function getAllPlacesFiltered() {
       Place.find()
       .$promise
@@ -280,60 +271,8 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
     }
 
-    //Count
-    getNumPendings();
-    getNumEmployes();
-    getNumVisits();
-    getNumContractos();
-    getRejected();
-    getNumPatentsEmployees();
-    getNumPatentsVisits();
-    getNumPatentsContractors();
-    getDefaultPlace();
-    getCompany();
-    getRecords();
-    getAllPlacesFiltered();
-
-    var onRecordCreate = function(data) {
-      getNumPendings();
-      getNumEmployes();
-      getNumVisits();
-      getNumContractos();
-      getRejected();
-      getNumPatentsEmployees();
-      getNumPatentsContractors();
-      getNumPatentsVisits();
-      getCompany();
-      getRecords();
-    }
-
-    PubSub.subscribe({
-      collectionName: 'Record',
-      method : 'POST'
-    }, onRecordCreate);
-
-    function countByPlace(place) {
-      Record.find({
-        filter: {
-          where: {
-            and: [
-              {place: place},
-              {is_input: true}
-            ]
-          }
-        }
-      },
-      function(list) {
-        console.log(list);
-        $scope.records = list;
-      },
-      function(errorResponse) {
-        console.log(errorResponse)
-      });
-    }
-
-    $scope.getPlacesByRut = function(rut) {
-      //console.log(rut);
+    //Get all the places filtered by id (run) of the company clicked on tabs in dashboard
+     $scope.getPlacesByRut = function(rut) {
       Place.find({
         filter: {
           where: {
@@ -343,16 +282,12 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(results) {
-        //console.log(results);
         $scope.places = results;
-       // angular.forEach(results, function(value, key) {
-          //console.log(value.name);
-         // countByPlace(value.name);
-        //});
       })
     }
 
-    $scope.getRecordsByRut = function(rut) {
+    //Get the records filtered by run of company and place for table in dashboard
+     $scope.getRecordsByRut = function(rut) {
       //console.log(rut);
       Place.find({
         filter: {
@@ -363,7 +298,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(results) {
-        var contadorsupremo =0;
+        var supreme_counter =0;
         var arreglo = results;
         var contador =0;
         var contadorFilter = 0;
@@ -373,10 +308,27 @@ if(localStorage.verificador){ //Primera vez que entra del login.
           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
           $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
           contadorFilter++;
-          contadorsupremo = newTemp.length + contadorsupremo;
+          supreme_counter = newTemp.length + supreme_counter;
         });
-        console.log(contadorsupremo);
+        console.log(supreme_counter);
       })
     }
 
+    //End: Table of departments with number of people in dashboard
+
+
+    //Get collections.
+    getAllPlacesFiltered();
+    getNumEmployes();
+    getNumVisits();
+    getNumContractos();
+    getRejected();
+    getNumPatentsEmployees();
+    getNumPatentsVisits();
+    getNumPatentsContractors();
+    getCompany();
+    getRecords();
+
+
   }]);
+
