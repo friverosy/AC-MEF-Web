@@ -36,16 +36,9 @@ module.exports = function(Record) {
           // nothing yet
           break;
         case "V": //Visit
-<<<<<<< HEAD
-          // Add visit on people.
-          if (ctx.instance.run.length <= 5) { // && card !== 0
-            ctx.instance.profile = "E"
-          } else {
-=======
           ctx.instance.is_permitted=true;
           // Add visit on people.
           if (ctx.instance.run.length >= 5) { // && card !==0
->>>>>>> 999c3c221a5a6d7dc5aa234c62929a0f07b6afb7
             var People = app.models.People
             //ctx.instance.is_permitted = true;
             People.findOrCreate(
@@ -66,27 +59,6 @@ module.exports = function(Record) {
           console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
           break;
       }
-<<<<<<< HEAD
-
-      // Update input with output.
-      if ( ctx.instance.is_input === false ) {
-        console.log("salida");
-        if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
-          findByName(ctx.instance)
-          .then(id => saveOutput(id, ctx))
-          .catch(err => catcher(err, ctx.instance))
-        } else {
-          console.log("visita");
-          findByRut(ctx.instance)
-          .then(id => saveOutput(id, ctx))
-          .catch(err => catcher(err, ctx.instance))
-        }
-      }
-    }
-    next();
-  });
-
-=======
 
       if (ctx.instance.type !== "MR") {
         ctx.instance.type == "ON";
@@ -110,7 +82,6 @@ module.exports = function(Record) {
     next();
   });
 
->>>>>>> 999c3c221a5a6d7dc5aa234c62929a0f07b6afb7
   function findByName(ctx) {
     return new Promise(function (resolve, reject) {
       //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
@@ -328,4 +299,3 @@ module.exports = function(Record) {
     }
   );
 };
-
