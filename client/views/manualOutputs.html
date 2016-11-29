@@ -1,11 +1,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-	Personas ingresadas
+	Salidas Manuales
   </h1>
   <ol class="breadcrumb">
 	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-	<li class="active">Pendientes</li>
+	<li class="active">Salidas Manuales</li>
   </ol>
 </section>
 
@@ -25,13 +25,15 @@
                     <th>Nombre</th>
                     <th>Empresa</th>
                     <th>Departamento</th>
-                    <th>Entrada</th>
                     <th>Perfil</th>
-                    <th>Opción</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Fecha Actualización</th>
+                    <th>Usuario</th>
                   </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                <tr dir-paginate="record in manual_outputs  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
                   <td>
                     <strong ng-if="record.blacklist" class="text-red">*</strong>
                     {{record.run}}
@@ -39,13 +41,15 @@
                   <td>{{record.fullname}}</td>
                   <td>{{record.company}}</td>
                   <td>{{record.place}}</td>
-                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>
-          					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
-          					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
+                   <td>
+                    <span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
+                    <span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
                     <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
-          				  </td>
-                  <td><a class="fa fa-exchange" href ng-click="addOutput(record)"></a></td>
+                    </td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.updated | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.user}}</td>
                 </tr>
               </tbody>
             </table>
@@ -59,4 +63,5 @@
     </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
+
 

@@ -78,7 +78,6 @@ angular.module('app')
             $scope.record.output_datetime = $scope.employee.valuationDate;
         }
 
-        console.log($scope.record);
         Record.create($scope.record, function(err,model) {
           alert("Visita Registrada con exito");
           $window.location.reload();
@@ -110,7 +109,6 @@ angular.module('app')
     }
 
     $scope.getPeople = function(run) {
-      console.log(run);
       People.find( { filter: { where: { run: run.people_run} } } )
       .$promise
       .then(function(results) {
@@ -154,3 +152,4 @@ angular.module('app')
     getParkings();
 
 }]);
+

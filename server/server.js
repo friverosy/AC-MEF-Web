@@ -19,7 +19,7 @@ app.start = function() {
 };
 
 app.get('/login', function(req, res) {
-  res.sendfile('client/views/login.html');
+  res.sendfile('/home/pwings/backend/client/views/login.html');
 });
 
 app.get('/status', function(req, res){

@@ -217,3 +217,4 @@ angular.module('app')
     getParkings();
 
 }]);
+

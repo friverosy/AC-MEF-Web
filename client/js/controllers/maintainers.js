@@ -174,6 +174,11 @@ angular
         type.$save(type);
   	};
 
+    $scope.update = function(people){
+        //record.updating=true;
+        people.$save(people);
+    };
+
      //Record Plant
     $scope.updateReadRecordPlant = function(profile) {
       if (profile.ReadRecordPlant == false) {

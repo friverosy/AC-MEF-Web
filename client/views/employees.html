@@ -6,21 +6,21 @@
     <li class="active">Empleados</li>
   </ol>
 </section>
-
 <!-- Main content -->
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header">
-          <h3 class="box-title">Registro de empleados ({{num_employees}} en planta)</h3>
+          <h3 class="box-title">Registro de empleados</h3>
         </div><!-- /.box-header -->
-        <div class="box-body" id="asdf">
+        <div class="box-body" id="asdf" ng-init="eventDateFilter('today', 'E')" >
           <ul class="nav nav-tabs">
-            <li><a href ng-click="eventDateFilter('today')">Hoy</a></li>
-            <li><a href ng-click="eventDateFilter('pastWeek')">7 días</a></li>
-            <li><a href ng-click="eventDateFilter('pastMonth')">30 días</a></li>
-            <li><a href ng-click="eventDateFilter('all')">Todos</a></li>
+            <li><a href ng-click="eventDateFilter('today', 'E')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek', 'E')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth', 'E')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all', 'E')">Todos</a></li>
+            <li><a href ng-click="notFindInputDate('E')">sin entrada Registrada</a></li>
             <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
@@ -39,7 +39,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="record in employees | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+              <tr dir-paginate="record in records | orderBy: '-input_datetime' | itemsPerPage:15">
                 <td ng-if="record.is_permitted" class="text-green">
                   <strong ng-if="record.blacklist" class="text-red">*</strong>
                   <strong>{{record.run}}</strong>
@@ -50,8 +50,8 @@
                 </td>
                 <td><small>{{record.fullname}}</small></td>
                 <td><small>{{record.place}}</small></td>
-                <td ng-if="record.input_datetime == false" class="text-red"><small>No registrado</small></td>
-                <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
+                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 <td>
                   <input
                     type="text"
@@ -96,7 +96,6 @@
                     ng-model="record.comment"
                     ng-change="update(record)"
                     class="form-control">
-                      <!-- <button class="btn btn-danger btn-xs" ng-click="delete($index)">  <span class="glyphicon glyphicon-trash" ></span></button> -->
                 </td>
               </tr>
             </tbody>
@@ -110,5 +109,6 @@
       </div><!-- /.box -->
     </div>
   </div><!-- /.row -->
-  <button ng-click="exportData()">Exportar a .xls</button>
+  <button class="btn btn-sm btn-primary" ng-click="exportData()">Exportar a .xls</button>
 </section><!-- /.content -->
+

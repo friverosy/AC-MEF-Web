@@ -3,9 +3,7 @@
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
-  "options": {
-    "validateUpsert": true
-  },
+  "options": {},
   "properties": {
     "fullname": {
       "type": "string",
@@ -13,7 +11,6 @@
     },
     "run": {
       "type": "string",
-      "id": true,
       "required": true
     },
     "is_permitted": {

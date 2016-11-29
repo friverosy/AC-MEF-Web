@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "main": "server/server.js",
   "scripts": {
-    "start": "node .",
+    "start": "nodemon .",
     "pretest": "jshint .",
     "posttest": "nsp check"
   },
