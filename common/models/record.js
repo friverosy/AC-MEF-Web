@@ -20,14 +20,14 @@ var app = require('../../server/server')
 var Slack = require('slack-node');
 
 module.exports = function(Record) {
-  // remove DELETE functionality from API
+  // Remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
       ctx.instance.reviewed = true;
       notification(ctx.instance);
-
+      console.log("before save", ctx.instance);
       switch (ctx.instance.profile) {
         case "E": //Employee
           //nothing yet
@@ -55,24 +55,27 @@ module.exports = function(Record) {
           break;
         default:
           console.log(ctx.instance.fullname, "without profile".yellow);
-          ctx.instance.profile = "E";
-          console.log("Profile set to Employee", ctx.instance.fullname, "by default".green);
+          ctx.instance.profile = "V";
+          console.log("Profile set to Visit", ctx.instance.fullname, "by default".green);
           break;
       }
 
-      if (ctx.instance.type !== "MR") {
-        ctx.instance.type == "ON";
-      }
+      // Always set Online type when its diferent to MR.
+      if (ctx.instance.type !== "MR") ctx.instance.type == "ON";
 
-      // Update input with output.
+      // Update last input as output, add output_datetime send from android.
       if ( ctx.instance.is_input === false ) {
-        console.log("salida");
+        /*
+        Name never change to Employee or Contractor,
+        and 1 person can register by his DNI card or Employee card.
+        So must be finded by name.
+        */
         if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
           findByName(ctx.instance)
           .then(id => saveOutput(id, ctx))
           .catch(err => catcher(err, ctx.instance))
         } else {
-          console.log("visita");
+          // Its if a visit find by rut.
           findByRut(ctx.instance)
           .then(id => saveOutput(id, ctx))
           .catch(err => catcher(err, ctx.instance))
@@ -84,17 +87,16 @@ module.exports = function(Record) {
 
   function findByName(ctx) {
     return new Promise(function (resolve, reject) {
-      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
       Record.findOne(
         {where: {fullname: ctx.fullname},
         order: 'id DESC'},
         function (err, recordFinded) {
           if (err) { reject(err) }
           if (recordFinded != null) {
-            // when register 2 output
+            // When register 2 output.
             if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
               resolve(0)
-            } else { // output after input
+            } else { // Output after input.
               resolve(recordFinded.id, ctx)
             }
           } else {
@@ -107,18 +109,16 @@ module.exports = function(Record) {
 
   function findByRut(ctx) {
     return new Promise(function (resolve, reject) {
-      //{ where: {and: [{ fullname: ctx.fullname}, { output_datetime: {neq: undefined} }] },
       Record.findOne(
         { where: {run: ctx.run},
         order: 'id DESC'},
         function (err, recordFinded) {
           if (err) { reject(err) }
-          //console.log("visit finded",recordFinded);
           if (recordFinded !== null) {
-            // when register 2 output
+            // When register 2 output.
             if (recordFinded.output_datetime !== undefined) {
               resolve(0)
-            } else { // output after input
+            } else { // Output after input.
               resolve(recordFinded.id, ctx)
             }
           } else {
@@ -131,8 +131,6 @@ module.exports = function(Record) {
 
   function saveOutput(id, ctx){
     return new Promise(function (resolve, reject) {
-      console.log("id for save out", id);
-      //console.log("ctx",ctx.instance);
       if (id !== 0) {
         Record.updateAll(
           { id: id },
@@ -145,7 +143,7 @@ module.exports = function(Record) {
           }
         )
       } else {
-        //double output an online record
+        // Double output an online record.
         reject(0)
       }
     })
@@ -241,7 +239,6 @@ module.exports = function(Record) {
 
   Record.observe('after save', function(ctx, next) {
     var socket = Record.app.io;
-    //var People = app.models.People
     if (ctx.instance) {
       if(ctx.instance.updating !== undefined && ctx.instance.updating !== ""){
         if(ctx.instance.profile === "V"){
@@ -271,9 +268,9 @@ module.exports = function(Record) {
     next()
   });
 
-  // Closed of turn, mark like a output (is_input=false) each record with more than 12 hours without output.
+  // Closed of turn, mark as output (is_input=false) each record with more than 12 hours without output.
   Record.closedTurn = function(msg, cb) {
-    var workday = 30 * 24 * 60 * 1000 //12 Hours in milliseconds
+    var workday = 30 * 24 * 60 * 1000 // 12 Hours in milliseconds
     var date = new Date()
     var now = date.getTime()
     Record.updateAll(
