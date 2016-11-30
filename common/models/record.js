@@ -26,7 +26,7 @@ module.exports = function(Record) {
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
       ctx.instance.reviewed = true;
-      notification(ctx.instance);
+      notification(ctx.instance.is_permitted, ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);
       console.log("before save", ctx.instance);
       switch (ctx.instance.profile) {
         case "E": //Employee
@@ -232,14 +232,14 @@ module.exports = function(Record) {
     }, function(err, response) {});
   }
 
-  function notification(ctx) {
-    if (ctx.is_permitted === false) sendSlackMessage(ctx.run, ctx.fullname, "Person dennied detected!.")
-    if (ctx.blacklist === true) sendSlackMessage(ctx.run, ctx.fullname, "Person blacklist detected!.")
+  function notification(is_permitted, run, fullname, blacklist) {
+    if (is_permitted === false) sendSlackMessage(run, fullname, "Person dennied detected!.")
+    if (blacklist === true) sendSlackMessage(run, fullname, "Person blacklist detected!.")
   }
 
   Record.observe('after save', function(ctx, next) {
-    var socket = Record.app.io;
     if (ctx.instance) {
+      console.log('after save', ctx.instance);
       if(ctx.instance.updating !== undefined && ctx.instance.updating !== ""){
         if(ctx.instance.profile === "V"){
             var People = app.models.People
@@ -270,17 +270,19 @@ module.exports = function(Record) {
 
   // Closed of turn, mark as output (is_input=false) each record with more than 12 hours without output.
   Record.closedTurn = function(msg, cb) {
+    console.log("cierre turno activado");
     var workday = 30 * 24 * 60 * 1000 // 12 Hours in milliseconds
     var date = new Date()
     var now = date.getTime()
     Record.updateAll(
-      {and: [{input_datetime: {lt: date - now}}, {output_datetime: undefined}]},
+      {and: [{input_datetime: {lt: now - workday}}, {output_datetime: undefined}]},
       {is_input: false, type: "CT"},
       function(err, info) {
         if (err) {
           console.log(err);
           cb(null, 500)
         } else {
+          console.log(info);
           cb(null, 200);
         }
       }

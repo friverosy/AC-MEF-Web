@@ -17,7 +17,7 @@
             <div class="box-header">
               <h3 class="box-title">Denegados</h3>
             </div><!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body" ng-init="eventDateFilterDennied('today')">
                 <ul class="nav nav-tabs">
                     <li><a href ng-click="eventDateFilterDennied('today')">Hoy</a></li>
             		<li><a href ng-click="eventDateFilterDennied('pastWeek')">7 días</a></li>
@@ -36,7 +36,7 @@
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in dennieds | filter: filterByDate(input_datetime) | filter: searchKeyword | itemsPerPage:10">
+                    <tr dir-paginate="record in dennieds | orderBy: '-input_datetime' | itemsPerPage:15">
                           <td>{{record.run}}</td>
                           <td>{{record.fullname}}</td>
                           <td>{{record.input_datetime | date:'dd MMM yyyy HH:mm:ss'}}</td>

@@ -32,6 +32,7 @@
               </thead>
               <tbody>
                 <tr dir-paginate="record in inPlant | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15 | unique: 'run'">
+                <div >
                   <td>
                     <strong ng-if="record.blacklist" class="text-red">*</strong>
                     {{record.run}}
@@ -50,6 +51,7 @@
                     <span ng-if="(record.type == 'ON' || record.type == 'OFF')" class="label label-success label-mini">Auto</span>
           					<span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
                  </td>
+                 </div>
                 </tr>
               </tbody>
             </table>
