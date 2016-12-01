@@ -31,7 +31,7 @@ angular.module('app')
             if (record != "") {
               if (record[0].run == $scope.employee.people_run && record[0].profile == "E") {
                 $scope.employee.fullname = record[0].fullname;
-                $scope.employee.people_run = record[0].run;
+                $scope.employee.people_run = record[0].id;
                 $scope.employee.card = record[0].card;
                 $scope.employee.place = record[0].place;
                 $scope.employee.company_code = record[0].company_code;
@@ -59,7 +59,7 @@ angular.module('app')
             record = results;
             if (record.length > 0) {
               $scope.employee.fullname = record[0].fullname;
-              $scope.employee.people_run = record[0].run;
+              $scope.employee.people_run = record[0].id;
               $scope.employee.card = record[0].card;
               $scope.employee.place = record[0].place;
               $scope.employee.company_code = record[0].company_code;
@@ -94,8 +94,7 @@ angular.module('app')
       } else if (!$scope.employee.is_input && ((($scope.employee.output_patent == undefined || $scope.employee.output_patent == "") && $scope.employee.checkboxCar))) {
         alert("Debe ingresar la patente de salida");
         return;
-      }
-     else {
+      } else {
         //Building the record for save.
         $scope.record.run =  $scope.employee.people_run;
         $scope.record.fullname = $scope.employee.fullname;
@@ -136,7 +135,8 @@ angular.module('app')
         $scope.record.company_code = $scope.employee.company_code;
         $scope.record.is_permitted = $scope.employee.is_permitted;
         $scope.record.company = $scope.employee.company;
-        $scope.record.bus=false;
+        $scope.record.bus = false;
+        console.log($scope.record);
         Record.create($scope.record, function(err, model){
           alert("Empleado Registrado con exito");
           $scope.is_saved = true;
@@ -217,4 +217,3 @@ angular.module('app')
     getParkings();
 
 }]);
-
