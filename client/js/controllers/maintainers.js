@@ -1,9 +1,14 @@
 angular
   .module('app')
   .controller('MaintainersController', ['$scope', '$state', 'Parking', 'People', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, People, Destination, VehicleType, Profile, PubSub) {
+  
+  
+    $scope.newPeople={};
+    $scope.people={};
 
-    $scope.newPeople = {};
-    $scope.people = {};
+    function pasuser() {
+      console.log("HOLA");
+    }
 
     function getVehicleType() {
       VehicleType.find()
@@ -162,16 +167,6 @@ angular
         });
     };
 
-    // Delete Visit (visit maintainers)
-    $scope.deleteVisitMantainer = function(type) {
-      People
-        .deleteById(type)
-        .$promise
-        .then(function() {
-          getPeople();
-        });
-    };
-
     // Update VehicleType
     $scope.updateVehicleType = function(type) {
         type.updating = 1;
@@ -249,6 +244,7 @@ angular
         profile.RecordContractor = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -260,6 +256,7 @@ angular
         profile.RecordVisits = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -270,6 +267,7 @@ angular
         profile.RecordVisits = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -281,6 +279,7 @@ angular
         profile.ManualRecordVisits = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -291,6 +290,7 @@ angular
         profile.ManualRecordVisits = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -302,6 +302,7 @@ angular
         profile.ManualRecordEmployees = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -312,6 +313,7 @@ angular
         profile.ManualRecordEmployees = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -323,6 +325,7 @@ angular
         profile.ManualRecordContractor = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -333,6 +336,7 @@ angular
         profile.ManualRecordContractor = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -344,6 +348,7 @@ angular
         profile.Maintainers = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -354,6 +359,7 @@ angular
         profile.Maintainers = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -365,6 +371,7 @@ angular
         profile.Profiles = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -375,6 +382,7 @@ angular
         profile.Profiles = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -386,6 +394,7 @@ angular
         profile.Blacklist = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
 
@@ -396,6 +405,7 @@ angular
         profile.Blacklist = false;
       }
       profile.updating = 1;
+      console.log(profile);
       profile.$save(profile);
     };
     //Visits maintainers
@@ -403,9 +413,9 @@ angular
       if(($scope.newPeople.fullname == undefined || $scope.newPeople.fullname == "")
         || ($scope.newPeople.run == undefined || $scope.newPeople.run == "")
         || ($scope.newPeople.company == undefined || $scope.newPeople.company == "")){
-
+          
           alert("Debe ingesar todos los datos solicitados");
-
+        
         }
       else{
           $scope.newPeople.profile = "V";
@@ -415,7 +425,7 @@ angular
             $scope.newPeople.run = "";
             $scope.newPeople.company = "";
         });
-
+          
       }
     };
 

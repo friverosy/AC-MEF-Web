@@ -9,7 +9,6 @@ angular
 
   //Manual Outputs
   $scope.manual_outputs = [];
-
   $scope.records = [];
   $scope.recordsForPatents ={};
 
@@ -18,7 +17,6 @@ angular
   ONE_WEEK = ONE_DAY * 7;
   ONE_MONTH = ONE_WEEK * 4;
   FILTER = '';
-
 
   function getParkings() {
     Parking.find()
@@ -61,7 +59,6 @@ angular
     })
   }
 
-
   function getPendings() {
     Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC']  } } )
     .$promise
@@ -94,7 +91,6 @@ angular
       //$scope.inPlant = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
     })
   }
-
 
   function getDennieds() {
     Record.find( { filter: { where: {and: [{ is_permitted: false, to_blacklist: {neq: true}}]}, order: ['input_datetime DESC'] } } )

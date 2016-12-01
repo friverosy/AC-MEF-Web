@@ -5,8 +5,8 @@ angular
       $state, $filter, Record, Login, $http, $window, $resource, PubSub, Company, Place, People) {
 
 
-//Login
-if(localStorage.verificador){ //Primera vez que entra del login.
+  //Login
+  if(localStorage.verificador){ //Primera vez que entra del login.
       Login.find({filter: {where: {and:
         [
           {email: localStorage.email},
@@ -15,7 +15,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       }}})
       .$promise
       .then(function(results) {
-        if(results.length > 0){ //Si existe
+        if(results.length>0){ //Si existe
           localStorage.verificador = true;
         }
         else{ //sino, lo tira a login.
@@ -24,11 +24,11 @@ if(localStorage.verificador){ //Primera vez que entra del login.
           }
       });
 
-  }else if(!localStorage.verificador && localStorage.verificador!= undefined){console.log("Usuario logeado");}
-  else{
+  } else if (!localStorage.verificador && localStorage.verificador!= undefined){
+    console.log("Usuario logeado");
+  } else {
        localStorage.clear();
        $window.location.href = '/login';
-
   }
   //End: Login
 
@@ -37,7 +37,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
     console.log("Local Storage Clear... Redireccionando");
     localStorage.clear();
     //$window.location.href = '/login';
-    location = "/login"
+    location="/login"
     };
     //End: Logout Function
 
@@ -61,14 +61,14 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(result){
-        var contador = 0;
-        var num_employees = 0;
+        var contador=0;
+        var num_employees=0;
         var employeeFiltered = $filter('unique')(result,'fullname');
          angular.forEach(employeeFiltered, function(value, key) {
           var newTemp = $filter("filter")($scope.placesFiltered, {name: employeeFiltered[contador].place});
           if(newTemp.length){
             if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true &&
-              employeeFiltered[contador].place != "" && employeeFiltered[contador].place != undefined &&
+              employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
               employeeFiltered[contador].place != "No encontrado"){
               num_employees++
 
@@ -91,16 +91,19 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(result){
-        var contador = 0;
-        var num_visits = 0;
+        var contador=0;
+        var num_visits=0;
         var visitFiltered = $filter('unique')(result,'run');
         angular.forEach(visitFiltered, function(value, key) {
           if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true
-            && visitFiltered[contador].destination != "No encontrado"){
+            &&
+            visitFiltered[contador].destination != "No encontrado"){
            num_visits++
+
           }
           contador++;
         });
+        console.log(visitFiltered);
         $scope.num_visits = num_visits;
       });
     };
@@ -119,12 +122,12 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       .$promise
       .then(function(result){
         //$scope.num_contractors = result;
-        var contador = 0;
-        var num_contractors = 0;
+        var contador=0;
+        var num_contractors=0;
         var contractorFiltered = $filter('unique')(result,'fullname');
         angular.forEach(contractorFiltered, function(value, key) {
             if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true &&
-              contractorFiltered[contador].place != "" && contractorFiltered[contador].place != undefined &&
+              contractorFiltered[contador].place!="" && contractorFiltered[contador].place !=undefined &&
               contractorFiltered[contador].place != "No encontrado"){
               num_contractors++
             }
@@ -201,18 +204,27 @@ if(localStorage.verificador){ //Primera vez que entra del login.
 
     //For dennied number in navbar.
     function getRejected() {
-      var today = new Date(ano+"/"+mes+"/"+dia);
-      var date = today.toISOString();
-       Record.find( { filter:
-        { where: { and:
-         [{
-          is_permitted: false,
-          to_blacklist: {neq: true},
-          input_datetime: {gte:  date}}]
-        }}})
+      Record.find({ filter:
+       { where: { and :
+          [{is_input: true},
+          {output_datetime: undefined},
+          {is_permitted : false}]
+        }}
+      })
       .$promise
       .then(function(result){
-        $scope.Dennied = result.length;
+        var contador=0;
+        $scope.Dennied = 0;
+        angular.forEach(result, function(value, key) {
+          var INPUT = new Date(result[contador].input_datetime)
+          if(INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia)){
+            $scope.Dennied++;
+
+          }
+          contador++
+        });
+
+
       });
     };
     //End: For dennied number in navbar
@@ -286,12 +298,12 @@ if(localStorage.verificador){ //Primera vez que entra del login.
       })
       .$promise
       .then(function(results) {
-        var supreme_counter = 0;
+        var supreme_counter =0;
         var arreglo = results;
-        var contador = 0;
+        var contador =0;
         var contadorFilter = 0;
         var arreglo2 = $filter('unique')($scope.RecordsAll,'fullname');
-        $scope.arregloPeople = {};
+        $scope.arregloPeople={};
         angular.forEach(arreglo, function(value, key) {
           var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
           $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
@@ -304,6 +316,7 @@ if(localStorage.verificador){ //Primera vez que entra del login.
 
     //End: Table of departments with number of people in dashboard
 
+
     //Get collections.
     getAllPlacesFiltered();
     getNumEmployes();
@@ -315,5 +328,6 @@ if(localStorage.verificador){ //Primera vez que entra del login.
     getNumPatentsContractors();
     getCompany();
     getRecords();
+
 
   }]);
