@@ -14,18 +14,25 @@ angular
     $scope.recordsForPatents ={};
 
     //For Dates.
+    var f=new Date();
+    var ano = f.getFullYear();
+    var mes = f.getMonth()+1;
+    var dia = f.getDate();
+
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    function getTodayByDefault(){
+    function getTodayByDefault(profile){
+      var today = new Date(ano+"/"+mes+"/"+dia);
+      var date = today.toISOString();
       Record.find( { filter:
        { where: { and:
         [{
-         profile: "E",
-         is_permitted: true
-         }]
+         profile: profile,
+         is_permitted: true,
+         input_datetime: {gte:  date}}]
        }},
          order:  ['input_datetime DESC']})
      .$promise
@@ -34,8 +41,6 @@ angular
        $scope.records = results;
      });
     }
-
-    getTodayByDefault();
 
     function getParkings() {
       Parking.find()
@@ -148,17 +153,12 @@ angular
 
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
-      case 'employees' : getVehicleType(); break;
-      case 'visits' :  getVehicleType(); getDestination(); getParkings(); break;
-      case 'contractors' : getVehicleType(); getDestination(); break;
+      case 'employees' : getVehicleType(); getTodayByDefault("E"); break;
+      case 'visits' :  getVehicleType(); getDestination(); getParkings(); getTodayByDefault("V"); break;
+      case 'contractors' : getVehicleType(); getDestination(); getTodayByDefault("C"); break;
       case 'dennieds' : getDennieds(); break;
       case 'manualRecords': getManualRecords(); break;
     }
-
-    var f=new Date();
-    var ano = f.getFullYear();
-    var mes = f.getMonth()+1;
-    var dia = f.getDate();
 
     $scope.filterByDate = function(input){
       return function(item){
