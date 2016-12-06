@@ -24,11 +24,11 @@ function($scope,
         }
       });
 
-    }else if(!localStorage.verificador && localStorage.verificador!= undefined){console.log("Usuario logeado");}
-    else{
+    } else if(!localStorage.verificador && localStorage.verificador!= undefined){
+      console.log("Usuario logeado");
+    } else{
       localStorage.clear();
       $window.location.href = '/login';
-
     }
     //End: Login
 
@@ -41,20 +41,9 @@ function($scope,
     };
     //End: Logout Function
 
-    //Get collections.
-    getAllPlacesFiltered();
-    getNumEmployes();
-    getNumVisits();
-    getNumContractos();
-    getRejected();
-    getNumPatentsEmployees();
-    getNumPatentsVisits();
-    getNumPatentsContractors();
-    getCompany();
-    getRecords();
-
     $scope.arregloPeople = {};
     $scope.RecordsAll = {};
+    $scope.placesFiltered = {};
 
     //Numbers in Dashboard
     //Number of employees inside
@@ -65,8 +54,7 @@ function($scope,
             {is_input: true},
             {output_datetime: undefined},
             {profile: "E"},
-            {is_permitted: true},
-            {company_code: {neq: null}}
+            {is_permitted: true}
           ]
         }}
       })
@@ -75,24 +63,13 @@ function($scope,
         var contador = 0;
         var num_employees = 0;
         var employeeFiltered = $filter('unique')(result,'fullname');
-        angular.forEach(employeeFiltered, function(value, key) {
-          console.log("placesFiltered", $scope.placesFiltered);
-          var newTemp = $filter("filter")($scope.placesFiltered, {name: employeeFiltered[contador].place});
-          console.log(newTemp);
-          try {
-            if(newTemp.length){
-              if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true &&
-                employeeFiltered[contador].place!="" && employeeFiltered[contador].place !=undefined &&
-                employeeFiltered[contador].place != "No encontrado"){
-                  num_employees++;
-                }
-            }
-          } catch (e) {
-            console.log(e);
+         angular.forEach(employeeFiltered, function(value, key) {
+          if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true){
+            num_employees++
           }
           contador++;
         });
-        $scope.num_employees = num_employees;
+        $scope.num_employees = num_employees
       });
     };
 
@@ -113,10 +90,8 @@ function($scope,
               var visitFiltered = $filter('unique')(result,'run');
               angular.forEach(visitFiltered, function(value, key) {
                 if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true
-                  &&
-                  visitFiltered[contador].destination != "No encontrado"){
+                  && visitFiltered[contador].destination != "No encontrado"){
                     num_visits++
-
                   }
                   contador++;
                 });
@@ -332,7 +307,17 @@ function($scope,
                   }
 
                   //End: Table of departments with number of people in dashboard
-
+                  //Get collections.
+                  getAllPlacesFiltered();
+                  getNumEmployes();
+                  getNumVisits();
+                  getNumContractos();
+                  getRejected();
+                  getNumPatentsEmployees();
+                  getNumPatentsVisits();
+                  getNumPatentsContractors();
+                  getCompany();
+                  getRecords();
 
 
                 }]);

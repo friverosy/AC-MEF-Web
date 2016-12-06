@@ -3,9 +3,9 @@ angular
   .controller('RecordController', ['$scope', '$state', '$filter', 'Record', 'Parking', 'Place', 'Destination', 'VehicleType', 'Blacklist', 'People', '$http', '$window', '$resource','PubSub', 'filterFilter' , function($scope,
       $state, $filter, Record, Parking, Place, Destination, VehicleType, Blacklist, People, $http, $window, $resource, PubSub, filterFilter) {
 
-    //for blacklist
-     $scope.blacklist = {};
-     $scope.verificador_noencontrado = false;
+    //For blacklist
+    $scope.blacklist = {};
+    $scope.verificador_noencontrado = false;
 
     //Manual Outputs
     $scope.manual_outputs = [];
@@ -34,10 +34,9 @@ angular
          is_permitted: true,
          input_datetime: {gte:  date}}]
        }},
-         order:  ['input_datetime DESC']})
+      order:  ['input_datetime DESC']})
      .$promise
      .then(function(results) {
-       //console.log(results);
        $scope.records = results;
      });
     }
@@ -83,13 +82,11 @@ angular
       })
     }
 
-
     function getPendings() {
-      Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC']  } } )
+      Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
         $scope.pendings = results;
-        console.log($scope.pendings);
         $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
       })
     }
@@ -109,7 +106,8 @@ angular
         });
       })
     }
-     function getInPlant() {
+
+    function getInPlant() {
       Record.find( { filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, fullname: {neq: null} }]}, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
@@ -117,7 +115,6 @@ angular
         //$scope.inPlant = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
       })
     }
-
 
     function getDennieds() {
       Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: ['input_datetime DESC'] } } )
@@ -292,9 +289,10 @@ angular
         })
     };
 
+    // Button on pendings view.
     $scope.addOutput = function(record) {
       record.type = "PEN";
-      record.state = "C";
+      record.state = "C"; // Closed.
       record.reviewed = false;
       record.is_input = false;
       var dateinput = new Date (record.input_datetime);
@@ -302,6 +300,7 @@ angular
       record.updated = new Date();
       record.user = localStorage.email;
       record.$save();
+      console.log("actualizado.");
       getPendings();
     }
 
@@ -324,7 +323,6 @@ angular
         .create(record)
         .$promise
         .then(function(record) {
-          console.log("sacado");
           $scope.newRecord = '';
           // getAll();
           getPendings();

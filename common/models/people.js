@@ -133,10 +133,10 @@ module.exports = function(People) {
       //console.log("profile",profile);
       if (profile === "E") {
          // need to look for the newest file
-         var text = fs.readFileSync('/opt/marcasmef/lastEmployees.txt','utf8');        
+         var text = fs.readFileSync('/opt/marcasmef/lastEmployees.txt','utf8');
          var lines = text.trim().split('\n');
          var lastEmployee = lines[lines.length -1];
-	 var xml = lastEmployee; //ROUTE TO XML (EMPLOYEE OPT/MARCASMEF/NAMEXML)
+	       var xml = lastEmployee; //ROUTE TO XML (EMPLOYEE OPT/MARCASMEF/NAMEXML)
          // console.log(xml);
       } else if (profile === "C") {
          // need to look for the newest file

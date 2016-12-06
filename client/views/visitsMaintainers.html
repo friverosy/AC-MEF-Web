@@ -31,7 +31,7 @@
                       </div>
                        <div class="form-group">
                         <input type="text" class="form-control focus" name="company"
-                            placeholder="Nombre de Compañia" autocomplete="off" 
+                            placeholder="Nombre de Compañia" autocomplete="off"
                             ng-model="newPeople.company">
                       </div>
                       <button class="btn btn-info" ng-click="addVisit()">Agregar</button>
@@ -51,20 +51,22 @@
                             <th>Rut</th>
                             <th>Nombre</th>
                             <th>Compañía</th>
+                            <th>Eliminar</th>
                           </tr>
                       </thead>
                       <tbody>
-                        <tr ng-repeat="people in peoples" ng-if= "people.profile == 'V'">
+                        <tr ng-repeat="person in people">
                           <td>{{$index + 1}}</td>
-                          <td>{{people.run}}</td>
+                          <td>{{person.run}}</td>
                           <td><input
                                type="text"
-                               ng-model="people.fullname"
-                               ng-change="update(people)" /></td>
+                               ng-model="person.fullname"
+                               ng-change="update(person)" /></td>
                           <td><input
                                type="text"
-                               ng-model="people.company"
-                               ng-change="update(people)" /></td>
+                               ng-model="person.company"
+                               ng-change="update(person)" /></td>
+                          <td><a class="glyphicon glyphicon-remove pull-right" ng-click="deleteVisit(person)"></a></td>
                         </tr>
                       </tbody>
                     </table>

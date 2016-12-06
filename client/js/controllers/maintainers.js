@@ -1,14 +1,10 @@
 angular
   .module('app')
   .controller('MaintainersController', ['$scope', '$state', 'Parking', 'People', 'Destination', 'VehicleType', 'Profile', 'PubSub', function($scope, $state, Parking, People, Destination, VehicleType, Profile, PubSub) {
-  
-  
+
+
     $scope.newPeople={};
     $scope.people={};
-
-    function pasuser() {
-      console.log("HOLA");
-    }
 
     function getVehicleType() {
       VehicleType.find()
@@ -43,10 +39,10 @@ angular
     }
 
     function getPeople() {
-      People.find()
+      People.find({filter: { where: { profile: 'V' } } })
       .$promise
       .then(function(results) {
-        $scope.peoples = results;
+        $scope.people = results;
       });
     }
 
@@ -271,7 +267,7 @@ angular
       profile.$save(profile);
     };
 
-       //Manual Record Visits
+    //Manual Record Visits
     $scope.updateReadManualRecordVisits = function(profile) {
       if (profile.ManualRecordVisits == false) {
         profile.ManualRecordVisits = true;
@@ -408,14 +404,15 @@ angular
       console.log(profile);
       profile.$save(profile);
     };
+
     //Visits maintainers
     $scope.addVisit = function() {
       if(($scope.newPeople.fullname == undefined || $scope.newPeople.fullname == "")
         || ($scope.newPeople.run == undefined || $scope.newPeople.run == "")
         || ($scope.newPeople.company == undefined || $scope.newPeople.company == "")){
-          
+
           alert("Debe ingesar todos los datos solicitados");
-        
+
         }
       else{
           $scope.newPeople.profile = "V";
@@ -425,14 +422,21 @@ angular
             $scope.newPeople.run = "";
             $scope.newPeople.company = "";
         });
-          
       }
     };
 
     $scope.clearVisit = function() {
-        $scope.newPeople.fullname = "";
-            $scope.newPeople.run = "";
-            $scope.newPeople.company = "";
+      $scope.newPeople.fullname = "";
+      $scope.newPeople.run = "";
+      $scope.newPeople.company = "";
+    };
+
+    // Del Visit.
+    $scope.deleteVisit = function(people) {
+      people.is_permitted = false;
+      people.$save(people);
+      console.log("actualizado");
+      getPeople();
     };
 
 }]);
