@@ -18,16 +18,15 @@ angular.module('app')
     $scope.employee.valuationDatePickerIsOpen = false;
 
   	$scope.employee.searchContractor = function() {
-      People.find( { filter: { where: { run: $scope.employee.people_run} } } )
+      People.find( { filter: { where: { "_id": $scope.employee.people_run, profile: "C" } } } )
       .$promise
       .then(function mySucces(results) {
           $scope.peoples = results;
           record = results;
-          console.log(record);
           if(record!=""){
-            if(record[0].run == $scope.employee.people_run  && record[0].profile == "C"){
+            if(record[0].id == $scope.employee.people_run){
               $scope.employee.place = record[0].place;
-              $scope.employee.people_run = record[0].run;
+              $scope.employee.people_run = record[0].id;
               $scope.employee.card = record[0].card;
               $scope.employee.company_code = record[0].company_code;
               $scope.employee.is_permitted = record[0].is_permitted;
@@ -103,7 +102,7 @@ angular.module('app')
             $scope.record.input_datetime = $scope.employee.valuationDate;
         } else {
             $scope.record.output_datetime = $scope.employee.valuationDate;
-        } 
+        }
 
       $scope.record.is_permitted = $scope.employee.is_permitted;
       $scope.record.card = $scope.employee.card;

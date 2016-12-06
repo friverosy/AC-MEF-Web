@@ -110,7 +110,7 @@ angular.module('app')
     }
 
     $scope.getPeople = function(run) {
-      People.find( { filter: { where: { run: run.people_run} } } )
+      People.find( { filter: { where: { "_id": run.people_run} } } )
       .$promise
       .then(function(results) {
         $scope.peoples = results;
@@ -153,4 +153,3 @@ angular.module('app')
     getParkings();
 
 }]);
-

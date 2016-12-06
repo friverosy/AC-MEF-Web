@@ -23,13 +23,13 @@ angular.module('app')
         alert("Ingrese RUT o tarjeta");
       } else {
         if($scope.employee.people_run.length >= 7){
-          People.find( { filter: { where: { run: $scope.employee.people_run} } } )
+          People.find( { filter: { where: { "_id": $scope.employee.people_run, profile: "E" } } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
             record = results;
             if (record != "") {
-              if (record[0].run == $scope.employee.people_run && record[0].profile == "E") {
+              if (record[0].id == $scope.employee.people_run) {
                 $scope.employee.fullname = record[0].fullname;
                 $scope.employee.people_run = record[0].id;
                 $scope.employee.card = record[0].card;
