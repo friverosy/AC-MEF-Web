@@ -39,7 +39,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="record in records | orderBy: '-input_datetime' | itemsPerPage:15">
+              <tr dir-paginate="record in records | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15 | filter: expression">
                 <td ng-if="record.is_permitted" class="text-green">
                   <strong ng-if="record.blacklist" class="text-red">*</strong>
                   <strong>{{record.run}}</strong>
@@ -111,4 +111,3 @@
   </div><!-- /.row -->
   <button class="btn btn-sm btn-primary" ng-click="exportData()">Exportar a .xls</button>
 </section><!-- /.content -->
-
