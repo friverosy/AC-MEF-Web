@@ -36,7 +36,6 @@ module.exports = function(Record) {
           // nothing yet
           break;
         case "V": //Visit
-          ctx.instance.is_permitted=true;
           // Add visit on people.
           if (ctx.instance.run.length >= 5) { // && card !==0
             var People = app.models.People
@@ -151,13 +150,14 @@ module.exports = function(Record) {
 
   function onBlacklist(ctx) {
     return new Promise(function (resolve, reject) {
-      var Blacklist = app.models.Blacklist
+      var Blacklist = app.models.Blacklist;
+      console.log(ctx.run, ctx.card);
       Blacklist.findOne(
-        { where: {or: [{ run: ctx.run}, { card: ctx.card }] },
-        order: 'id DESC'},
+        { where: { run: ctx.run} },
         function (err, recordFinded) {
           if (err) { reject(err) }
-          if (recordFinded != null) {
+          if (recordFinded !== null) {
+            console.log("persona encontrada en la lista negra", ctx.fullname);
             resolve(ctx.id)
           } else {
             resolve(0)
@@ -260,6 +260,7 @@ module.exports = function(Record) {
         if(ctx.instance.status === "DO") { saveOutput(ctx.instance.id) }
         else { deleteRecord(ctx.instance.id) }
       } else {
+        console.log(ctx.instance.is_input);
         onBlacklist(ctx.instance)
         .then(id => setBlacklist(id))
         .catch(err => console.log("Error onBlacklist", err))

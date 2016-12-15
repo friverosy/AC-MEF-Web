@@ -18,15 +18,15 @@ angular.module('app')
     $scope.employee.valuationDatePickerIsOpen = false;
 
   	$scope.employee.searchContractor = function() {
-      People.find( { filter: { where: { "_id": $scope.employee.people_run, profile: "C" } } } )
+      People.find( { filter: { where: { run: $scope.employee.people_run, profile: "C" } } } )
       .$promise
       .then(function mySucces(results) {
           $scope.peoples = results;
           record = results;
           if(record!=""){
-            if(record[0].id == $scope.employee.people_run){
+            if(record[0].run == $scope.employee.people_run){
               $scope.employee.place = record[0].place;
-              $scope.employee.people_run = record[0].id;
+              $scope.employee.people_run = record[0].run;
               $scope.employee.card = record[0].card;
               $scope.employee.company_code = record[0].company_code;
               $scope.employee.is_permitted = record[0].is_permitted;
@@ -110,9 +110,8 @@ angular.module('app')
       $scope.record.is_permitted = $scope.employee.is_permitted;
       $scope.record.company = $scope.employee.company;
       $scope.record.company_code = $scope.employee.company_code;
-      $scope.record.bus=false;
+      $scope.record.bus = false;
 
-      console.log($scope.record);
       Record.create($scope.record, function(err,model){
         alert("Contratista Registrado con exito");
         $window.location.reload();
@@ -153,8 +152,7 @@ angular.module('app')
     }
 
     $scope.getPeople = function(run){
-      console.log(run);
-      People.find( { filter: { where: { run: run.people_run} } } )
+      People.find( { filter: { where: { run: run.people_run } } } )
       .$promise
       .then(function(results) {
         $scope.peoples = results;

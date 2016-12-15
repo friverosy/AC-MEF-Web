@@ -64,13 +64,14 @@ angular.module('app')
         }
 
         $scope.employee.authorized_by
+        $scope.record.is_permitted = true;
         $scope.record.type = "MR";
         $scope.record.profile = "V";
         $scope.record.reviewed = false;
 
         $scope.record.company = $scope.employee.company;
         $scope.record.authorized_by = $scope.employee.authorized_by;
-        $scope.record.bus=false;
+        $scope.record.bus = false;
 
         //validation for datetime (input_datetime and outputdatetime)
         if ($scope.record.is_input){
@@ -79,7 +80,7 @@ angular.module('app')
             $scope.record.output_datetime = $scope.employee.valuationDate;
         }
 
-        Record.create($scope.record, function(err,model) {
+        Record.create($scope.record, function(err, model) {
           alert("Visita Registrada con exito");
           $window.location.reload();
         });
@@ -122,7 +123,7 @@ angular.module('app')
       .$promise
       .then(function(results) {
         $scope.vehicleTypes = results;
-        $scope.employee.selectedOptionVehicleTypes= $scope.vehicleTypes[0];
+        $scope.employee.selectedOptionVehicleTypes = $scope.vehicleTypes[0];
       });
     }
 

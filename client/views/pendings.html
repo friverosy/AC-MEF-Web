@@ -32,9 +32,8 @@
               </thead>
               <tbody>
                 <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
-                  <td>
-                    <strong ng-if="record.blacklist" class="text-red">*</strong>
-                    {{record.run}}
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                   </td>
                   <td>{{record.fullname}}</td>
                   <td>{{record.company}}</td>
@@ -45,7 +44,7 @@
           					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
                     <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
           				  </td>
-                  <td><a class="fa fa-exchange" href ng-click="addOutput(record)"></a></td>
+                  <td><a class="fa fa-exchange" href ng-click="showDiv=true; addOutput(record)" ng-show="!showDiv"></a></td>
                 </tr>
               </tbody>
             </table>
@@ -59,4 +58,3 @@
     </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
-

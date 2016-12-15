@@ -7,6 +7,7 @@ angular
     'ngAnimate',
     'angular.filter',
     'ui.bootstrap',
+    'ui.bootstrap.modal',
     'ui.bootstrap.datetimepicker',
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
@@ -68,10 +69,7 @@ angular
         url: '/employee_individual',
         templateUrl: 'views/employee_individual.html',
         controller: 'EmployeeController',
-        onExit: unSubscribeAll,
-        data: {
-          accion : "employee_individual"
-        }
+        onExit: unSubscribeAll
       })
       .state('pendings', {
         url: '/pendings',

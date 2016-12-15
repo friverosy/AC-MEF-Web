@@ -28,15 +28,14 @@
                     <th>Perfil</th>
                     <th>Entrada</th>
                     <th>Salida</th>
-                    <th>Fecha Actualización</th>
+                    <th>Actualizado</th>
                     <th>Usuario</th>
                   </tr>
               </thead>
               <tbody>
                 <tr dir-paginate="record in manual_outputs  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
-                  <td>
-                    <strong ng-if="record.blacklist" class="text-red">*</strong>
-                    {{record.run}}
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                   </td>
                   <td>{{record.fullname}}</td>
                   <td>{{record.company}}</td>
@@ -63,5 +62,3 @@
     </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
-
-

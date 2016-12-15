@@ -108,7 +108,7 @@ angular
     }
 
     function getInPlant() {
-      Record.find( { filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, fullname: {neq: null} }]}, order: ['input_datetime DESC'] } } )
+      Record.find({ filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, is_permitted: true }]}, order: ['input_datetime DESC'] } } )
       .$promise
       .then(function(results) {
         $scope.inPlant = results;
@@ -299,8 +299,7 @@ angular
       record.output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
       record.updated = new Date();
       record.user = localStorage.email;
-      record.$save();
-      console.log("actualizado.");
+      record.$save(record);
       getPendings();
     }
 
@@ -355,7 +354,6 @@ angular
       record.$save(record)
       getManualRecords();
     }
-
 
     //Get Collections
     getRecords();

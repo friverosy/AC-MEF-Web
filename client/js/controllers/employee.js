@@ -22,16 +22,17 @@ angular.module('app')
       if ($scope.employee.people_run === undefined) {
         alert("Ingrese RUT o tarjeta");
       } else {
-        if($scope.employee.people_run.length >= 7){
-          People.find( { filter: { where: { "_id": $scope.employee.people_run, profile: "E" } } } )
+        if ($scope.employee.people_run.length >= 7) {
+          People.find( { filter: { where: { run: $scope.employee.people_run, profile: "E" } } } )
           .$promise
           .then(function mySucces(results) {
             $scope.peoples = results;
             record = results;
+            console.log(results);
             if (record != "") {
-              if (record[0].id == $scope.employee.people_run) {
+              if (record[0].run == $scope.employee.people_run) {
                 $scope.employee.fullname = record[0].fullname;
-                $scope.employee.people_run = record[0].id;
+                $scope.employee.people_run = record[0].run;
                 $scope.employee.card = record[0].card;
                 $scope.employee.place = record[0].place;
                 $scope.employee.company_code = record[0].company_code;
@@ -59,7 +60,7 @@ angular.module('app')
             record = results;
             if (record.length > 0) {
               $scope.employee.fullname = record[0].fullname;
-              $scope.employee.people_run = record[0].id;
+              $scope.employee.people_run = record[0].run;
               $scope.employee.card = record[0].card;
               $scope.employee.place = record[0].place;
               $scope.employee.company_code = record[0].company_code;
