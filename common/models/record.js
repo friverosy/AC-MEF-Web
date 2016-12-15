@@ -239,18 +239,19 @@ module.exports = function(Record) {
 
   Record.observe('after save', function(ctx, next) {
     if (ctx.instance) {
-      console.log('after save', ctx.instance);
-      if(ctx.instance.updating !== undefined && ctx.instance.updating !== ""){
+      if(ctx.instance.updating !== undefined || ctx.instance.updating !== ""){
         if(ctx.instance.profile === "V"){
+          console.log("is a visit");
             var People = app.models.People
-            People.upsert(
+            People.upsertWithWhere(
+            {run: ctx.instance.run},
             {fullname: ctx.instance.fullname,
              company: ctx.instance.company,
              run: ctx.instance.run,
              profile: ctx.instance.profile},
-            function(err, instance, created) {
+            function(err, model) {
                   if (err) { console.log(err) }
-                  else if (created) console.log("Visit Updated".green, ctx.instance.fullname)
+                  else if (model) console.log("Visit Updated".green, model)
                }
             )
 
