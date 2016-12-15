@@ -1,6 +1,7 @@
 /* TYPE:
 ON = Online,
 OFF = Offline,
+PDA = Online,
 MR = Manual Record,
 CT = Closed of turn,
 PEN = from pendings view, manual record with input & output datetime
@@ -37,19 +38,12 @@ module.exports = function(Record) {
           break;
         case "V": //Visit
           // Add visit on people.
-          if (ctx.instance.run.length >= 5) { // && card !==0
-            var People = app.models.People
-            //ctx.instance.is_permitted = true;
-            People.findOrCreate(
-              {where: {run: ctx.instance.run}},
-              {fullname: ctx.instance.fullname, run: ctx.instance.run,
-               company: ctx.instance.company,
-               profile: ctx.instance.profile},
-              function(err, instance, created) {
-                if (err) { console.log(err) }
-                else if (created) console.log("New visit created".green, ctx.instance.fullname)
-              }
-            )
+          if (ctx.instance.run.length <= 5) {
+           /* This person its an employee
+           who was registered as a visit
+           because it was not found in the database of employees */
+            ctx.instane.profile = "E";
+            ctx.instane.is_permitted = false;
           }
           break;
         default:
