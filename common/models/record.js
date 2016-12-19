@@ -242,6 +242,7 @@ module.exports = function(Record) {
             {fullname: ctx.instance.fullname,
              company: ctx.instance.company,
              run: ctx.instance.run,
+             is_permitted: false,
              profile: ctx.instance.profile},
             function(err, model) {
                   if (err) { console.log(err) }

@@ -39,7 +39,7 @@ angular
     }
 
     function getPeople() {
-      People.find({filter: { where: { profile: 'V' } } })
+      People.find({filter: { where: { profile: 'V', is_permitted: true } } })
       .$promise
       .then(function(results) {
         $scope.people = results;
