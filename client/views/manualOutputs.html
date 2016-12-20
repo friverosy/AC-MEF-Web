@@ -30,10 +30,11 @@
                     <th>Salida</th>
                     <th>Actualizado</th>
                     <th>Usuario</th>
+                    <th>Opción</th>
                   </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="record in manual_outputs  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                <tr dir-paginate="record in manualrecords | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
                   <td class="text-green">
                     <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                   </td>
@@ -49,6 +50,7 @@
                   <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                   <td>{{record.updated | date:'dd/MM HH:mm:ss'}}</td>
                   <td>{{record.user}}</td>
+                  <td><a class="glyphicon glyphicon glyphicon-ok"  ng-click="updateManualRecord(record)"></a></td>
                 </tr>
               </tbody>
             </table>

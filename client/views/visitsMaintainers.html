@@ -57,12 +57,14 @@
                       <tbody>
                         <tr ng-repeat="person in people">
                           <td>{{$index + 1}}</td>
-                          <td>{{person.run}}</td>
+                          <td class="text-green">{{person.run}}</td>
                           <td><input
+                               class="form-control"
                                type="text"
                                ng-model="person.fullname"
                                ng-change="update(person)" /></td>
                           <td><input
+                               class="form-control"
                                type="text"
                                ng-model="person.company"
                                ng-change="update(person)" /></td>

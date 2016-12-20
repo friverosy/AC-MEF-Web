@@ -43,7 +43,7 @@ module.exports = function(Record) {
            who was registered as a visit
            because it was not found in the database of employees */
             ctx.instane.profile = "E";
-            ctx.instane.is_permitted = false;
+            ctx.instane.is_permitted = true;
           }
           break;
         default:
@@ -242,7 +242,7 @@ module.exports = function(Record) {
             {fullname: ctx.instance.fullname,
              company: ctx.instance.company,
              run: ctx.instance.run,
-             is_permitted: false,
+             is_permitted: true,
              profile: ctx.instance.profile},
             function(err, model) {
                   if (err) { console.log(err) }

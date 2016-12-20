@@ -58,7 +58,7 @@
                 					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
                           <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
                 				</td>
-                        <td><a class="glyphicon glyphicon glyphicon-ok"  ng-click="updateManualRecord(record)"></a></td>
+                        <td><a class="glyphicon glyphicon glyphicon-ok"  ng-click="showDiv=true; updateManualRecord(record)" ng-show="!showDiv"></a></td>
                     </tr>
                 </tbody>
               </table>

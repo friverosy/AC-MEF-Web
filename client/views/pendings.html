@@ -31,7 +31,7 @@
                   </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                <tr dir-paginate="record in pendings  | filter: searchKeyword | orderBy: '-id' | itemsPerPage:15">
                   <td class="text-green">
                     <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                   </td>

@@ -24,22 +24,21 @@ angular
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
-    function getTodayByDefault(profile){
-      var today = new Date(ano+"/"+mes+"/"+dia);
-      var date = today.toISOString();
-      Record.find( { filter:
-       { where: { and:
-        [{
-         profile: profile,
-         is_permitted: true,
-         input_datetime: {gte:  date}}]
-       }},
-      order:  ['input_datetime DESC']})
-     .$promise
-     .then(function(results) {
-       $scope.records = results;
-     });
-    }
+    // function getTodayByDefault(profile){
+    //   var today = new Date(ano+"/"+mes+"/"+dia);
+    //   var date = today.toISOString();
+    //   Record.find( { filter:
+    //    { where: { and:
+    //     [{
+    //      profile: profile,
+    //      is_permitted: true,
+    //      input_datetime: {gte:  date}}]
+    //    },order: '_id DESC'}})
+    //  .$promise
+    //  .then(function(results) {
+    //    $scope.records = results;
+    //  });
+    // }
 
     function getParkings() {
       Parking.find()
@@ -66,7 +65,7 @@ angular
     }
 
     function getAll() {
-      Record.find({ filter: { order: ['id ASC'] } })
+      Record.find({ filter: { order: '_id ASC' } })
       .$promise
       .then(function(results) {
         $scope.todayall = results;
@@ -74,7 +73,7 @@ angular
     }
 
     function getManualRecords() {
-      Record.find( { filter: { where: { type:"PEN", reviewed: false }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where: { type:"PEN", reviewed: false }, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
@@ -83,7 +82,7 @@ angular
     }
 
     function getPendings() {
-      Record.find( { filter: { where:  { is_input: true, is_permitted: true }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where:  { is_input: true, is_permitted: true } } } )
       .$promise
       .then(function(results) {
         $scope.pendings = results;
@@ -92,7 +91,7 @@ angular
     }
 
     function getManualOutputs() {
-      Record.find( { filter: { where:  { is_input: false }, order: ['input_datetime DESC']  } } )
+      Record.find( { filter: { where:  { is_input: false }, order: '_id DESC'  } } )
       .$promise
       .then(function(results) {
         var contador_manual_outputs =0;
@@ -108,7 +107,7 @@ angular
     }
 
     function getInPlant() {
-      Record.find({ filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, is_permitted: true }]}, order: ['input_datetime DESC'] } } )
+      Record.find({ filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, is_permitted: true }]}, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
         $scope.inPlant = results;
@@ -117,7 +116,7 @@ angular
     }
 
     function getDennieds() {
-      Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
         $scope.dennieds = results;
@@ -141,7 +140,7 @@ angular
     }
 
     function getInputPatents() {
-      Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: ['input_datetime DESC'] } } )
+      Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
         $scope.inputPatents = results;
@@ -150,9 +149,9 @@ angular
 
     switch($state.current.data.accion) {
       case 'pendings' : getPendings(); break;
-      case 'employees' : getVehicleType(); getTodayByDefault("E"); break;
-      case 'visits' :  getVehicleType(); getDestination(); getParkings(); getTodayByDefault("V"); break;
-      case 'contractors' : getVehicleType(); getDestination(); getTodayByDefault("C"); break;
+      case 'employees' : getVehicleType(); break;
+      case 'visits' :  getVehicleType(); getDestination(); getParkings(); break;
+      case 'contractors' : getVehicleType(); getDestination(); break;
       case 'dennieds' : getDennieds(); break;
       case 'manualRecords': getManualRecords(); break;
     }
@@ -171,7 +170,7 @@ angular
        results_inputNotFind = [];
        Record.find( { filter: { where:
         { profile: profile,
-        is_permitted: true }, order:  ['input_datetime DESC'] } } )
+        is_permitted: true }, order:  '_id DESC' } } )
       .$promise
       .then(function(results) {
         var counter_inputs_undefined =0;
@@ -186,6 +185,7 @@ angular
          $scope.records = results_inputNotFind;
       });
      }
+
      //input_datetime not undefined in records
     $scope.eventDateFilter = function(column, profile){
       if(column ==='today'){
@@ -359,7 +359,5 @@ angular
     getRecords();
     getInputPatents();
     getInPlant();
-    getManualOutputs();
-
 
   }]);

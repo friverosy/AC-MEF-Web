@@ -43,7 +43,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="record in records | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+              <tr dir-paginate="record in records | filter: searchKeyword | itemsPerPage:15">
                 <td><strong>{{record.run}}<strong></td>
                 <td>
                   <input
