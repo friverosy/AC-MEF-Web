@@ -1,7 +1,7 @@
 <script src="../../../js/controllers/login.js"></script>
 <li class="header">MENU NAVEGACIÓN</li>
 <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-<li><a href="/#/inPlant"><i class="fa fa-th-list"></i> <span>En Planta</span></a></li>
+<li><a href="/#/logbook/inside"><i class="fa fa-th-list"></i> <span>En Planta</span></a></li>
 <li class="treeview">
   <a href="">
     <i class="fa fa-table"></i>
@@ -9,10 +9,9 @@
     <i class="fa fa-angle-left pull-right"></i>
   </a>
   <ul class="treeview-menu">
-    <li><a href="/#/employees"><i class="fa fa-circle-o text-green"></i> Empleados</a></li>
-    <li><a href="/#/contractors"><i class="fa fa-circle-o text-yellow"></i> Contratistas</a></li>
-    <li><a href="/#/visits"><i class="fa fa-circle-o text-red"></i> Visitas</a></li>
-    <!-- <li><a href="/#/todayall"><i class="fa fa-circle-o text-aqua"></i> Todos</a></li> -->
+    <li><a href="/#/logbook/employees"><i class="fa fa-circle-o text-green"></i> Empleados</a></li>
+    <li><a href="/#/logbook/contractors"><i class="fa fa-circle-o text-yellow"></i> Contratistas</a></li>
+    <li><a href="/#/logbook/visits"><i class="fa fa-circle-o text-red"></i> Visitas</a></li>
   </ul>
 </li>
 <li class="treeview">
@@ -22,24 +21,17 @@
     <i class="fa fa-angle-left pull-right"></i>
   </a>
   <ul class="treeview-menu">
-      <li><a href="/#/employee_individual"><i class="fa fa-user"></i> Empleados</a></li>
-      <li><a href="/#/contractor/new"><i class="fa fa-user"></i> Contratistas</a></li>
-      <li><a href="/#/visit/new"><i class="fa fa-user"></i> Visita</a></li>
+      <li><a href="/#/logbook/employees/new"><i class="fa fa-user"></i> Empleados</a></li>
+      <li><a href="/#/logbook/contractors/new"><i class="fa fa-user"></i> Contratistas</a></li>
+      <li><a href="/#/logbook/visits/new"><i class="fa fa-user"></i> Visita</a></li>
   </ul>
 </li>
-<!--<li><a href="/#/manualOutputs"><i class="fa fa-sign-out"></i> <span>Salidas Manuales</span></a></li>-->
-<!-- <li><a href="/#/visit_calendar"><i class="fa fa-calendar"></i> Agendar Visita</a></li> -->
-<!-- <li><a href="/#/reports"><i class="fa fa-pie-chart"></i> <span>Reportes</span></a></li> -->
 <li class="header">ADMINISTRACIÓN</li>
-<li><a href="/#/maintainers"><i class="fa fa-book"></i> <span>Mantenedores</span></a></li>
+<li><a href="/#/admin/maintainers"><i class="fa fa-book"></i> <span>Mantenedores</span></a></li>
 <!--<li><a href="/#/profilesManagement"><i class="fa fa-unlock-alt"></i> <span>Autorización</span></a></li>-->
-<li><a href="/#/visitsMaintainers"><i class="fa fa-users"></i> <span>Visitas</span></a></li>
-<li><a href="/#/manualRecords"><i class="fa fa-check-square-o"></i> <span>Revisión Manual</span></a></li>
-<li><a href="/#/blacklist"><i class="fa fa-eye"></i> <span>Lista sensible</span></a></li>
+<li><a href="/#/people/visits/maintainers"><i class="fa fa-users"></i> <span>Visitas</span></a></li>
+<li><a href="/#/logbook/manuals"><i class="fa fa-check-square-o"></i> <span>Revisión Manual</span></a></li>
+<li><a href="/#/admin/blacklist"><i class="fa fa-eye"></i> <span>Lista sensible</span></a></li>
 
 <li class="header">ETIQUETAS</li>
-<li><a href="/#/pendings"><i class="fa fa-circle-o text-yellow"></i> <span>Pendientes</span></a></li>
-<li><a href="/#/dennieds"><i class="fa fa-circle-o text-red"></i> <span>Rechazados</span></a></li>
-<!-- <li><a type="button" class="btn btn-danger btn-block btn-flat" ng-href="/login">Logout</a></li> -->
-
-<!--<span class="pull-right badge bg-green">{{num_parkings.count}}</span>-->
+<li><a href="/#/logbook/dennieds"><i class="fa fa-circle-o text-red"></i> <span>Rechazados</span></a></li>

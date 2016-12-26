@@ -11,34 +11,18 @@ angular
     $scope.manual_outputs = [];
 
     $scope.records = [];
-    $scope.recordsForPatents ={};
+    $scope.recordsForPatents = {};
 
     //For Dates.
-    var f=new Date();
+    var f = new Date();
     var ano = f.getFullYear();
-    var mes = f.getMonth()+1;
+    var mes = f.getMonth() + 1;
     var dia = f.getDate();
 
     ONE_DAY = 24 * 60 * 60 * 1000;
     ONE_WEEK = ONE_DAY * 7;
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
-
-    // function getTodayByDefault(profile){
-    //   var today = new Date(ano+"/"+mes+"/"+dia);
-    //   var date = today.toISOString();
-    //   Record.find( { filter:
-    //    { where: { and:
-    //     [{
-    //      profile: profile,
-    //      is_permitted: true,
-    //      input_datetime: {gte:  date}}]
-    //    },order: '_id DESC'}})
-    //  .$promise
-    //  .then(function(results) {
-    //    $scope.records = results;
-    //  });
-    // }
 
     function getParkings() {
       Parking.find()
@@ -64,54 +48,13 @@ angular
       });
     }
 
-    function getAll() {
-      Record.find({ filter: { order: '_id ASC' } })
-      .$promise
-      .then(function(results) {
-        $scope.todayall = results;
-      })
-    }
-
     function getManualRecords() {
-      Record.find( { filter: { where: { type:"PEN", reviewed: false }, order: '_id DESC' } } )
+      Record.find( { filter: { where: { reviewed: false }, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
+        console.log(results);
         $scope.manualrecords = results;
-        $scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
-      })
-    }
-
-    function getPendings() {
-      Record.find( { filter: { where:  { is_input: true, is_permitted: true } } } )
-      .$promise
-      .then(function(results) {
-        $scope.pendings = results;
-        $scope.num_pendings = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
-      })
-    }
-
-    function getManualOutputs() {
-      Record.find( { filter: { where:  { is_input: false }, order: '_id DESC'  } } )
-      .$promise
-      .then(function(results) {
-        var contador_manual_outputs =0;
-        var contador_results = 0;
-         angular.forEach(results, function(value, key) {
-            if(results[contador_results].user != undefined){
-              $scope.manual_outputs[contador_manual_outputs] = results[contador_results];
-              contador_manual_outputs++;
-            }
-          contador_results++;
-        });
-      })
-    }
-
-    function getInPlant() {
-      Record.find({ filter: { where: {and: [{ is_input: true, input_datetime: {neq:null}, is_permitted: true }]}, order: '_id DESC' } } )
-      .$promise
-      .then(function(results) {
-        $scope.inPlant = results;
-        //$scope.inPlant = filterFilter($scope.pendings, {is_input: true, is_permitted: true}).length;
+        //$scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
       })
     }
 
@@ -124,15 +67,15 @@ angular
     }
 
     function getVehicleType() {
-      VehicleType.find( )
+      VehicleType.find()
       .$promise
       .then(function(results) {
         $scope.vehicleTypes = results;
       });
     }
 
-    function getRecords() {
-      Record.find( { filter: { where: { input_patent: {neq: null} }}})
+    function getRecords4Patents() {
+      Record.find( { fields: {input_patent: true}, filter: { where: { input_patent: {neq: null} }}})
       .$promise
       .then(function(results) {
         $scope.recordsForPatents = results;
@@ -140,20 +83,11 @@ angular
     }
 
     function getInputPatents() {
-      Record.find( { filter: { where: { is_input: true, input_patent: {neq: null} }, order: '_id DESC' } } )
+      Record.find( { filter: { where: { is_input: true, input_patent: { and: [{neq: null, neq: ''}]}}, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
         $scope.inputPatents = results;
       })
-    }
-
-    switch($state.current.data.accion) {
-      case 'pendings' : getPendings(); break;
-      case 'employees' : getVehicleType(); break;
-      case 'visits' :  getVehicleType(); getDestination(); getParkings(); break;
-      case 'contractors' : getVehicleType(); getDestination(); break;
-      case 'dennieds' : getDennieds(); break;
-      case 'manualRecords': getManualRecords(); break;
     }
 
     $scope.filterByDate = function(input){
@@ -173,7 +107,7 @@ angular
         is_permitted: true }, order:  '_id DESC' } } )
       .$promise
       .then(function(results) {
-        var counter_inputs_undefined =0;
+        var counter_inputs_undefined = 0;
         var counter_results = 0;
          angular.forEach(results, function(value, key) {
             if(results[counter_results].input_datetime == undefined){
@@ -186,40 +120,59 @@ angular
       });
      }
 
-     //input_datetime not undefined in records
+    // Get data record by profile and date filter.
     $scope.eventDateFilter = function(column, profile){
-      if(column ==='today'){
-        var today = new Date(ano+"/"+mes+"/"+dia);
-        var date = today.toISOString();
-      }
-      else if(column === 'pastWeek'){
-        var pastWeek = new Date(Date.now()-ONE_WEEK);
-        var date = pastWeek.toISOString();
-      }
-      else if(column === 'pastMonth'){
-        var pastMonth = new Date(Date.now()-ONE_MONTH);
-        var date = pastMonth.toISOString();
-      }
-      else if(column === 'all'){
+      var today = new Date(ano + "/" + mes + "/" + dia);
+      var date = today.toISOString();
+
+      if(column === 'pastWeek'){
+        var pastWeek = new Date(Date.now() - ONE_WEEK);
+        date = pastWeek.toISOString();
+      } else if(column === 'pastMonth'){
+        var pastMonth = new Date(Date.now() - ONE_MONTH);
+        date = pastMonth.toISOString();
+      } else if(column === 'all'){
         var all = new Date('0000-01-01T00:00:00.000Z');
-        var date = all.toISOString();
-      };
-       Record.find( { filter:
-        { where: { and:
-         [{
-          profile: profile,
-          is_permitted: true,
-          input_datetime: {gte:  date}}]
-        }},
-          order:  ['input_datetime DESC']})
+        date = all.toISOString();
+      }
+
+      Record.find({
+        filter: {
+          where: {
+            and: [
+              {profile: profile},
+              {is_permitted: true},
+              {is_input: true},
+              {input_datetime: {gte: date}}
+            ]
+          },
+          order: 'input_datetime DESC' }
+        })
       .$promise
       .then(function(results) {
-        //console.log(results);
         $scope.records = results;
-      });
+        $scope.recordsFiltered =  $filter('unique')(results,'run');
+      })
     }
 
-    //End: For records tabs (employees, contractors and visits)
+    function getInside() {
+      Record.find({
+        filter: {
+          where: {
+            and: [
+              { is_input: true},
+              {input_datetime: { neq: null }},
+              {is_permitted: true }
+            ]
+          },
+          order: 'input_datetime DESC' }
+        })
+      .$promise
+      .then(function(results) {
+        $scope.records = results;
+        $scope.recordsFiltered =  $filter('unique')(results,'run');
+      })
+    }
 
     //Dennied view
     //Dennieds tabs
@@ -291,8 +244,6 @@ angular
 
     // Button on pendings view.
     $scope.addOutput = function(record) {
-      record.type = "PEN";
-      record.state = "C"; // Closed.
       record.reviewed = false;
       record.is_input = false;
       var dateinput = new Date (record.input_datetime);
@@ -300,7 +251,7 @@ angular
       record.updated = new Date();
       record.user = localStorage.email;
       record.$save(record);
-      getPendings();
+      getInside();
     }
 
     $scope.denniedToBlacklist = function(record) {
@@ -328,24 +279,24 @@ angular
         })
     };
 
-    $scope.registrarSalida = function(record){
-      //Date picker
-    }
+    // $scope.registrarSalida = function(record){
+    //   //Date picker
+    // }
 
     $scope.update = function(record){
-        record.updating=true;
+        record.updating = true;
         record.$save(record);
   	}
 
     $scope.updateInputPatent = function(record, item){
       record.input_patent = item;
-      record.updating=true;
+      record.updating = true;
       record.$save(record);
     }
 
     $scope.updateOutputPatent = function(record, item){
       record.output_patent = item;
-      record.updating=true;
+      record.updating = true;
       record.$save(record);
   	}
 
@@ -356,8 +307,45 @@ angular
     }
 
     //Get Collections
-    getRecords();
-    getInputPatents();
-    getInPlant();
+    switch($state.current.data.accion) {
+      case 'inside' :
+        getInside();
+        break;
+      case 'employees' :
+        getVehicleType();
+        $scope.eventDateFilter('today','E');
+        break;
+      case 'employeeInside':
+        getVehicleType();
+        $scope.eventDateFilter('today','E');
+        break;
+      case 'visitInside':
+        getVehicleType();
+        $scope.eventDateFilter('today','V');
+        break;
+      case 'contractorInside':
+        getVehicleType();
+        $scope.eventDateFilter('today','C');
+        break;
+      case 'visits' :
+        getVehicleType();
+        getDestination();
+        getParkings();
+        $scope.eventDateFilter('today','V');
+        break;
+      case 'contractors' :
+        getVehicleType();
+        getDestination();
+        $scope.eventDateFilter('today','C');
+        break;
+      case 'dennieds' :
+        getDennieds();
+        break;
+      case 'manuals':
+        getManualRecords();
+        break;
+    }
 
+    getRecords4Patents();
+    getInputPatents();
   }]);

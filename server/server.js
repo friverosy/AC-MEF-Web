@@ -1,9 +1,6 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-
 var app = module.exports = loopback();
-
-
 
 app.start = function() {
   // start the web server
@@ -19,7 +16,8 @@ app.start = function() {
 };
 
 app.get('/login', function(req, res) {
-  res.sendfile('/home/pwings/backend/client/views/login.html');
+  var path = require('path');
+  res.sendfile(path.resolve(__dirname, '../client')+ '/views/login.html');
 });
 
 app.get('/status', function(req, res){
@@ -45,9 +43,9 @@ boot(app, __dirname, function(err) {
     app.io = require('socket.io')(app.start());
 
     app.io.on('connection', function(socket){
-      console.log('a user connected');
+      //console.log('a user connected');
       socket.on('disconnect', function(){
-          console.log('user disconnected');
+          //console.log('user disconnected');
       });
     });
   }

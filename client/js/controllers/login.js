@@ -1,5 +1,3 @@
-
-
 function logout(){
   console.log("Local Storage Clear... Redireccionando");
   localStorage.clear();
@@ -8,12 +6,8 @@ function logout(){
 };
 
 function pasuser(form) {
-  
-   
         localStorage.setItem("email", form.email.value);
         localStorage.setItem("password", form.password.value);
         localStorage.setItem("verificador", false);
         location="/#/dashboard"
-    
-  }
-
+}

@@ -8,11 +8,10 @@ PEN = from pendings view, manual record with input & output datetime
 
 State:
 DO = Double Output,
-C = Closed (with input, output datetime, and is_input = false)
 
 Reviewed:
-true = showable on manualRecords view
-false = dont showable on manualRecords view (admin mark as reviewed)
+false = showable on manuals view to mark as reviewed
+true = dont showable on manuals view (admin mark as reviewed)
 */
 
 var colors = require('colors')
@@ -80,45 +79,47 @@ module.exports = function(Record) {
 
   function findByName(ctx) {
     return new Promise(function (resolve, reject) {
-      Record.findOne(
-        {where: {fullname: ctx.fullname},
-        order: 'id DESC'},
-        function (err, recordFinded) {
-          if (err) { reject(err) }
-          if (recordFinded != null) {
-            // When register 2 output.
-            if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
-              resolve(0)
-            } else { // Output after input.
-              resolve(recordFinded.id, ctx)
-            }
-          } else {
-            resolve(0)
-          }
+      Record.findOne({
+        where: {
+          fullname: ctx.fullname
         }
-      )}
+      },
+      function (err, recordFinded) {
+        if (err) { reject(err) }
+        if (recordFinded != null) {
+          // When register 2 output.
+          if (recordFinded.output_datetime !== undefined && ctx.type !== "PEN") {
+            resolve(0)
+          } else { // Output after input.
+            resolve(recordFinded.id, ctx)
+          }
+        } else {
+          resolve(0)
+        }
+      })}
     )
   }
 
   function findByRut(ctx) {
     return new Promise(function (resolve, reject) {
-      Record.findOne(
-        { where: {run: ctx.run},
-        order: 'id DESC'},
-        function (err, recordFinded) {
-          if (err) { reject(err) }
-          if (recordFinded !== null) {
-            // When register 2 output.
-            if (recordFinded.output_datetime !== undefined) {
-              resolve(0)
-            } else { // Output after input.
-              resolve(recordFinded.id, ctx)
-            }
-          } else {
-            resolve(0)
+      Record.findOne({
+          where: {
+            run: ctx.run
           }
+      },
+      function (err, recordFinded) {
+        if (err) { reject(err) }
+        if (recordFinded !== null) {
+          // When register 2 output.
+          if (recordFinded.output_datetime !== undefined) {
+            resolve(0)
+          } else { // Output after input.
+            resolve(recordFinded.id, ctx)
+          }
+        } else {
+          resolve(0)
         }
-      )}
+      })}
     )
   }
 
@@ -127,7 +128,7 @@ module.exports = function(Record) {
       if (id !== 0) {
         Record.updateAll(
           { id: id },
-          { output_datetime: ctx.instance.output_datetime, is_input: false, state: "C" },
+          { output_datetime: ctx.instance.output_datetime, is_input: false },
           function(err) {
             if (err) { reject(err) }
             else {
@@ -146,18 +147,20 @@ module.exports = function(Record) {
     return new Promise(function (resolve, reject) {
       var Blacklist = app.models.Blacklist;
       console.log(ctx.run, ctx.card);
-      Blacklist.findOne(
-        { where: { run: ctx.run} },
-        function (err, recordFinded) {
-          if (err) { reject(err) }
-          if (recordFinded !== null) {
-            console.log("persona encontrada en la lista negra", ctx.fullname);
-            resolve(ctx.id)
-          } else {
-            resolve(0)
-          }
+      Blacklist.findOne({
+        where: {
+          run: ctx.run
         }
-      )}
+      },
+      function (err, recordFinded) {
+        if (err) { reject(err) }
+        if (recordFinded !== null) {
+          console.log("persona encontrada en la lista negra", ctx.fullname);
+          resolve(ctx.id)
+        } else {
+          resolve(0)
+        }
+      })}
     )
   }
 
@@ -238,12 +241,12 @@ module.exports = function(Record) {
           console.log("is a visit");
             var People = app.models.People
             People.upsertWithWhere(
-            {run: ctx.instance.run},
-            {fullname: ctx.instance.fullname,
+            { run: ctx.instance.run },
+            { fullname: ctx.instance.fullname,
              company: ctx.instance.company,
              run: ctx.instance.run,
              is_permitted: true,
-             profile: ctx.instance.profile},
+             profile: ctx.instance.profile },
             function(err, model) {
                   if (err) { console.log(err) }
                   else if (model) console.log("Visit Updated".green, model)
