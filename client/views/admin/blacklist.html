@@ -1,0 +1,83 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Lista Negra
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Lista Negra</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Agregar Empleado o Contratista</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" name="blacklistForm" ng-submit="addBlacklist()">
+                        <div class="form-group"
+                            ng-class="{'has-error': blacklistForm.run.$invalid && blacklistForm.run.$dirty}">
+                            <div class="form-group">
+                                <label>Rut * <span class="label label-warning label-mini">Sin dígito verificador</span></label>
+                                <input type="text" class="form-control focus"
+                                placeholder="Rut" autocomplete="off" required
+                                ng-model="newRecord.run">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Tarjeta</label>
+                                <input type="text" class="form-control focus"
+                                placeholder="Tarjeta" autocomplete="off" required
+                                ng-model="newRecord.card">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Motivo</label>
+                                <input type="text" class="form-control focus"
+                                placeholder="Tarjeta" autocomplete="off" required
+                                ng-model="newRecord.reason">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-disabled="blacklistForm.$success">Registrar</button>
+                    </form>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <div class="col-xs-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado</h3>
+                    <span class="pull-right badge bg-green">{{num_blacklist.count}}</span>
+                </div>
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Rut</th>
+                                <th>Tarjeta</th>
+                                <th>Motivo</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng:repeat="blacklist in Blacklist">
+                                <td>{{$index + 1}}</td>
+                                <td>{{ blacklist.run }}</td>
+                                <td>{{ blacklist.card }}</td>
+                                <td>{{ blacklist.reason }}</td>
+                                <td><a class="glyphicon glyphicon-remove pull-right"  ng-click="deleteBlacklist(blacklist)"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+</section><!-- /.content -->

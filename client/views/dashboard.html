@@ -1,0 +1,111 @@
+<img class="axxezo" src="../../dist/img/axxezo_logo.png" alt="Axxezo">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Dashboard
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-aqua">
+  		<div class="inner">
+  		  <h3>{{ num_employees + num_contractors + num_visits }}</h3>
+  		  <p>En Planta</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-pie-graph"></i>
+  		</div>
+  		<a href="/#/logbook/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-green">
+  		<div class="inner">
+  		  <h3>{{ num_employees}}</h3>
+  		  <p>Empleados</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-stalker"></i>
+  		</div>
+  		<a href="/#/logbook/employees/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-yellow">
+  		<div class="inner">
+  		  <h3>{{ num_contractors }}</h3>
+  		  <p>Contratistas</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-stalker"></i>
+  		</div>
+  		<a href="/#/logbook/contractors/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+  	<div class="col-lg-2 col-xs-6">
+  	  <!-- small box -->
+  	  <div class="small-box bg-red">
+  		<div class="inner">
+  		  <h3>{{ num_visits }}</h3>
+  		  <p>Visitas planta</p>
+  		</div>
+  		<div class="icon">
+  		  <i class="ion ion-person-add"></i>
+  		</div>
+  		<a href="/#/logbook/visits/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
+  	  </div>
+  	</div><!-- ./col -->
+      <div class="col-lg-2 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-purple">
+      <div class="inner">
+        <h3>{{ num_patentsInside.count }}</h3>
+        <p>Vehículos planta</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-model-s"></i>
+      </div>
+      <a href="/#/logbook/PatentsFiled" class="small-box-footer">Ver Detalle <i class="fa fa-car"></i></a>
+      </div>
+    </div><!-- ./col -->
+  </div>
+  <div class="row">
+    <div class="col-md-10">
+      <!-- Custom Tabs -->
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab_1" data-toggle="tab" ng-click="getRecordsByRut('8')">SALMONES</a></li>
+          <li><a href="#tab_2" data-toggle="tab" ng-click="getRecordsByRut('2')">ALIMENTOS</a></li>
+          <li><a href="#tab_3" data-toggle="tab" ng-click="getRecordsByRut('3');">PACIFIC</a></li>
+        </ul>
+        <div class="tab-content">
+
+          <div class="tab-pane active" id="tab_1">
+            <table class="table">
+              <thead>
+                <td>Departamento</td>
+                <td>Personas</td>
+              </thead>
+              <tbody class="text-muted">
+                <!-- <tr ng-repeat="place in places | filter:{name: '!AREA'}"> -->
+                <tr ng-repeat="people in arregloPeople">
+                  <td>{{people.Place}}</td>
+                  <td><span class="label label-primary">{{people.Count}}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div><!-- /.tab-pane -->
+
+        </div><!-- /.tab-content -->
+      </div><!-- nav-tabs-custom -->
+    </div><!-- /.col -->
+  </div><!-- /.row (main row) -->
+</section><!-- /.content -->

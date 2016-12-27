@@ -1,0 +1,114 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Contratistas
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Contratistas</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Registro de contratistas en planta</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <ul class="nav nav-tabs">
+                   <li><a href ng-click="eventDateFilter('today', 'C')">Hoy</a></li>
+                    <li><a href ng-click="eventDateFilter('pastWeek', 'C')">7 días</a></li>
+                    <li><a href ng-click="eventDateFilter('pastMonth', 'C')">30 días</a></li>
+                    <li><a href ng-click="eventDateFilter('all', 'C')">Todos</a></li>
+                    <li><a href ng-click="notFindInputDate('C')">sin entrada Registrada</a></li>
+                <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+                </ul>
+              <table id="example2" class="table table-bordered table-condensed table-striped">
+                <thead>
+                    <tr>
+                          <th>Rut</th>
+                          <th class="fullname">Nombre</th>
+                          <th class="department">Empresa</th>
+                          <th>Área</th>
+                          <th>Entrada</th>
+                          <th>Salida</th>
+                          <th>Patente Entrada</th>
+                          <th>Tipo Vehiculo</th>
+                          <th>Patente Salida</th>
+                          <th>Tipo Vehiculo</th>
+                          <th>Comentario</th>
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="record in records | filter: searchKeyword | itemsPerPage:15">
+                          <td class="text-green">
+                            <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                          </td>
+                          <td ng-if="record.is_permitted == false" class="text-red">
+                            <strong ng-if="record.blacklist" class="text-red">*</strong>
+                            <strong>{{record.run}}</strong>
+                          </td>
+                          <td>{{record.fullname}}</td>
+                          <td>{{record.company}}</td>
+                          <td>
+                              <select
+                                  ng-model="record.destination"
+                                  ng-options="destination.id as destination.name for destination in destinations"
+                                  ng-change="update(record)"
+                              ></select>
+                          </td>
+                          <td ng-if="record.input_datetime == undefined" class="text-red">No registrado</td>
+                          <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                          <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                          <td><input
+                            type="text"
+                            class="patent"
+                            ng-if="record.input_datetime != undefined"
+                            ng-model="record.input_patent"
+                            typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
+                            typeahead-on-select="updateInputPatent(record, $item.input_patent)"
+                            ng-change="update(record)" />
+                          <td>
+                              <select
+                                  ng-if="record.input_patent != undefined"
+                                  ng-model="record.input_patent_type"
+                                  ng-options="type.id as type.name for type in vehicleTypes"
+                                  ng-change="update(record)"
+                              ></select>
+                          </td>
+                          <td><input
+                            type="text"
+                            class="patent"
+                            ng-if="record.output_datetime != undefined"
+                            ng-model="record.output_patent"
+                            typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
+                            typeahead-on-select="updateOutputPatent(record, $item.output_patent)"
+                            ng-change="update(record)"/></td>
+                          <td>
+                            <select
+                                ng-if="record.output_patent != undefined"
+                                ng-model="record.output_patent_type"
+                                ng-options="type.id as type.name for type in vehicleTypes"
+                                ng-change="update(record)"
+                            ></select>
+                          </td>
+                          <td><input type="text" ng-model="record.comment" ng-change="update(record)" class="form-control"></td>
+                      </tr>
+                </tbody>
+              </table>
+              <dir-pagination-controls
+                 max-size="15"
+                 direction-links="true"
+                 boundary-links="true" >
+              </dir-pagination-controls>
+            </div><!-- /.box-body -->
+            <!-- <button class="btn btn-sm btn-primary" ng-click="exportData()">
+                <span class="glyphicon glyphicon-share"></span> Export to Excel
+            </button> -->
+          </div><!-- /.box -->
+      </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->

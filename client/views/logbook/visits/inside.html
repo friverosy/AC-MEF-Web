@@ -1,0 +1,148 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Visitas</h1>
+  <ol class="breadcrumb">
+    <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Visitas</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-18">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Registro de visitas en planta</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <ul class="nav nav-tabs">
+            <li><a href ng-click="eventDateFilter('today', 'V')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek', 'V')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth', 'V')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all', 'V')">Todos</a></li>
+            <li><a href ng-click="notFindInputDate('V')">sin entrada Registrada</a></li>
+            <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+          </ul>
+          <table id="example2" class="table table-bordered table-condensed table-striped">
+            <thead>
+              <tr>
+                <th>Rut</th>
+                <th>Nombre</th>
+                <th>Empresa</th>
+                <th>Destino</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Patente Entrada</th>
+                <th>Tipo Vehiculo</th>
+                <th>Estacionamiento</th>
+                <th>Patente Salida</th>
+                <th>Tipo Vehiculo</th>
+                <th>Autorizado por</th>
+                <th>Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="record in records | filter: searchKeyword | itemsPerPage:15">
+                <td><strong>{{record.run}}<strong></td>
+                <td>
+                  <input
+                    type="text"
+                    class="fullname"
+                    ng-model="record.fullname"
+                    ng-change="update(record)"
+                    placeholder="Nombre Completo"
+                    class="form-control">
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="company"
+                    ng-model="record.company"
+                    ng-change="update(record)"
+                    placeholder="Empresa"
+                    class="form-control">
+                </td>
+                <td>
+                  <select
+                    ng-model="record.destination"
+                    ng-options="destination.name as destination.name for destination in destinations"
+                    ng-change="update(record)"
+                  ></select>
+                </td>
+                <td
+                  ng-if="record.input_datetime == undefined"
+                  class="text-red">No registrado</td>
+                <td
+                  ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}
+                </td>
+                <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                <td>
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.input_datetime != undefined" ng-model="record.input_patent"
+                    typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
+                    typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
+                </td>
+                <td>
+                  <select
+                    ng-if="record.input_patent != undefined"
+                    ng-model="record.input_patent_type"
+                    ng-options="type.name as type.name for type in vehicleTypes"
+                    ng-change="update(record)"
+                  ></select>
+                </td>
+                <td>
+                  <select
+                    ng-if="record.input_patent != undefined"
+                    ng-model="record.parking"
+                    ng-options="parking.name as parking.name for parking in parkings"
+                    ng-change="update(record)"
+                  ></select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.output_datetime != undefined" ng-model="record.output_patent"
+                    typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
+                    typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/>
+                </td>
+                <td>
+                  <select
+                    ng-if="record.output_patent != undefined"
+                    ng-model="record.output_patent_type"
+                    ng-options="type.name as type.name for type in vehicleTypes"
+                    ng-change="update(record)"
+                  ></select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    ng-model="record.authorized_by"
+                    ng-change="update(record)"
+                    placeholder="Autorizado por"
+                    class="form-control">
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    ng-model="record.comment"
+                    ng-change="update(record)"
+                    placeholder="Comentario"
+                    class="form-control">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <dir-pagination-controls
+            max-size="15"
+            direction-links="true"
+            boundary-links="true" >
+          </dir-pagination-controls>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->
