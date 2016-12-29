@@ -135,11 +135,13 @@ angular
      }
 
     // Get data record by profile and date filter.
-    $scope.eventDateFilter = function(column, profile){
+    $scope.eventDateFilter = function(column, profile, filter){
       var today = new Date(ano + "/" + mes + "/" + dia);
       var date = today.toISOString();
 
-      if(column === 'pastWeek'){
+      if (column === 'today') {
+        // nothing yet
+      } else if (column === 'pastWeek'){
         var pastWeek = new Date(Date.now() - ONE_WEEK);
         date = pastWeek.toISOString();
       } else if(column === 'pastMonth'){
@@ -150,23 +152,41 @@ angular
         date = all.toISOString();
       }
 
-      Record.find({
-        filter: {
-          where: {
-            and: [
-              {profile: profile},
-              {is_permitted: true},
-              {is_input: true},
-              {input_datetime: {gte: date}}
-            ]
-          },
-          order: 'input_datetime DESC' }
+      if (filter === 'inside') {
+        Record.find({
+          filter: {
+            where: {
+              and: [
+                {profile: profile},
+                {is_permitted: true},
+                {is_input: true},
+                {input_datetime: {gte: date}}
+              ]
+            },
+            order: 'input_datetime DESC' }
+          })
+        .$promise
+        .then(function(results) {
+          $scope.recordsFiltered =  $filter('unique')(results,'run');
         })
-      .$promise
-      .then(function(results) {
-        $scope.records = results;
-        $scope.recordsFiltered =  $filter('unique')(results,'run');
-      })
+      } else {
+        Record.find({
+          filter: {
+            where: {
+              and: [
+                {profile: profile},
+                {is_permitted: true},
+                {input_datetime: {gte: date}}
+              ]
+            },
+            order: 'input_datetime DESC' }
+          })
+        .$promise
+        .then(function(results) {
+          $scope.records = results;
+        })
+      }
+
     }
 
     function getInside() {
@@ -174,7 +194,7 @@ angular
         filter: {
           where: {
             and: [
-              { is_input: true},
+              {is_input: true},
               {input_datetime: { neq: null }},
               {is_permitted: true }
             ]
@@ -183,7 +203,7 @@ angular
         })
       .$promise
       .then(function(results) {
-        $scope.records = results;
+        //$scope.records = results;
         $scope.recordsFiltered =  $filter('unique')(results,'run');
       })
     }
@@ -327,33 +347,33 @@ angular
         break;
       case 'employees' :
         getVehicleType();
-        $scope.eventDateFilter('today','E');
+        $scope.eventDateFilter('today','E', 'all');
         break;
       case 'employeeInside':
         getVehicleType();
-        $scope.eventDateFilter('today','E');
+        $scope.eventDateFilter('today','E', 'inside');
         break;
       case 'visitInside':
         getVehicleType();
         getDestination();
         getParkings();
-        $scope.eventDateFilter('today','V');
+        $scope.eventDateFilter('today','V', 'inside');
         break;
       case 'contractorInside':
         getVehicleType();
         getDestination();
-        $scope.eventDateFilter('today','C');
+        $scope.eventDateFilter('today','C', 'all');
         break;
       case 'visits' :
         getVehicleType();
         getDestination();
         getParkings();
-        $scope.eventDateFilter('today','V');
+        $scope.eventDateFilter('today','V', 'all');
         break;
       case 'contractors' :
         getVehicleType();
         getDestination();
-        $scope.eventDateFilter('today','C');
+        $scope.eventDateFilter('today','C', 'all');
         break;
       case 'dennieds' :
         getDennieds();

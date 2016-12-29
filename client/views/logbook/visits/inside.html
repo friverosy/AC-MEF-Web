@@ -32,6 +32,7 @@
                 <th>Empresa</th>
                 <th>Destino</th>
                 <th>Entrada</th>
+                <th>Tipo</th>
                 <th>Patente Entrada</th>
                 <th>Tipo Vehiculo</th>
                 <th>Estacionamiento</th>
@@ -71,6 +72,10 @@
                   class="text-red">No registrado</td>
                 <td
                   ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}
+                </td>
+                <td>
+                  <span ng-if="(record.type == 'PDA')" class="label label-info label-mini">PDA {{record.PDA}}</span>
+                  <span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
                 </td>
                 <td>
                   <input

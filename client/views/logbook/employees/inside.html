@@ -30,6 +30,7 @@
                 <th class="fullname">Nombre</th>
                 <th class="department">Departamento</th>
                 <th class="datetime">Entrada</th>
+                <th>Tipo</th>
                 <th>Patente</th>
                 <th>Tipo Vehiculo</th>
                 <th>Comentario</th>
@@ -48,6 +49,10 @@
                 <td><small>{{record.place}}</small></td>
                 <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
                 <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss.sss'}}</td>
+                <td>
+                  <span ng-if="(record.type == 'PDA')" class="label label-info label-mini">PDA {{record.PDA}}</span>
+                  <span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
+                </td>
                 <td>
                   <input
                     type="text"
