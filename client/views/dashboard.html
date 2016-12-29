@@ -78,7 +78,7 @@
     </div><!-- ./col -->
   </div>
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-6">
       <!-- Custom Tabs -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
@@ -87,23 +87,23 @@
           <li><a href="#tab_3" data-toggle="tab" ng-click="getRecordsByRut('3');">PACIFIC</a></li>
         </ul>
         <div class="tab-content">
-
           <div class="tab-pane active" id="tab_1">
-            <table class="table">
+            <table class="table table-condensed">
               <thead>
                 <td>Departamento</td>
-                <td>Personas</td>
+                <td>Empleados</td>
               </thead>
               <tbody class="text-muted">
                 <!-- <tr ng-repeat="place in places | filter:{name: '!AREA'}"> -->
                 <tr ng-repeat="people in arregloPeople">
                   <td>{{people.Place}}</td>
-                  <td><span class="label label-primary">{{people.Count}}</span></td>
+                  <td>
+                    <span ng-if="people.Count > 0" class="badge bg-light-blue">{{people.Count}}</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div><!-- /.tab-pane -->
-
         </div><!-- /.tab-content -->
       </div><!-- nav-tabs-custom -->
     </div><!-- /.col -->

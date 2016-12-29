@@ -55,7 +55,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                        <tr ng-repeat="person in people">
+                        <tr ng-repeat="person in people | filter: searchKeyword">
                           <td>{{$index + 1}}</td>
                           <td class="text-green">{{person.run}}</td>
                           <td><input
