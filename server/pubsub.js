@@ -8,13 +8,14 @@ module.exports = {
             var method         = options.method;
             var data           = options.data;
             var modelId        = options.modelId;
+            var name;
             if(method === 'POST'){
                 //console.log('Posting new data');
-                var name = '/' + collectionName + '/' + method;
+                name = '/' + collectionName + '/' + method;
                 socket.emit(name, data);
             }
             else{
-                var name = '/' + collectionName + '/' + modelId + '/' + method;
+                name = '/' + collectionName + '/' + modelId + '/' + method;
                 socket.emit(name, data);
             }
         }else{
@@ -38,4 +39,4 @@ module.exports = {
         }
         return true;
     } //isEmpty function..
-}
+};

@@ -101,7 +101,7 @@ angular
     $scope.filterByDate = function(input){
       return function(item){
         var INPUT = new Date(item.input_datetime)
-        return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+        return INPUT.getTime() >= new Date(ano+'/'+mes+'/'+dia);
       }
     }
 
@@ -136,7 +136,7 @@ angular
 
     // Get data record by profile and date filter.
     $scope.eventDateFilter = function(column, profile, filter){
-      var today = new Date(ano + "/" + mes + "/" + dia);
+      var today = new Date(ano + '/' + mes + '/' + dia);
       var date = today.toISOString();
 
       if (column === 'today') {
@@ -213,16 +213,16 @@ angular
    $scope.eventDateFilterDennied = function(column) {
     getDennieds();
       if(column === 'today') {
-        $scope.dateRange = "";
+        $scope.dateRange = '';
         $scope.filterByDate = function(input){
           return function(item){
             var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() >= new Date(ano+"/"+mes+"/"+dia);
+            return INPUT.getTime() >= new Date(ano+'/'+mes+'/'+dia);
           }
         }
       } else if (column === 'pastWeek') {
         //curr_date - 7 dias
-        $scope.dateRange = "";
+        $scope.dateRange = '';
         $scope.filterByDate = function(input){
           return function(item){
             var INPUT = new Date(item.input_datetime)
@@ -263,7 +263,7 @@ angular
     //End: Dennied view
 
     $scope.addVisit = function() {
-      $scope.newRecord.profile = "V";
+      $scope.newRecord.profile = 'V';
       $scope.newRecord.is_permitted = true;
       $scope.newRecord.is_input = true;
       Record

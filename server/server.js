@@ -21,7 +21,7 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/status', function(req, res){
-    res.status(200).send("I'am alive!!");
+    res.status(200).send('I am alive!!');
 });
 
 
