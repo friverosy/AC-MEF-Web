@@ -248,6 +248,34 @@ function($scope,
         })
       }
 
+      //Get the records filtered by run of company and place for table in dashboard
+      $scope.getRecordsByRut = function(rut) {
+        //console.log(rut);
+        Place.find({
+          filter: {
+            where: {
+              companyId: rut
+            }
+          }
+        })
+        .$promise
+        .then(function(results) {
+          var supreme_counter =0;
+          var arreglo = results;
+          var contador =0;
+          var contadorFilter = 0;
+          var arreglo2 = $filter('unique')($scope.RecordsAll,'fullname');
+          $scope.arregloPeople={};
+          angular.forEach(arreglo, function(value, key) {
+            var newTemp = $filter("filter")(arreglo2, {place: arreglo[contadorFilter].name});
+            $scope.arregloPeople[contadorFilter] = {Place: arreglo[contadorFilter].name, Count : newTemp.length};
+            contadorFilter++;
+            supreme_counter = newTemp.length + supreme_counter;
+          });
+          console.log(supreme_counter);
+        })
+      }
+
       //End: Table of departments with number of people in dashboard
       //Get collections.
       getAllPlacesFiltered();
@@ -256,7 +284,6 @@ function($scope,
       getNumContractos();
       getRejected();
       getNumPatentsInside();
-      //getNumPatentsEmployees();
       getCompany();
       getRecords();
     }

@@ -30,10 +30,7 @@
                 <th class="fullname">Nombre</th>
                 <th class="department">Departamento</th>
                 <th class="datetime">Entrada</th>
-                <th>Patente Entrada</th>
-                <th>Tipo Vehiculo</th>
-                <th>Salida</th>
-                <th>Patente Salida</th>
+                <th>Patente</th>
                 <th>Tipo Vehiculo</th>
                 <th>Comentario</th>
               </tr>
@@ -64,27 +61,6 @@
                   <select
                     ng-if="record.input_patent != undefined"
                     ng-model="record.input_patent_type"
-                    ng-options="type.id as type.name for type in vehicleTypes"
-                    ng-change="update(record)">
-                  </select>
-                </td>
-                <td
-                  ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss.sss'}}</td>
-                <td ng-if="record.output_datetime == undefined"></td>
-                <td ng-if="record.type == 'CT'">No registrado</td>
-                <td>
-                  <input
-                    type="text"
-                    class="patent"
-                    ng-if="record.output_datetime != undefined" ng-model="record.output_patent"
-                    typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
-                    typeahead-on-select="updateOutputPatent(record, $item.output_patent)"
-                    ng-change="update(record)"/>
-                </td>
-                <td>
-                  <select
-                    ng-if="record.output_patent != undefined"
-                    ng-model="record.output_patent_type"
                     ng-options="type.id as type.name for type in vehicleTypes"
                     ng-change="update(record)">
                   </select>

@@ -1,8 +1,6 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-	Listado cierre de turno
-  </h1>
+  <h1>Listado cierre de turno</h1>
   <ol class="breadcrumb">
 	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
 	<li class="active">Registros Manuales</li>
@@ -29,14 +27,15 @@
                         <th class="fullname">Nombre</th>
                         <th class="department">Departamento</th>
                         <th class="datetime">Entrada</th>
-                        <th>Patente</th>
-                        <th>Vehiculo</th>
+                        <th class="datetime">Salida</th>
                         <th>Perfil</th>
+                        <th>Actualización</th>
+                        <th>Usuario</th>
                         <th>Opción</th>
                       </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="record in manualrecords | filter: filterByDate(input_datetime) | filter: searchKeyword | orderBy: '-input_datetime' | itemsPerPage:15">
+                    <tr dir-paginate="record in manualrecords | filter: searchKeyword | itemsPerPage:15">
                       <td class="text-green">
                         <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                       </td>
@@ -44,20 +43,14 @@
                         <td>{{record.place}}</td>
                         <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
                         <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                        <td><input type="text" ng-model="record.input_patent" ng-change="update(record)" placeholder="__.__.__" class="form-control"></td>
-                        <td>
-                            <select
-                                ng-if="record.input_patent != undefined"
-                                ng-model="record.input_patent_type"
-                                ng-options="type.id as type.name for type in vehicleTypes"
-                                ng-change="update(record)"
-                            ></select>
-                        </td>
+                        <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                         <td>
                 					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
                 					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
                           <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>
                 				</td>
+                        <td>{{record.updated | date:'dd/MM HH:mm:ss'}}</td>
+                        <td>{{record.user}}</td>
                         <td><a class="glyphicon glyphicon glyphicon-ok"  ng-click="showDiv=true; updateManualRecord(record)" ng-show="!showDiv"></a></td>
                     </tr>
                 </tbody>

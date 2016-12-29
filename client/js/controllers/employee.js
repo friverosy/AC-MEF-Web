@@ -137,7 +137,10 @@ angular.module('app')
         $scope.record.is_permitted = $scope.employee.is_permitted;
         $scope.record.company = $scope.employee.company;
         $scope.record.bus = false;
-        console.log($scope.record);
+        console.log($scope.record.run);
+        console.log($scope.record.input_datetime);
+        console.log($scope.record.output_datetime);
+        console.log($scope.record.is_input);
         Record.create($scope.record, function(err, model){
           alert("Empleado Registrado con exito");
           $scope.is_saved = true;

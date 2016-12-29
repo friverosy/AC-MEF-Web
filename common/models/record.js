@@ -27,7 +27,7 @@ module.exports = function(Record) {
     if (ctx.instance) {
       ctx.instance.reviewed = true;
       notification(ctx.instance.is_permitted, ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);
-      console.log("before save", ctx.instance);
+      //console.log("before save", ctx.instance);
       switch (ctx.instance.profile) {
         case "E": //Employee
           //nothing yet
@@ -46,7 +46,7 @@ module.exports = function(Record) {
           }
           break;
         default:
-          console.log(ctx.instance.fullname, "without profile".yellow);
+          //console.log(ctx.instance.fullname, "without profile".yellow);
           ctx.instance.profile = "V";
           console.log("Profile set to Visit", ctx.instance.fullname, "by default".green);
           break;
@@ -64,12 +64,12 @@ module.exports = function(Record) {
         */
         if(ctx.instance.profile === "E" || ctx.instance.profile === "C"){
           findByName(ctx.instance)
-          .then(id => saveOutput(id, ctx))
+          .then(id => saveOutput(id, ctx.instance))
           .catch(err => catcher(err, ctx.instance))
         } else {
           // Its if a visit find by rut.
           findByRut(ctx.instance)
-          .then(id => saveOutput(id, ctx))
+          .then(id => saveOutput(id, ctx.instance))
           .catch(err => catcher(err, ctx.instance))
         }
       }
@@ -124,11 +124,12 @@ module.exports = function(Record) {
   }
 
   function saveOutput(id, ctx){
+    console.log("saveOutput",ctx);
     return new Promise(function (resolve, reject) {
       if (id !== 0) {
         Record.updateAll(
           { id: id },
-          { output_datetime: ctx.instance.output_datetime, is_input: false },
+          { output_datetime: ctx.output_datetime, is_input: false },
           function(err) {
             if (err) { reject(err) }
             else {
@@ -146,7 +147,7 @@ module.exports = function(Record) {
   function onBlacklist(ctx) {
     return new Promise(function (resolve, reject) {
       var Blacklist = app.models.Blacklist;
-      console.log(ctx.run, ctx.card);
+      //console.log(ctx.run, ctx.card);
       Blacklist.findOne({
         where: {
           run: ctx.run
@@ -155,7 +156,7 @@ module.exports = function(Record) {
       function (err, recordFinded) {
         if (err) { reject(err) }
         if (recordFinded !== null) {
-          console.log("persona encontrada en la lista negra", ctx.fullname);
+          //console.log("persona encontrada en la lista negra", ctx.fullname);
           resolve(ctx.id)
         } else {
           resolve(0)
@@ -238,7 +239,7 @@ module.exports = function(Record) {
     if (ctx.instance) {
       if(ctx.instance.updating !== undefined || ctx.instance.updating !== ""){
         if(ctx.instance.profile === "V"){
-          console.log("is a visit");
+          //console.log("is a visit");
             var People = app.models.People
             People.upsertWithWhere(
             { run: ctx.instance.run },
@@ -256,10 +257,10 @@ module.exports = function(Record) {
         }
       }
       if (ctx.instance.input_datetime === undefined && ctx.instance.is_input === false && ctx.instance.updating === undefined) {
-        if(ctx.instance.status === "DO") { saveOutput(ctx.instance.id) }
+        if (ctx.instance.status === "DO") { saveOutput(ctx.instance.id, ctx.instance) }
         else { deleteRecord(ctx.instance.id) }
       } else {
-        console.log(ctx.instance.is_input);
+        //console.log(ctx.instance.is_input);
         onBlacklist(ctx.instance)
         .then(id => setBlacklist(id))
         .catch(err => console.log("Error onBlacklist", err))
@@ -270,7 +271,7 @@ module.exports = function(Record) {
 
   // Closed of turn, mark as output (is_input=false) each record with more than 12 hours without output.
   Record.closedTurn = function(msg, cb) {
-    console.log("cierre turno activado");
+    //console.log("cierre turno activado");
     var workday = 30 * 24 * 60 * 1000 // 12 Hours in milliseconds
     var date = new Date()
     var now = date.getTime()

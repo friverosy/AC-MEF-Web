@@ -44,7 +44,8 @@ angular
       Destination.find()
       .$promise
       .then(function(results) {
-          $scope.destinations = results;
+        console.log(results);
+        $scope.destinations = results;
       });
     }
 
@@ -52,7 +53,6 @@ angular
       Record.find( { filter: { where: { reviewed: false }, order: '_id DESC' } } )
       .$promise
       .then(function(results) {
-        console.log(results);
         $scope.manualrecords = results;
         //$scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
       })
@@ -83,10 +83,18 @@ angular
     }
 
     function getInputPatents() {
-      Record.find( { filter: { where: { is_input: true, input_patent: { and: [{neq: null, neq: ''}]}}, order: '_id DESC' } } )
+      Record.find( {
+        filter: {
+          where: {
+            is_input: true,
+            input_patent: {neq: null}
+          },
+          order: ['input_datetime DESC']
+        }
+      })
       .$promise
       .then(function(results) {
-        $scope.inputPatents = results;
+          $scope.inputPatents = results;
       })
     }
 
@@ -102,13 +110,19 @@ angular
     //input_datetime undefined in records
     $scope.notFindInputDate = function(profile){
        results_inputNotFind = [];
-       Record.find( { filter: { where:
-        { profile: profile,
-        is_permitted: true }, order:  '_id DESC' } } )
-      .$promise
-      .then(function(results) {
-        var counter_inputs_undefined = 0;
-        var counter_results = 0;
+       Record.find( {
+         filter: {
+           where: {
+             profile: profile,
+             is_permitted: true
+           },
+           order:  '_id DESC'
+         }
+       })
+       .$promise
+       .then(function(results) {
+         var counter_inputs_undefined = 0;
+         var counter_results = 0;
          angular.forEach(results, function(value, key) {
             if(results[counter_results].input_datetime == undefined){
               results_inputNotFind[counter_inputs_undefined] = results[counter_results];
@@ -116,7 +130,7 @@ angular
             }
           counter_results++;
         });
-         $scope.records = results_inputNotFind;
+        $scope.records = results_inputNotFind;
       });
      }
 
@@ -250,7 +264,7 @@ angular
       record.output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
       record.updated = new Date();
       record.user = localStorage.email;
-      record.$save(record);
+      record.$save();
       getInside();
     }
 
@@ -321,10 +335,13 @@ angular
         break;
       case 'visitInside':
         getVehicleType();
+        getDestination();
+        getParkings();
         $scope.eventDateFilter('today','V');
         break;
       case 'contractorInside':
         getVehicleType();
+        getDestination();
         $scope.eventDateFilter('today','C');
         break;
       case 'visits' :
@@ -344,8 +361,11 @@ angular
       case 'manuals':
         getManualRecords();
         break;
+      case 'patentsFiled':
+        getInputPatents();
+        break;
     }
 
     getRecords4Patents();
-    getInputPatents();
+
   }]);
