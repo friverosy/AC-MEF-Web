@@ -44,7 +44,6 @@ angular
       Destination.find()
       .$promise
       .then(function(results) {
-        console.log(results);
         $scope.destinations = results;
       });
     }
@@ -152,6 +151,7 @@ angular
         date = all.toISOString();
       }
 
+      console.log(column, profile, filter);
       if (filter === 'inside') {
         Record.find({
           filter: {
@@ -163,8 +163,9 @@ angular
                 {input_datetime: {gte: date}}
               ]
             },
-            order: 'input_datetime DESC' }
-          })
+            order: 'input_datetime DESC'
+          }
+        })
         .$promise
         .then(function(results) {
           $scope.recordsFiltered =  $filter('unique')(results,'run');
@@ -179,8 +180,9 @@ angular
                 {input_datetime: {gte: date}}
               ]
             },
-            order: 'input_datetime DESC' }
-          })
+            order: 'input_datetime DESC'
+          }
+        })
         .$promise
         .then(function(results) {
           $scope.records = results;

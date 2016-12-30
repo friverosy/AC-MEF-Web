@@ -16,11 +16,11 @@
         </div><!-- /.box-header -->
         <div class="box-body" id="asdf">
           <ul class="nav nav-tabs">
-            <li><a href ng-click="eventDateFilter('today', 'E')">Hoy</a></li>
-            <li><a href ng-click="eventDateFilter('pastWeek', 'E')">7 días</a></li>
-            <li><a href ng-click="eventDateFilter('pastMonth', 'E')">30 días</a></li>
-            <li><a href ng-click="eventDateFilter('all', 'E')">Todos</a></li>
-            <li><a href ng-click="notFindInputDate('E')">sin entrada Registrada</a></li>
+            <li><a href ng-click="eventDateFilter('today', 'E', 'all')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek', 'E', 'all')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
+            <li><a href ng-click="notFindInputDate('E', 'all')">sin entrada Registrada</a></li>
             <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
