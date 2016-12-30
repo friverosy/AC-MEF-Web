@@ -362,7 +362,7 @@ angular
       case 'contractorInside':
         getVehicleType();
         getDestination();
-        $scope.eventDateFilter('today','C', 'all');
+        $scope.eventDateFilter('today','C', 'inside');
         break;
       case 'visits' :
         getVehicleType();
