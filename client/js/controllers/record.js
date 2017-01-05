@@ -303,7 +303,6 @@ angular
 
     $scope.addRecord = function(record) {
       //var newRecord = record;
-      console.log(record);
       if(record !== undefined)
       Record
         .create(record)

@@ -53,7 +53,7 @@ module.exports = function(Record) {
       }
 
       // Always set Online type when its diferent to MR.
-      if (ctx.instance.type !== 'MR') ctx.instance.type = 'ON';
+      //if (ctx.instance.type !== 'MR') ctx.instance.type = 'ON';
 
       // Update last input as output, add output_datetime send from android.
       if ( ctx.instance.is_input === false ) {

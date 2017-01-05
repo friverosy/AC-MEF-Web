@@ -8,7 +8,7 @@ angular
     'angular.filter',
     'ui.bootstrap',
     'ui.bootstrap.modal',
-    'ui.bootstrap.datetimepicker',
+    'ui.bootstrap.datetimepicker'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider,
     $urlRouterProvider,$locationProvider) {

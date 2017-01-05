@@ -21,7 +21,8 @@
             <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
             <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
             <li><a href ng-click="notFindInputDate('E', 'all')">sin entrada Registrada</a></li>
-            <li class="pull-right"><a href="/#/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+            <li class="pull-right"><a href="/#/logbook/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+            <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false'});" class="fa fa-file-excel-o"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
             <thead>
@@ -108,5 +109,4 @@
       </div><!-- /.box -->
     </div>
   </div><!-- /.row -->
-  <button class="btn btn-sm btn-primary" ng-click="exportData()">Exportar a .xls</button>
 </section><!-- /.content -->

@@ -4,7 +4,7 @@ angular
 
 
     $scope.newPeople={};
-    $scope.people={};
+    //$scope.people={};
 
     function getVehicleType() {
       VehicleType.find()
