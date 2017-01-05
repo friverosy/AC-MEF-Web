@@ -43,7 +43,7 @@ module.exports = function(Record) {
            who was registered as a visit
            because it was not found in the database of employees */
             ctx.instane.profile = 'E';
-            ctx.instane.is_permitted = true;
+            ctx.instane.is_permitted = false;
           }
           break;
         default:
@@ -57,55 +57,20 @@ module.exports = function(Record) {
 
       // Update last input as output, add output_datetime send from android.
       if ( ctx.instance.is_input === false ) {
-        /*
-        Name never change to Employee or Contractor,
-        and 1 person can register by his DNI card or Employee card.
-        So must be finded by name.
-        */
-        if(ctx.instance.profile === 'E' || ctx.instance.profile === 'C'){
-          findByName(ctx.instance)
-          .then(id => saveOutput(id, ctx.instance))
-          .catch(err => catcher(err, ctx.instance));
-        } else {
-          // Its if a visit find by rut.
-          findByRut(ctx.instance)
-          .then(id => saveOutput(id, ctx.instance))
-          .catch(err => catcher(err, ctx.instance));
-        }
+        findByRut(ctx.instance)
+        .then(id => saveOutput(id, ctx.instance))
+        .catch(err => catcher(err, ctx.instance));
       }
     }
     next();
   });
 
-  function findByName(ctx) {
-    return new Promise(function (resolve, reject) {
-      Record.findOne({
-        where: {
-          fullname: ctx.fullname
-        }
-      },
-      function (err, recordFinded) {
-        if (err) { reject(err); }
-        if (recordFinded != null) {
-          // When register 2 output.
-          if (recordFinded.output_datetime !== undefined &&
-            ctx.type !== 'PEN') {
-            resolve(0);
-          } else { // Output after input.
-            resolve(recordFinded.id, ctx);
-          }
-        } else {
-          resolve(0);
-        }
-      });}
-    );
-  }
-
   function findByRut(ctx) {
     return new Promise(function (resolve, reject) {
       Record.findOne({
+        order: 'input_datetime DESC'},{
           where: {
-            run: ctx.run
+            run: ctx.run, is_input: true
           }
       },
       function (err, recordFinded) {
@@ -125,7 +90,7 @@ module.exports = function(Record) {
   }
 
   function saveOutput(id, ctx){
-    console.log('saveOutput',ctx);
+    console.log('saveOutput',id);
     return new Promise(function (resolve, reject) {
       if (id !== 0) {
         Record.updateAll(
@@ -143,6 +108,13 @@ module.exports = function(Record) {
         reject(0);
       }
     });
+  }
+
+  function catcher(err, ctx){
+    if (err === 0) {
+      // DO = Double output
+      ctx.status = 'DO';
+    }
   }
 
   function onBlacklist(ctx) {
@@ -164,13 +136,6 @@ module.exports = function(Record) {
         }
       });}
     );
-  }
-
-  function catcher(err, ctx){
-    if (err === 0) {
-      // DO = Double output
-      ctx.status = 'DO';
-    }
   }
 
   function setBlacklist(id) {
@@ -242,7 +207,6 @@ module.exports = function(Record) {
     if (ctx.instance) {
       if(ctx.instance.updating !== undefined || ctx.instance.updating !== ''){
         if(ctx.instance.profile === 'V'){
-          //console.log('is a visit');
             var People = app.models.People;
             People.upsertWithWhere(
             { run: ctx.instance.run },
@@ -258,6 +222,7 @@ module.exports = function(Record) {
             );
         }
       }
+      
       if (ctx.instance.input_datetime === undefined &&
         ctx.instance.is_input === false &&
         ctx.instance.updating === undefined) {
