@@ -151,7 +151,24 @@ angular
         date = all.toISOString();
       }
 
-      if (filter === 'inside') {
+      if (profile === '') { // For /#/logbook/inside all profile
+        Record.find({
+          filter: {
+            where: {
+              and: [
+                {is_permitted: true},
+                {is_input: true},
+                {input_datetime: {gte: date}}
+              ]
+            },
+            order: 'input_datetime DESC'
+          }
+        })
+        .$promise
+        .then(function(results) {
+          $scope.recordsFiltered =  $filter('unique')(results,'run');
+        });
+      } else if (filter === 'inside') {
         Record.find({
           filter: {
             where: {
