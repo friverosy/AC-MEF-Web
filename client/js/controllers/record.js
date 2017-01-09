@@ -151,7 +151,6 @@ angular
         date = all.toISOString();
       }
 
-      console.log(column, profile, filter);
       if (filter === 'inside') {
         Record.find({
           filter: {
@@ -169,14 +168,14 @@ angular
         .$promise
         .then(function(results) {
           $scope.recordsFiltered =  $filter('unique')(results,'run');
-        })
+          console.log($scope.recordsFiltered.length);
+        });
       } else {
         Record.find({
           filter: {
             where: {
               and: [
                 {profile: profile},
-                {is_permitted: true},
                 {input_datetime: {gte: date}}
               ]
             },
@@ -185,6 +184,7 @@ angular
         })
         .$promise
         .then(function(results) {
+          console.log(results.length);
           $scope.records = results;
         })
       }

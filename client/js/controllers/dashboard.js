@@ -53,7 +53,6 @@ function($scope,
             and:
               [
                 {is_input: true},
-                {output_datetime: undefined},
                 {profile: "E"},
                 {is_permitted: true}
               ]
@@ -83,7 +82,6 @@ function($scope,
             and:
               [
                 {is_input: true},
-                {output_datetime: undefined},
                 {profile: "V"}
               ]
           }
@@ -95,12 +93,10 @@ function($scope,
         var num_visits = 0;
         var visitFiltered = $filter('unique')(result,'run');
         angular.forEach(visitFiltered, function(value, key) {
-          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true){
-              num_visits++
-          }
           contador++;
         });
-        $scope.num_visits = num_visits;
+        console.log('contador', contador);
+        $scope.num_visits = contador;
       })};
 
       //Number of contractors inside
