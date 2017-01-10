@@ -102,7 +102,7 @@ angular
     // Update Destination
     $scope.updateDestination = function(destination) {
         destination.updating = 1;
-        destination.$save(place);
+        destination.$save(destination);
   	};
 
     // Update Profile
