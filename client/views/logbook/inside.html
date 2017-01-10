@@ -51,7 +51,8 @@
                   </td>
                   <td>{{record.fullname}}</td>
                   <td>{{record.company}}</td>
-                  <td>{{record.place}}</td>
+                  <td ng-if="record.place == 'null'"></td>
+                  <td ng-if="record.place != 'null'">{{record.place}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                   <td>
                     <span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>

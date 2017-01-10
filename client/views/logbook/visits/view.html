@@ -21,7 +21,7 @@
             <li><a href ng-click="eventDateFilter('pastWeek', 'V', 'all')">7 días</a></li>
             <li><a href ng-click="eventDateFilter('pastMonth', 'V', 'all')">30 días</a></li>
             <li><a href ng-click="eventDateFilter('all', 'V')">Todos</a></li>
-            <li><a href ng-click="notFindInputDate('V')">sin entrada Registrada</a></li>
+            <li><a href ng-click="notFindInputDate('V')">Salidas sin entradas</a></li>
             <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
@@ -72,7 +72,7 @@
                   ng-if="record.input_datetime == undefined"
                   class="text-red">No registrado</td>
                 <td
-                  ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss.sss'}}
+                  ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}
                 </td>
                 <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 <td>

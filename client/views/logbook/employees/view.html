@@ -20,7 +20,7 @@
             <li><a href ng-click="eventDateFilter('pastWeek', 'E', 'all')">7 días</a></li>
             <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
             <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
-            <li><a href ng-click="notFindInputDate('E', 'all')">sin entrada Registrada</a></li>
+            <li><a href ng-click="notFindInputDate('E', 'all')">Salidas sin entradas</a></li>
             <li class="pull-right"><a href="/#/logbook/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
             <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false'});" class="fa fa-file-excel-o"></i></a></li>
           </ul>
@@ -51,7 +51,7 @@
                 <td><small>{{record.fullname}}</small></td>
                 <td><small>{{record.place}}</small></td>
                 <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
-                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss.sss'}}</td>
+                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss'}}</td>
                 <td>
                   <input
                     type="text"
@@ -70,7 +70,7 @@
                   </select>
                 </td>
                 <td
-                  ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss.sss'}}</td>
+                  ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 <td ng-if="record.output_datetime == undefined"></td>
                 <td ng-if="record.type == 'CT'">No registrado</td>
                 <td>

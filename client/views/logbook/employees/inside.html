@@ -48,7 +48,7 @@
                 <td><small>{{record.fullname}}</small></td>
                 <td><small>{{record.place}}</small></td>
                 <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
-                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss.sss'}}</td>
+                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss'}}</td>
                 <td>
                   <span ng-if="(record.type == 'PDA')" class="label label-info label-mini">PDA {{record.PDA}}</span>
                   <span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
