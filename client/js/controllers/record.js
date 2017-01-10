@@ -224,7 +224,7 @@ angular
       .then(function(results) {
         //$scope.records = results;
         $scope.recordsFiltered =  $filter('unique')(results,'run');
-      })
+      });
     }
 
     //Dennied view
@@ -297,14 +297,30 @@ angular
 
     // Button on pendings view.
     $scope.addOutput = function(record) {
-      record.reviewed = false;
-      record.is_input = false;
-      var dateinput = new Date (record.input_datetime);
-      record.output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
-      record.updated = new Date();
-      record.user = localStorage.email;
-      record.$save();
-      getInside();
+      // Find all pendings records
+      Record.find({
+        filter: {
+          where: {
+            and: [
+              {is_input: true},
+              {run: record.run}
+            ]
+          }
+        }
+      })
+      .$promise
+      .then(function(results) {
+        for (i = 0; i < results.length; i++) {
+          results[i].is_input = false;
+          var dateinput = new Date (results[i].input_datetime);
+          results[i].output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
+          results[i].updated = new Date();
+          results[i].reviewed = false;
+          results[i].user = localStorage.email;
+          results[i].$save();
+        }
+        getInside();
+      });
     }
 
     $scope.denniedToBlacklist = function(record) {
@@ -400,10 +416,12 @@ angular
         getManualRecords();
         break;
       case 'patentsFiled':
+        getVehicleType();
         getInputPatents();
         break;
     }
 
     getRecords4Patents();
-
-  }]);
+  }
+]
+);
