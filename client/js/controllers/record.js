@@ -49,16 +49,25 @@ angular
     }
 
     function getManualRecords() {
-      Record.find( { filter: { where: { reviewed: false }, order: '_id DESC' } } )
+      Record.find( {
+        filter: {
+          where: { reviewed: false },
+          order: '_id DESC' }
+      } )
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
-        //$scope.num_manualrecords = filterFilter($scope.manualrecords, {reviewed: false}).length;
+        //$scope.num_manualrecords = filterFilter($scope.manualrecords,
+        //{reviewed: false}).length;
       })
     }
 
     function getDennieds() {
-      Record.find( { filter: { where: { is_permitted: false, to_blacklist: {neq: true}}, order: '_id DESC' } } )
+      Record.find( {
+        filter: {
+          where: { is_permitted: false, to_blacklist: {neq: true}},
+          order: '_id DESC' }
+      } )
       .$promise
       .then(function(results) {
         $scope.dennieds = results;
@@ -74,7 +83,10 @@ angular
     }
 
     function getRecords4Patents() {
-      Record.find( { fields: {input_patent: true}, filter: { where: { input_patent: {neq: null} }}})
+      Record.find({
+        fields: {input_patent: true},
+        filter: { where: { input_patent: {neq: null} }}
+      })
       .$promise
       .then(function(results) {
         $scope.recordsForPatents = results;
@@ -313,7 +325,9 @@ angular
         for (i = 0; i < results.length; i++) {
           results[i].is_input = false;
           var dateinput = new Date (results[i].input_datetime);
-          results[i].output_datetime = new Date(dateinput.setTime(dateinput.getTime() + 1*60*1000));
+          results[i].output_datetime = new Date(
+            dateinput.setTime(dateinput.getTime() + 1*60*1000)
+          );
           results[i].updated = new Date();
           results[i].reviewed = false;
           results[i].user = localStorage.email;

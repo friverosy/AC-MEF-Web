@@ -18,16 +18,18 @@ record.get = function(req,res,next){
 	var docs = [];
 	console.log('record get');
 	var findRecords = function(db, callback) {
-		var cursor = db.collection('record').find({ input_datetime : { $exists : true } });
-	   	cursor.each(function(err, doc) {
-	   	  console.log('each');
-	      assert.equal(err, null);
-	      if (doc != null) {
-	         res.send(doc)
-	      } else {
-	         callback();
-	      }
-	   	});
+		var cursor = db.collection('record').find(
+			{ input_datetime : { $exists : true } }
+		);
+		cursor.each(function(err, doc) {
+			console.log('each');
+			assert.equal(err, null);
+			if (doc != null) {
+				 res.send(doc);
+			} else {
+				 callback();
+			}
+		});
 	};
 
 	MongoClient.connect(url, function(err, db) {
@@ -36,6 +38,6 @@ record.get = function(req,res,next){
 	      db.close();
 	  });
 	});
-}
+};
 
 module.exports = record;

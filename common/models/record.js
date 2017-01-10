@@ -181,7 +181,8 @@ module.exports = function(Record) {
 
   function sendSlackMessage(run, fullname, message){
     var slack = new Slack();
-    slack.setWebhook('https://hooks.slack.com/services/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');
+    slack.setWebhook('https://hooks.slack.com/services/'+
+    'T1XCBK5ML/B24FS68C8/bNGkYEzjlhQbu2E1LLtr9TJ0');
     slack.webhook({
       channel: '#multiexportfoods',
       username: 'Multi-Boot',
@@ -222,7 +223,7 @@ module.exports = function(Record) {
             );
         }
       }
-      
+
       if (ctx.instance.input_datetime === undefined &&
         ctx.instance.is_input === false &&
         ctx.instance.updating === undefined) {
