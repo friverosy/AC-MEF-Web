@@ -22,7 +22,7 @@
             <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
             <li><a href ng-click="notFindInputDate('E', 'all')">Salidas sin entradas</a></li>
             <li class="pull-right"><a href="/#/logbook/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
-            <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false'});" class="fa fa-file-excel-o"></i></a></li>
+            <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false',ignoreColumn: [4,5,7,8,9]});" class="fa fa-file-excel-o"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
             <thead>
