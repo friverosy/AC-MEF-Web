@@ -237,7 +237,7 @@ module.exports = function(Record) {
 
   Record.observe('after save', function(ctx, next) {
     if (ctx.instance) {
-      if(ctx.instance.updating !== undefined || ctx.instance.updating !== ''){
+      if(ctx.instance.updating !== undefined && ctx.instance.updating !== ''){
         if(ctx.instance.profile === 'V'){
             var People = app.models.People;
             People.upsertWithWhere(
