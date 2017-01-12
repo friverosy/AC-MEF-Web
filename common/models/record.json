@@ -84,13 +84,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "people": {
-      "type": "belongsTo",
-      "model": "people",
-      "foreignKey": "run"
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }
