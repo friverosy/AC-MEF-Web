@@ -1,4 +1,4 @@
-<img class="axxezo" src="../../dist/img/axxezo_logo.png" alt="Axxezo">
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
@@ -10,73 +10,93 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-  	<div class="col-lg-2 col-xs-6">
-  	  <!-- small box -->
-  	  <div class="small-box bg-aqua">
-  		<div class="inner">
-  		  <h3>{{ num_employees + num_contractors + num_visits }}</h3>
-  		  <p>En Planta</p>
-  		</div>
-  		<div class="icon">
-  		  <i class="ion ion-pie-graph"></i>
-  		</div>
-  		<a href="/#/logbook/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-  	  </div>
+
+    <div class="col-lg-12 col-xs-12">
+      <div class="info-box bg-aqua">
+        <a href="/#/logbook/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-pie-graph"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">En Planta</span>
+          <span class="info-box-number">{{ num_employees + num_contractors + num_visits }}</span>
+          <div class="progress">
+            <div class="progress-bar" style="width: 100%"></div>
+          </div>
+          <span class="progress-description">
+            Total
+          </span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
   	</div><!-- ./col -->
 
-  	<div class="col-lg-2 col-xs-6">
-  	  <!-- small box -->
-  	  <div class="small-box bg-green">
-  		<div class="inner">
-  		  <h3>{{ num_employees}}</h3>
-  		  <p>Empleados</p>
-  		</div>
-  		<div class="icon">
-  		  <i class="ion ion-person-stalker"></i>
-  		</div>
-  		<a href="/#/logbook/employees/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-  	  </div>
+  	<div class="col-lg-3 col-xs-6">
+      <div class="info-box bg-green">
+        <a href="/#/logbook/employees/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">Empleados</span>
+          <span class="info-box-number">{{ num_employees}}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: {{ (num_employees * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+          </div>
+          <span ng-if="num_employees > 0" class="progress-description">
+            {{ (num_employees * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+          </span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
   	</div><!-- ./col -->
-  	<div class="col-lg-2 col-xs-6">
-  	  <!-- small box -->
-  	  <div class="small-box bg-yellow">
-  		<div class="inner">
-  		  <h3>{{ num_contractors }}</h3>
-  		  <p>Contratistas</p>
-  		</div>
-  		<div class="icon">
-  		  <i class="ion ion-person-stalker"></i>
-  		</div>
-  		<a href="/#/logbook/contractors/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-  	  </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="info-box bg-yellow">
+        <a href="/#/logbook/contractors/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">Contratistas</span>
+          <span class="info-box-number">{{ num_contractors}}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: {{ (num_contractors * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+          </div>
+          <span ng-if="num_contractors > 0" class="progress-description">
+            {{ (num_contractors * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+          </span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
   	</div><!-- ./col -->
-  	<div class="col-lg-2 col-xs-6">
-  	  <!-- small box -->
-  	  <div class="small-box bg-red">
-  		<div class="inner">
-  		  <h3>{{ num_visits }}</h3>
-  		  <p>Visitas planta</p>
-  		</div>
-  		<div class="icon">
-  		  <i class="ion ion-person-add"></i>
-  		</div>
-  		<a href="/#/logbook/visits/inside" class="small-box-footer">Ver Detalle <i class="fa fa-arrow-circle-right"></i></a>
-  	  </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="info-box bg-red">
+        <a href="/#/logbook/visits/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">Visitas</span>
+          <span class="info-box-number">{{ num_visits}}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: {{ (num_visits * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+          </div>
+          <span ng-if="num_visits > 0" class="progress-description">
+            {{ (num_visits * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+          </span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
   	</div><!-- ./col -->
-      <div class="col-lg-2 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-purple">
-      <div class="inner">
-        <h3>{{ num_patentsInside.count }}</h3>
-        <p>Vehículos planta</p>
-      </div>
-      <div class="icon">
-        <i class="ion ion-model-s"></i>
-      </div>
-      <a href="/#/logbook/PatentsFiled" class="small-box-footer">Ver Detalle <i class="fa fa-car"></i></a>
-      </div>
-    </div><!-- ./col -->
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="info-box bg-gray">
+        <a href="/#/logbook/PatentsFiled" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-model-s"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">Vehículos</span>
+          <span class="info-box-number">{{ num_patentsInside.count }}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: 100%"></div>
+          </div>
+          <span class="progress-description">
+            En Planta
+          </span>
+        </div><!-- /.info-box-content -->
+      </div><!-- /.info-box -->
+  	</div><!-- ./col -->
+
   </div>
+
   <div class="row">
     <div class="col-md-6">
       <!-- Custom Tabs -->
@@ -106,5 +126,8 @@
         </div><!-- /.tab-content -->
       </div><!-- nav-tabs-custom -->
     </div><!-- /.col -->
+    <div class="col-lg-6 col-xs-12">
+      <img class="center-block axxezo" src="../../dist/img/axxezo_logo.png" alt="Axxezo">
+    </div>
   </div><!-- /.row (main row) -->
 </section><!-- /.content -->
