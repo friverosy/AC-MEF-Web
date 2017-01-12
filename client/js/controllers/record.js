@@ -337,6 +337,29 @@ angular
       });
     }
 
+    $scope.addSingleOutput = function(record) {
+      Record.findOne({
+        filter: {
+          where: {
+            id: record.id
+          }
+        }
+      })
+      .$promise
+      .then(function(result) {
+        result.is_input = false;
+        var dateinput = new Date (result.input_datetime);
+        result.output_datetime = new Date(
+          dateinput.setTime(dateinput.getTime() + 1*60*1000)
+        );
+        result.updated = new Date();
+        result.reviewed = false;
+        result.user = localStorage.email;
+        result.$save();
+        getInputPatents();
+      });
+    }
+
     $scope.denniedToBlacklist = function(record) {
       //save flag in record
       record.to_blacklist = true;
@@ -431,6 +454,8 @@ angular
         break;
       case 'patentsFiled':
         getVehicleType();
+        getDestination();
+        getParkings();
         getInputPatents();
         break;
     }
