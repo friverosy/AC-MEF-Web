@@ -1,6 +1,4 @@
 /* TYPE:
-ON = Online,
-OFF = Offline,
 PDA = Online,
 MR = Manual Record,
 CT = Closed of turn,
@@ -52,12 +50,13 @@ module.exports = function(Record) {
           break;
       }
 
-      // Always set Online type when its diferent to MR.
-      //if (ctx.instance.type !== 'MR') ctx.instance.type = 'ON';
-
       // Update last input as output, add output_datetime send from android.
-      if ( ctx.instance.is_input === false ) {
-        findByRut(ctx.instance)
+      if (!ctx.instance.is_input) {
+        findLastInput(ctx.instance)
+        .then(id => saveOutput(id, ctx.instance))
+        .catch(err => catcher(err, ctx.instance));
+      } else {
+        findLastOutput(ctx.instance)
         .then(id => saveOutput(id, ctx.instance))
         .catch(err => catcher(err, ctx.instance));
       }
@@ -65,34 +64,60 @@ module.exports = function(Record) {
     next();
   });
 
-  function findByRut(ctx) {
+  function findLastOutput(ctx) {
     return new Promise(function (resolve, reject) {
-      Record.findOne({
-        order: 'input_datetime DESC'},{
-          where: {
-            run: ctx.run, is_input: true
-          }
+      Record.find( {
+        where: {
+          and: [
+            {run: ctx.run},
+            {is_input: false}
+          ]
+        },
+        order: "id DESC",
+        limit: 1
       },
       function (err, recordFinded) {
         if (err) { reject(err); }
         if (recordFinded !== null) {
-          // When register 2 output.
-          if (recordFinded.output_datetime !== undefined) {
+          resolve();
+        } else {
+          reject();
+        }
+      });}
+    );
+  }
+
+  function findLastInput(ctx) {
+    return new Promise(function (resolve, reject) {
+      Record.find( {
+        where: {
+          run: ctx.run
+        },
+        order: "id DESC",
+        limit: 1
+      },
+      function (err, recordFinded) {
+        if (err) { reject(err); }
+        if (recordFinded !== null) {
+          try {
+            if (recordFinded[0].is_input === false) {
+              resolve(0); // Double output
+            } else {
+              resolve(recordFinded[0].id, ctx);
+            }
+          } catch (e) { // First input (property 'is_input' is undefined)
             resolve(0);
-          } else { // Output after input.
-            resolve(recordFinded.id, ctx);
           }
         } else {
-          resolve(0);
+          reject();
         }
       });}
     );
   }
 
   function saveOutput(id, ctx){
-    console.log('saveOutput',id);
     return new Promise(function (resolve, reject) {
-      if (id !== 0) {
+      if (id !== 0 && id !== undefined) {
         Record.updateAll(
           { id: id },
           { output_datetime: ctx.output_datetime, is_input: false },
@@ -103,9 +128,14 @@ module.exports = function(Record) {
             }
           }
         );
-      } else {
-        // Double output an online record.
+      } else if (id === 0) {
+        // Double output.
         reject(0);
+      } else if (id === 1) {
+        // Double input.
+        reject(1);
+      } else {
+        resolve(); // Do nothing
       }
     });
   }
@@ -114,13 +144,15 @@ module.exports = function(Record) {
     if (err === 0) {
       // DO = Double output
       ctx.status = 'DO';
+    } else if (err === 1) {
+      // DO = Double input
+      ctx.status = 'DI';
     }
   }
 
   function onBlacklist(ctx) {
     return new Promise(function (resolve, reject) {
       var Blacklist = app.models.Blacklist;
-      //console.log(ctx.run, ctx.card);
       Blacklist.findOne({
         where: {
           run: ctx.run
@@ -129,7 +161,6 @@ module.exports = function(Record) {
       function (err, recordFinded) {
         if (err) { reject(err); }
         if (recordFinded !== null) {
-          //console.log('persona encontrada en la lista negra', ctx.fullname);
           resolve(ctx.id);
         } else {
           resolve(0);
@@ -218,7 +249,7 @@ module.exports = function(Record) {
              profile: ctx.instance.profile },
             function(err, model) {
                   if (err) { console.log(err); }
-                  else if (model) console.log('Visit Updated'.green, model);
+                  //else if (model) console.log('Visit Updated'.green, model);
                }
             );
         }
@@ -229,11 +260,12 @@ module.exports = function(Record) {
         ctx.instance.updating === undefined) {
         if (ctx.instance.status === 'DO') {
           saveOutput(ctx.instance.id, ctx.instance);
+        } else if (ctx.instance.status === 'DI') {
+          // do nothing
         } else {
           deleteRecord(ctx.instance.id);
         }
       } else {
-        //console.log(ctx.instance.is_input);
         onBlacklist(ctx.instance)
         .then(id => setBlacklist(id))
         .catch(err => console.log('Error onBlacklist', err));
