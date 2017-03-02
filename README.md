@@ -19,7 +19,3 @@ open http://0.0.0.0:3000 on your favorite browser
 
 ### Api Explorer
 * open http://0.0.0.0:3000/explorer/ on your favorite browser
-
-### Diagram
-
-![plantilla.png](https://bitbucket.org/repo/7bbkby/images/3625128779-plantilla.png)
