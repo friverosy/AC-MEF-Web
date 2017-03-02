@@ -197,7 +197,6 @@ angular
         .$promise
         .then(function(results) {
           $scope.recordsFiltered =  $filter('unique')(results,'run');
-          console.log($scope.recordsFiltered.length);
         });
       } else {
         Record.find({
@@ -213,7 +212,6 @@ angular
         })
         .$promise
         .then(function(results) {
-          console.log(results.length);
           $scope.records = results;
         })
       }
@@ -411,6 +409,91 @@ angular
       getManualRecords();
     }
 
+    //Numbers in Dashboard
+    //Number of employees inside
+    function getNumEmployes() {
+      Record.find({
+        filter: {
+          where: {
+            and:
+              [
+                {is_input: true},
+                {profile: "E"},
+                {is_permitted: true}
+              ]
+          }
+        }
+      })
+      .$promise
+      .then(function(result){
+        var contador = 0;
+        var num_employees = 0;
+        var employeeFiltered = $filter('unique')(result,'fullname');
+        angular.forEach(employeeFiltered, function(value, key) {
+          if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true)
+            num_employees++
+          contador++;
+        });
+        $scope.num_employees = num_employees
+      });
+    };
+
+    //Number of visits inside
+    function getNumVisits() {
+      //Filtered by run (not fullname)
+      Record.find({
+        filter: {
+          where: {
+            and:
+              [
+                {is_input: true},
+                {profile: "V"}
+              ]
+          }
+        }
+      })
+      .$promise
+      .then(function(result){
+        var contador = 0;
+        var num_visits = 0;
+        var visitFiltered = $filter('unique')(result,'run');
+        angular.forEach(visitFiltered, function(value, key) {
+          contador++;
+        });
+        $scope.num_visits = contador;
+      })};
+
+      //Number of contractors inside
+      function getNumContractors() {
+        Record.find({
+          filter: {
+            where: {
+              and: [
+                {is_input: true},
+                {output_datetime: undefined},
+                {profile: "C"},
+                {is_permitted: true},
+                {company_code: {neq: null}}
+              ]
+            }
+          }
+        })
+        .$promise
+        .then(function(result){
+          //$scope.num_contractors = result;
+          var contador = 0;
+          var num_contractors = 0;
+          var contractorFiltered = $filter('unique')(result,'fullname');
+          angular.forEach(contractorFiltered, function(value, key) {
+            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true){
+                num_contractors++
+            }
+            contador++;
+          });
+          $scope.num_contractors = num_contractors;
+        });
+      };
+
     //Get Collections
     switch($state.current.data.accion) {
       case 'inside' :
@@ -418,31 +501,37 @@ angular
         break;
       case 'employees' :
         getVehicleType();
+        getNumEmployes();
         $scope.eventDateFilter('today','E', 'all');
         break;
       case 'employeeInside':
         getVehicleType();
+        getNumEmployes();
         $scope.eventDateFilter('today','E', 'inside');
         break;
       case 'visitInside':
         getVehicleType();
         getDestination();
+        getNumVisits();
         getParkings();
         $scope.eventDateFilter('today','V', 'inside');
         break;
       case 'contractorInside':
         getVehicleType();
         getDestination();
+        getNumContractors();
         $scope.eventDateFilter('today','C', 'inside');
         break;
       case 'visits' :
         getVehicleType();
         getDestination();
+        getNumVisits();
         getParkings();
         $scope.eventDateFilter('today','V', 'all');
         break;
       case 'contractors' :
         getVehicleType();
+        getNumContractors();
         getDestination();
         $scope.eventDateFilter('today','C', 'all');
         break;

@@ -95,7 +95,6 @@ angular
     // Update Parking
     $scope.updateParking = function(parking) {
         parking.updating = 1;
-        console.log(parking);
         parking.$save(parking);
   	};
 
@@ -108,7 +107,6 @@ angular
     // Update Profile
     $scope.updateProfile = function(profile) {
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -166,7 +164,6 @@ angular
     // Update VehicleType
     $scope.updateVehicleType = function(type) {
         type.updating = 1;
-        console.log(type);
         type.$save(type);
   	};
 
@@ -183,7 +180,6 @@ angular
         profile.ReadRecordPlant = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -194,7 +190,6 @@ angular
         profile.WriteRecordPlant = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -206,7 +201,6 @@ angular
         profile.RecordEmployees = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -217,7 +211,6 @@ angular
         profile.RecordEmployees = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -229,7 +222,6 @@ angular
         profile.RecordContractor = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -240,7 +232,6 @@ angular
         profile.RecordContractor = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -252,7 +243,6 @@ angular
         profile.RecordVisits = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -263,7 +253,6 @@ angular
         profile.RecordVisits = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -275,7 +264,6 @@ angular
         profile.ManualRecordVisits = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -286,7 +274,6 @@ angular
         profile.ManualRecordVisits = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -298,7 +285,6 @@ angular
         profile.ManualRecordEmployees = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -309,7 +295,6 @@ angular
         profile.ManualRecordEmployees = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -321,7 +306,6 @@ angular
         profile.ManualRecordContractor = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -332,7 +316,6 @@ angular
         profile.ManualRecordContractor = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -344,7 +327,6 @@ angular
         profile.Maintainers = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -355,7 +337,6 @@ angular
         profile.Maintainers = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -367,7 +348,6 @@ angular
         profile.Profiles = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -378,7 +358,6 @@ angular
         profile.Profiles = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -390,7 +369,6 @@ angular
         profile.Blacklist = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -401,7 +379,6 @@ angular
         profile.Blacklist = false;
       }
       profile.updating = 1;
-      console.log(profile);
       profile.$save(profile);
     };
 
@@ -410,12 +387,11 @@ angular
       if(($scope.newPeople.fullname == undefined || $scope.newPeople.fullname == "")
         || ($scope.newPeople.run == undefined || $scope.newPeople.run == "")
         || ($scope.newPeople.company == undefined || $scope.newPeople.company == "")){
-
           alert("Debe ingesar todos los datos solicitados");
-
         }
       else{
           $scope.newPeople.profile = "V";
+          $scope.newPeople.is_permitted = true;
           People.create($scope.newPeople, function(err, model){
             getPeople();
             $scope.newPeople.fullname = "";
@@ -435,7 +411,6 @@ angular
     $scope.deleteVisit = function(people) {
       people.is_permitted = false;
       people.$save(people);
-      console.log("actualizado");
       getPeople();
     };
 

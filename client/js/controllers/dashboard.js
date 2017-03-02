@@ -41,7 +41,7 @@ function($scope,
       });
 
     } else if(!localStorage.verificador && localStorage.verificador!= undefined){
-      console.log("Usuario logeado");
+      console.log("Usuario logeado", localStorage.email);
     } else{
       localStorage.clear();
       $window.location.href = '/login';
@@ -111,7 +111,6 @@ function($scope,
         angular.forEach(visitFiltered, function(value, key) {
           contador++;
         });
-        console.log('contador', contador);
         $scope.num_visits = contador;
       })};
 
@@ -284,7 +283,6 @@ function($scope,
             contadorFilter++;
             supreme_counter = newTemp.length + supreme_counter;
           });
-          console.log(supreme_counter);
         })
       }
 
@@ -298,6 +296,7 @@ function($scope,
       getNumPatentsInside();
       getCompany();
       getRecords();
+      $scope.user = localStorage.email.toUpperCase();
     }
   ]
 );

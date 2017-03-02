@@ -1,9 +1,9 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>Empleados</h1>
+  <h1>{{num_employees}} Empleados en planta</h1>
   <ol class="breadcrumb">
     <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Empleados</li>
+    <li class="active">Empleados en planta</li>
   </ol>
 </section>
 <!-- Main content -->
@@ -11,9 +11,6 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">Registro de empleados en planta</h3>
-        </div><!-- /.box-header -->
         <div class="box-body" id="asdf">
           <ul class="nav nav-tabs">
             <li><a href ng-click="eventDateFilter('today', 'E', 'inside')">Hoy</a></li>
@@ -26,6 +23,7 @@
           <table id="example2" class="table table-bordered table-condensed table-striped">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Rut</th>
                 <th class="fullname">Nombre</th>
                 <th class="department">Departamento</th>
@@ -38,6 +36,7 @@
             </thead>
             <tbody>
               <tr dir-paginate="record in recordsFiltered | filter: searchKeyword | itemsPerPage:25">
+                <td>{{$index+1}}</td>
                 <td class="text-green">
                   <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                 </td>

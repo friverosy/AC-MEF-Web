@@ -1,6 +1,6 @@
 angular.module('app')
-  .controller('ContractorController', ['$scope', '$http', '$window', 'Record', 'People', 'PubSub', 'Place', 'Parking', 'VehicleType',
-  	function($scope, $http, $window, Record, People, PubSub, Place, Parking, VehicleType) {
+  .controller('ContractorController', ['$scope', '$http', '$window', 'Record', 'People', 'PubSub', 'Place', 'Parking', 'VehicleType', 'Destination',
+  	function($scope, $http, $window, Record, People, PubSub, Place, Parking, VehicleType, Destination) {
 
   	$scope.is_saved = false;
 
@@ -68,6 +68,7 @@ angular.module('app')
       }
       else{
 
+
       //Building the record for save.
       $scope.record.run =  $scope.employee.people_run;
       $scope.record.fullname = $scope.employee.fullname;
@@ -108,6 +109,7 @@ angular.module('app')
       $scope.record.card = $scope.employee.card;
       $scope.record.company_code = $scope.employee.company_code;
       $scope.record.is_permitted = $scope.employee.is_permitted;
+      $scope.record.destination = $scope.employee.destination;
       $scope.record.company = $scope.employee.company;
       $scope.record.company_code = $scope.employee.company_code;
       $scope.record.bus = false;
@@ -159,8 +161,17 @@ angular.module('app')
       })
     }
 
+    function getDestination() {
+      Destination.find()
+      .$promise
+      .then(function(results) {
+        $scope.destinations = results;
+      });
+    }
+
     getVehicleType();
     getPlaces();
+    getDestination();
     getParkings();
 
       //CHECK OUTPUT PARKING

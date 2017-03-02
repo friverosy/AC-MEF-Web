@@ -96,7 +96,6 @@ angular.module('app')
       Destination.find()
       .$promise
       .then(function(results) {
-        console.log(results);
         $scope.departments = results;
         $scope.employee.selectedOptionPlaces = $scope.departments[0];
       });

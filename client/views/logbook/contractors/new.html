@@ -57,19 +57,28 @@
                   ng-False-value="false"
                   >
                   <br>
-                  <br>
                 </div>
 
                 <div  class="form-group">
-                      <p class="input-group">
-                            <input type="text" class="form-control"
-                                    datepicker-popup="{{employee.formatDate}}"
-                                    is-open="employee.valuationDatePickerIsOpen"
-                                    ng-model="employee.valuationDate" />
-                            <span class="input-group-btn">
-                                  <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                      </p>
+                  <label>Fecha / Hora</label><br >
+                  <p class="input-group">
+                    <input type="text" class="form-control"
+                          datepicker-popup="{{employee.formatDate}}"
+                          is-open="employee.valuationDatePickerIsOpen"
+                          ng-model="employee.valuationDate" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </p>
+                </div>
+
+                <div class="form-group" ng-show="employee.is_input">
+                  <label>Destino</label>
+                  <select
+                    class="form-control"
+                    ng-model="employee.destination"
+                    ng-options="destination.id as destination.name for destination in destinations">
+                  </select>
                 </div>
 
                 <!-- <label ng-show="employee.is_input">Destino *</label>

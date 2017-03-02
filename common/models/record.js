@@ -289,10 +289,8 @@ module.exports = function(Record) {
       {is_input: false, type: 'CT'},
       function(err, info) {
         if (err) {
-          console.log(err);
           cb(null, 500);
         } else {
-          console.log(info);
           cb(null, 200);
         }
       }
