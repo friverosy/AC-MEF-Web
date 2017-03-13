@@ -20,6 +20,9 @@ var Slack = require('slack-node');
 module.exports = function(Record) {
   // Remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
+  // Validate unique
+  Record.validatesUniquenessOf('input_datetime', {message: ''});
+  Record.validatesUniquenessOf('output_datetime', {message: ''});
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
