@@ -12,6 +12,11 @@ angular
 
     $scope.records = [];
     $scope.recordsForPatents = {};
+    $scope.totalRegister_length = 0;
+    $scope.totalEmployees_length = 0;
+    $scope.totalContractors_length = 0;
+    $scope.totalVisits_length = 0;
+    $scope.totalVehicles_length = 0;
 
     //For Dates.
     var f = new Date();
@@ -53,7 +58,7 @@ angular
         filter: {
           where: { reviewed: false },
           order: '_id DESC' }
-      } )
+      })
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
@@ -82,6 +87,49 @@ angular
       });
     }
 
+    $scope.getIndividualReport = function() {
+        var array = $scope.person.month.split("-");
+        var month = array[0]-1;
+        var year = array[1];
+        var from = new Date(year,month,01);
+        var until = new Date(year,month,31);
+
+        console.log("from ", from.toISOString());
+        console.log("until", until.toISOString());
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {'run': $scope.person.rut},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.records = results;
+            console.log($scope.records);
+        })
+    }
+
+    function getPeople() {
+        People.find({
+            filter: {
+                fields: {run: true}
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.people = $filter('unique')(results,'run');
+        });
+    }
+
     function getRecords4Patents() {
       Record.find({
         fields: {input_patent: true},
@@ -107,6 +155,132 @@ angular
       .then(function(results) {
           $scope.inputPatents = results;
       })
+    }
+
+    $scope.getReport = function() {
+        Report($scope.reportForm.$$success.parse[0].$$rawModelValue)
+    }
+
+    function Report(date) {
+        console.log(date);
+        var array = date.split("-");
+        var month = array[0]-1;
+        var year = array[1];
+        var from = new Date(year,month,01);
+        var until = new Date(year,month,31);
+
+        console.log("from ", from.toISOString());
+        console.log("until", until.toISOString());
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.totalRegister_length =  results.length;
+            $scope.totalRegister =  results;
+        });
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {profile: "E"},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.totalEmployees_length =  results.length;
+            $scope.totalEmployees =  results;
+        });
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {profile: "C"},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.totalContractors_length =  results.length;
+            $scope.totalContractors =  results;
+        });
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {profile: "V"},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.totalVisits_length =  results.length;
+            $scope.totalVisits =  results;
+        });
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {input_patent: {nin: [null, '']}},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            console.log("total", results.length);
+            $scope.totalVehicles_length =  results.length;
+            $scope.totalVehicles =  results;
+        });
     }
 
     $scope.filterByDate = function(input){
@@ -188,7 +362,8 @@ angular
                 {profile: profile},
                 {is_permitted: true},
                 {is_input: true},
-                {input_datetime: {gte: date}}
+                {input_datetime: {gte: date}},
+                {output_datetime: undefined}
               ]
             },
             order: 'input_datetime DESC'
@@ -313,7 +488,8 @@ angular
           where: {
             and: [
               {is_input: true},
-              {run: record.run}
+              {run: record.run},
+              {input_datetime: {lte: new Date(record.input_datetime)}}
             ]
           }
         }
@@ -419,7 +595,8 @@ angular
               [
                 {is_input: true},
                 {profile: "E"},
-                {is_permitted: true}
+                {is_permitted: true},
+                {output_datetime: undefined}
               ]
           }
         }
@@ -447,7 +624,8 @@ angular
             and:
               [
                 {is_input: true},
-                {profile: "V"}
+                {profile: "V"},
+                {output_datetime: undefined}
               ]
           }
         }
@@ -458,9 +636,11 @@ angular
         var num_visits = 0;
         var visitFiltered = $filter('unique')(result,'run');
         angular.forEach(visitFiltered, function(value, key) {
+          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true)
+            num_visits++
           contador++;
         });
-        $scope.num_visits = contador;
+        $scope.num_visits = num_visits;
       })};
 
       //Number of contractors inside
@@ -472,8 +652,7 @@ angular
                 {is_input: true},
                 {output_datetime: undefined},
                 {profile: "C"},
-                {is_permitted: true},
-                {company_code: {neq: null}}
+                {is_permitted: true}
               ]
             }
           }
@@ -485,9 +664,8 @@ angular
           var num_contractors = 0;
           var contractorFiltered = $filter('unique')(result,'fullname');
           angular.forEach(contractorFiltered, function(value, key) {
-            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true){
+            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true)
                 num_contractors++
-            }
             contador++;
           });
           $scope.num_contractors = num_contractors;
@@ -546,6 +724,9 @@ angular
         getDestination();
         getParkings();
         getInputPatents();
+        break;
+      case 'individual-report':
+        //getPeople();
         break;
     }
 

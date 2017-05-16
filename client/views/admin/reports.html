@@ -1,0 +1,389 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Reporte Mensual
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Reporte Mensual</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-solid box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Filtrar registros por mes</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Minimizar"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                   <form name="reportForm" ng-submit="getReport()">
+                    
+                        <div class="col-lg-3 col-md-4 col-xs-12">
+                            <div class='input-group date' id='datepicker' ng-class="{'has-error': reportForm.month.$invalid && reportForm.month.$dirty}">
+                                <input type="text" class="form-control focus" name="date" ng-model="report.month" placeholder="Seleccione mes" required />
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <span class="has-error control-label" ng-show="
+                            reportForm.month.$invalid && reportForm.month.$dirty">
+                          Mes es requerido.
+                        </span>
+
+                        <div class="col-lg-3 col-md-4 col-xs-12">
+                            <button class="btn btn-primary" ng-disabled="reportForm.$invalid">Buscar</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Estadisticas</h3>
+                    <span class="pull-right badge bg-green">{{num_blacklist.count}}</span>
+                </div>
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ingresos</th>
+                                <th>Empleados</th>
+                                <th>Contratistas</th>
+                                <th>Visitas</th>
+                                <th>Vehiculos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-blue" ng-click="
+                                      showTotalRegister=true; 
+                                      showTotalEmployees=false;
+                                      showTotalContractors=false;
+                                      showTotalVisitors=false;
+                                      showTotalVehicles=false;">
+                                       {{ totalRegister_length }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-green" ng-click="
+                                      showTotalRegister=false; 
+                                      showTotalEmployees=true;
+                                      showTotalContractors=false;
+                                      showTotalVisitors=false;
+                                      showTotalVehicles=false;
+                                      ">
+                                       {{ totalEmployees_length }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-orange" ng-click="
+                                      showTotalRegister=false; 
+                                      showTotalEmployees=false;
+                                      showTotalContractors=true;
+                                      showTotalVisitors=false;
+                                      showTotalVehicles=false;">
+                                       {{ totalContractors_length }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-red" ng-click="
+                                      showTotalRegister=false; 
+                                      showTotalEmployees=false;
+                                      showTotalContractors=false;
+                                      showTotalVisitors=true;
+                                      showTotalVehicles=false;">
+                                       {{ totalVisits_length }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-gray" ng-click="
+                                      showTotalRegister=false; 
+                                      showTotalEmployees=false;
+                                      showTotalContractors=false;
+                                      showTotalVisitors=false;
+                                      showTotalVehicles=true;">
+                                       {{ totalVehicles_length }}
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row" ng-show="showTotalRegister">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de ingresos</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalRegister | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+      </div>
+    </div>
+    
+    <div class="row" ng-show="showTotalEmployees">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de empleados</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalEmployees | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+    </div>
+    
+    <div class="row" ng-show="showTotalContractors">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de contratistas</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalContractors | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+    </div>
+    
+    <div class="row" ng-show="showTotalVisitors">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de visitas</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalVisits | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+    </div>
+    
+    <div class="row" ng-show="showTotalVehicles">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de vehiculos</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Departamento</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalVehicles | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+    </div>
+    
+</section><!-- /.content -->
+
+<script type="text/javascript">
+  $(function() {
+    $('#datepicker').datepicker({
+      format: "mm-yyyy",
+      viewMode: "months", 
+      minViewMode: "months"
+    });
+  });
+</script>
