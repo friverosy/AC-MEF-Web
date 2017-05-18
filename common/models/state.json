@@ -1,0 +1,26 @@
+{
+  "name": "state",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "updatePeople": {
+      "type": "boolean",
+      "default": false
+    },
+    "pda":{
+      "type": "number",
+      "required": true
+    },
+    "datetime": {
+      "type": "date",
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
