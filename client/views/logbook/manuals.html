@@ -41,8 +41,8 @@
                       </td>
                         <td>{{record.fullname}}</td>
                         <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
-                        <td ng-if="record.place != 'null' && (record.profile == 'E' || record.profile == 'C')">{{record.place}}</td>
-                        <td ng-if="record.destination != 'null' && record.profile == 'V'">{{record.destination}}</td>
+                        <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                        <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                         <td ng-if="record.input_datetime == false" class="text-red">No registrado</td>
                         <td ng-if="record.input_datetime != false">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                         <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>

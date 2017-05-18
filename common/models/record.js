@@ -21,37 +21,15 @@ module.exports = function(Record) {
   // Remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
   // Validate unique
-  Record.validatesUniquenessOf('input_datetime', {message: ''});
+  Record.validatesUniquenessOf('input_datetime', {message: 'ya exis'});
   Record.validatesUniquenessOf('output_datetime', {message: ''});
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
-      ctx.instance.reviewed = true;
-      notification(ctx.instance.is_permitted,
-        ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);
       //console.log('before save', ctx.instance);
-      switch (ctx.instance.profile) {
-        case 'E': //Employee
-          //nothing yet
-          break;
-        case 'C': //Contractor
-          // nothing yet
-          break;
-        case 'V': //Visit
-          // Add visit on people.
-          if (ctx.instance.run.length <= 5) {
-           /* This person its an employee
-           who was registered as a visit
-           because it was not found in the database of employees */
-            ctx.instane.profile = 'E';
-            ctx.instane.is_permitted = false;
-          }
-          break;
-        default:
-          //console.log(ctx.instance.fullname, 'without profile'.yellow);
-          ctx.instance.profile = 'V';
-          break;
-      }
+      ctx.instance.reviewed = true;
+      // notification(ctx.instance.is_permitted,
+      //   ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);
 
       // Update last input as output, add output_datetime send from android.
       if (!ctx.instance.is_input) {
@@ -76,7 +54,7 @@ module.exports = function(Record) {
             {is_input: false}
           ]
         },
-        order: "id DESC",
+        order: 'id DESC',
         limit: 1
       },
       function (err, recordFinded) {
@@ -96,7 +74,7 @@ module.exports = function(Record) {
         where: {
           run: ctx.run
         },
-        order: "id DESC",
+        order: 'id DESC',
         limit: 1
       },
       function (err, recordFinded) {
