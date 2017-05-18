@@ -409,9 +409,11 @@ angular
 
     // Del Visit.
     $scope.deleteVisit = function(people) {
-      people.is_permitted = false;
-      people.$save(people);
-      getPeople();
+      People.deleteById(people)
+      .$promise
+      .then(function() {
+        getPeople();
+      });
     };
 
 }]);
