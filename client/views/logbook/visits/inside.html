@@ -75,12 +75,17 @@
                   <span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
                 </td>
                 <td>
-                  <input
+                  <!-- <input
                   type="text"
                   class="patent"
                   ng-if="record.input_datetime != undefined" ng-model="record.input_patent"
                   typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue | unique:'input_patent'"
-                  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
+                  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" /> -->
+                  <input
+                  type="text"
+                  class="patent"
+                  ng-if="record.input_datetime != undefined" ng-model="record.input_patent"
+                  ng-change="update(record)" />
                 </td>
                 <td>
                   <select

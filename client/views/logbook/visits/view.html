@@ -76,12 +76,17 @@
                 </td>
                 <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 <td>
-                  <input
+                  <!-- <input
                     type="text"
                     class="patent"
                     ng-if="record.input_datetime != undefined" ng-model="record.input_patent"
                     typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"
-                    typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" />
+                    typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" /> -->
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.input_datetime != undefined" ng-model="record.input_patent"
+                    ng-change="update(record)" />
                 </td>
                 <td>
                   <select
@@ -100,12 +105,17 @@
                   ></select>
                 </td>
                 <td>
-                  <input
+                  <!-- <input
                     type="text"
                     class="patent"
                     ng-if="record.output_datetime != undefined" ng-model="record.output_patent"
                     typeahead="records.output_patent for records in recordsForPatents | filter:$viewValue"
-                    typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/>
+                    typeahead-on-select="updateOutputPatent(record, $item.output_patent)" ng-change="update(record)"/> -->
+                  <input
+                    type="text"
+                    class="patent"
+                    ng-if="record.output_datetime != undefined" ng-model="record.output_patent"
+                    ng-change="update(record)"/>
                 </td>
                 <td>
                   <select
