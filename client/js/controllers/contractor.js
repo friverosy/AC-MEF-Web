@@ -109,7 +109,7 @@ angular.module('app')
       $scope.record.card = $scope.employee.card;
       $scope.record.company_code = $scope.employee.company_code;
       $scope.record.is_permitted = $scope.employee.is_permitted;
-      $scope.record.destination = $scope.employee.destination;
+      $scope.record.destination = $scope.employee.destination.name;
       $scope.record.company = $scope.employee.company;
       $scope.record.company_code = $scope.employee.company_code;
       $scope.record.bus = false;
