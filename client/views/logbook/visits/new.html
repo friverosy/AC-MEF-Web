@@ -22,33 +22,72 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form role="form" novalidate name="searchEmployeeForm" onsubmit="return false;">
-                        <div class="form-group" ng-class="{'has-error': searchEmployeeForm.visit_RUT.$valid && searchEmployeeForm.visit_RUT.$dirty}">
-                            <label>RUT/Pasaporte*</label><br>
-                            <input type="text" name="visit_RUT" ng-minlength="7" ng-pattern="/-/" ng-model="employee.people_run" class="form-control" placeholder="Ingrese rut o Pasaporte" data-toggle="tooltip" data-placement="right" title="Sin Dígito Verificador." ng-trim="true" required>
-                            <span class="error text-danger" ng-show="searchEmployeeForm.visit_RUT.$dirty && !searchEmployeeForm.visit_RUT.$error.pattern">Sin digito verificador! ("-x")</span>
-                            <span class="error text-danger" ng-show="searchEmployeeForm.visit_RUT.$dirty && searchEmployeeForm.visit_RUT.$error.minlength">Rut/Pasaporte inválido!</span>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': searchEmployeeForm.visit_FULLNAME.$invalid && searchEmployeeForm.visit_FULLNAME.$dirty}">
-                            <label>Nombre Completo*</label>
-                            <input type="text" name="visit_FULLNAME" ng-model="employee.fullname" class="form-control" placeholder="Nombre completo" ng-trim="true" required>
-                            <span class="error text-danger" ng-show="searchEmployeeForm.visit_FULLNAME.$dirty && searchEmployeeForm.visit_FULLNAME.$error.required">Campo obligatorio!</span>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': searchEmployeeForm.visita_company_name.$invalid && searchEmployeeForm.visita_company_name.$dirty}">
-                            <label>Empresa*</label><br>
-                            <input type="text" name="visita_company_name" ng-model="employee.company" class="form-control" placeholder="Nombre de la compañía de origen de la visita" required>
-                            <span class="error text-danger" ng-show="searchEmployeeForm.visita_company_name.$dirty && searchEmployeeForm.visita_company_name.$error.required">Campo obligatorio!</span>
-                        </div>
-                    </form>
 
-                    <form role="form" novalidate name="employeeForm" ng-submit="addEmployee()">
+                    <form role="form" novalidate name="employeeForm">
+                      <div class="form-group" ng-class="{'has-error': employeeForm.visit_RUT.$invalid && employeeForm.visit_RUT.$dirty}">
+                          <label>RUT/Pasaporte*</label>
+                          <input
+                            type="text"
+                            name="visit_RUT"
+                            ng-minlength="7"
+                            ng-pattern="regex"
+                            ng-model="employee.people_run"
+                            class="form-control"
+                            placeholder="Ingrese rut o Pasaporte"
+                            data-toggle="tooltip"
+                            data-placement="right"
+                            title="Sin Dígito Verificador."
+                            ng-trim="false"
+                            required>
+                          <span class="error text-danger" ng-show="employeeForm.visit_RUT.$dirty && employeeForm.visit_RUT.$error.required">Campo obligatorio!</span>
+                          <span class="error text-danger" ng-show="employeeForm.visit_RUT.$dirty && employeeForm.visit_RUT.$error.minlength || employeeForm.visit_RUT.$error.pattern">Rut/Pasaporte inválido!</span>
+                      </div>
+                      <div class="form-group" ng-class="{'has-error': employeeForm.visit_FULLNAME.$invalid && employeeForm.visit_FULLNAME.$dirty}">
+                          <label>Nombre Completo*</label>
+                          <input
+                            type="text"
+                            name="visit_FULLNAME"
+                            ng-model="employee.fullname"
+                            class="form-control"
+                            placeholder="Nombre completo"
+                            ng-trim="true"
+                            required>
+                          <span class="error text-danger" ng-show="employeeForm.visit_FULLNAME.$dirty && employeeForm.visit_FULLNAME.$error.required">Campo obligatorio!</span>
+                      </div>
+                      <div class="form-group" ng-class="{'has-error': employeeForm.visita_company_name.$invalid && employeeForm.visita_company_name.$dirty}">
+                          <label>Empresa*</label><br>
+                          <input
+                            type="text"
+                            name="visita_company_name"
+                            ng-model="employee.company"
+                            class="form-control"
+                            placeholder="Nombre de la compañía de origen de la visita"
+                            required>
+                          <span class="error text-danger" ng-show="employeeForm.visita_company_name.$dirty && employeeForm.visita_company_name.$error.required">Campo obligatorio!</span>
+                      </div>
                         <div class="form-group">
                             <label>Tipo de registro*</label><br>
-                            <input type="checkbox" ng-model="employee.is_input" bs-switch id="cheboxConflictivo" data-toggle="toggle" data-on-text="Entrada" data-off-text="Salida" name="my-checkbox" data-on-color="success" data-off-color="danger" ng-true-value="true" ng-False-value="false">
+                            <input
+                              type="checkbox"
+                              ng-model="employee.is_input"
+                              bs-switch id="cheboxConflictivo"
+                              data-toggle="toggle"
+                              data-on-text="Entrada"
+                              data-off-text="Salida"
+                              name="my-checkbox"
+                              data-on-color="success"
+                              data-off-color="danger"
+                              ng-true-value="true"
+                              ng-False-value="false">
                         </div>
                         <div class="form-group">
                             <p class="input-group">
-                                <input type="text" class="form-control" datepicker-popup="{{employee.formatDate}}" is-open="employee.valuationDatePickerIsOpen" ng-model="employee.valuationDate" />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  datepicker-popup="{{employee.formatDate}}"
+                                  is-open="employee.valuationDatePickerIsOpen"
+                                  ng-model="employee.valuationDate" />
                                 <span class="input-group-btn">
                                      <button type="button" class="btn btn-default" ng-click="employee.valuationDatePickerOpen()"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
@@ -56,46 +95,85 @@
                         </div>
                         <div class="form-group">
                             <label ng-show="employee.is_input">Destino</label>
-                            <select class="form-control" ng-model="employee.selectedOptionPlaces" ng-options="place.name for place in departments" ng-show="employee.is_input"></select>
+                            <select
+                              class="form-control"
+                              ng-model="employee.selectedOptionPlaces"
+                              ng-options="place.name for place in departments"
+                              ng-show="employee.is_input">
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>¿La visita utiliza vehículo?</label>
-                            <input type="checkbox" name="checkbox1" ng-model="employee.checkboxCar">
+                            <input
+                              type="checkbox"
+                              name="checkbox1"
+                              ng-model="employee.checkboxCar">
                         </div>
 
                         <!--Div that show or hide the car information -->
                         <div ng-show="employee.checkboxCar">
                             <div class="form-group" show-errors="{ showSuccess: true }" ng-show="employee.is_input">
                                 <label>Patente de entrada</label>
-                                <input type="text" class="form-control" placeholder="Patente Entrada" ng-model="employee.input_patent" ng-Change="inputParkingCheck()">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Patente Entrada"
+                                  ng-model="employee.input_patent"
+                                  ng-Change="inputParkingCheck()">
                             </div>
                             <div class="form-group">
                                 <label>Tipo de Patente de Entrada</label>
-                                <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
+                                <select
+                                  class="form-control"
+                                  ng-model="employee.selectedOptionVehicleTypes"
+                                  ng-options="vehicleType.name for vehicleType in vehicleTypes"
+                                  ng-disabled="employee.unselectParking">
+                                </select>
                             </div>
                             <div class="form-group" show-errors="{ showSuccess: true }" ng-show="!employee.is_input">
                                 <label>Patente de salida</label>
-                                <input type="text" class="form-control" placeholder="Patente Salida" ng-model="employee.output_patent" ng-Change="outputParkingCheck()">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Patente Salida"
+                                  ng-model="employee.output_patent"
+                                  ng-Change="outputParkingCheck()">
                             </div>
                             <div class="form-group">
                                 <label>Tipo de Patente de Salida</label >
-                                <select class="form-control" ng-model="employee.selectedOptionVehicleTypes" ng-options="vehicleType.name for vehicleType in vehicleTypes" ng-disabled="employee.unselectParking"></select>
+                                <select
+                                  class="form-control"
+                                  ng-model="employee.selectedOptionVehicleTypes"
+                                  ng-options="vehicleType.name for vehicleType in vehicleTypes"
+                                  ng-disabled="employee.unselectParking">
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label ng-show="employee.is_input">Estacionamiento</label >
-                                <select class="form-control" ng-model="employee.selectedOptionParkings" ng-options="parking.name for parking in parkings" ng-disabled="employee.unselectParking" ng-show="employee.is_input"></select>
+                                <select
+                                  class="form-control"
+                                  ng-model="employee.selectedOptionParkings"
+                                  ng-options="parking.name for parking in parkings"
+                                  ng-disabled="employee.unselectParking" ng-show="employee.is_input">
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': employeeForm.authorized.$invalid && employeeForm.authorized.$dirty}">
+                        <div class="form-group">
                               <label>Autorizado por:*</label >
-                              <input type="text" name="authorized" ng-model="employee.authorized_by" class="form-control" placeholder="Nombre de la persona que autoriza la visita" required>
+                              <input
+                                type="text"
+                                name="authorized"
+                                ng-model="employee.authorized_by"
+                                lass="form-control"
+                                placeholder="Nombre de la persona que autoriza la visita"
+                                required>
                               <span class="error text-danger" ng-show="employeeForm.authorized.$dirty && employeeForm.authorized.$error.required">Campo obligatorio!</span>
                         </div>
                         <div class="form-group">
                             <button
                                  type="button"
                                  class="btn btn-primary"
-                                 ng-disabled="!searchEmployeeForm.visit_RUT.$error.pattern || searchEmployeeForm.visit_RUT.$error.minlength"
+                                 ng-disabled="employeeForm.visit_RUT.$error.pattern || employeeForm.visit_RUT.$error.minlength"
                                  ng-click="employee.addEmployee()">Registrar
                             </button>
                         </div>

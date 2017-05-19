@@ -11,12 +11,15 @@ angular.module('app')
     $scope.employee.checkboxCar = false;
     $scope.peoples = {};
     $scope.record = {};
+    $scope.regex = '^[a-zA-Z0-9]+$';
+
     //for date in calendar
     $scope.employee.valuationDate = new Date();
     $scope.employee.formatDate='dd/MM/yy HH:mm:ss';
     $scope.employee.valuationDatePickerIsOpen = false;
 
     $scope.employee.addEmployee = function() {
+      console.log($scope.employee.people_run);
 
     	if (typeof $scope.employee.fullname == "undefined" || $scope.employee.fullname == "") {
     		alert("Debe ingresar el nombre completo de la visita");
