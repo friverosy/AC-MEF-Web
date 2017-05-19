@@ -46,11 +46,9 @@
                 <td>{{record.fullname}}</td>
                 <td>{{record.company}}</td>
                 <td>
-                  <select
-                  ng-model="record.destination"
-                  ng-options="destination.id as destination.name for destination in destinations"
-                  ng-change="update(record)"
-                  ></select>
+                  <select ng-model="record.destination" ng-change="update(record)">
+                    <option ng-repeat="destination in destinations" value="{{destination.name}}">{{destination.name}}</option>
+                  </select>
                 </td>
                 <td ng-if="record.input_datetime == undefined" class="text-red">No registrado</td>
                 <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
