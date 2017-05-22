@@ -4,6 +4,7 @@ angular
 
 
     $scope.newPeople={};
+    $scope.regex = '^[a-zA-Z0-9]+$';
     //$scope.people={};
 
     function getVehicleType() {
@@ -46,11 +47,21 @@ angular
       });
     }
 
+    function getSuppliers() {
+      People.find({filter: { where: { profile: 'P', is_permitted: true } } })
+      .$promise
+      .then(function(results) {
+        $scope.suppliers = results;
+        console.log(results);
+      });
+    }
+
     getParkings();
     getDestination();
     getVehicleType();
     getProfiles();
     getPeople();
+    getSuppliers();
 
     // Counts
     $scope.num_parkings = Parking.count();
@@ -413,6 +424,30 @@ angular
       .$promise
       .then(function() {
         getPeople();
+      });
+    };
+
+    // Supplier Maintainer
+
+    $scope.addSupplier = function() {
+      $scope.newPeople.profile = "P";
+      $scope.newPeople.is_permitted = true;
+      console.log("inserting",$scope.newPeople);
+      People.create($scope.newPeople, function(err, model){
+        $scope.newPeople.fullname = "";
+        $scope.newPeople.run = "";
+        $scope.newPeople.company = "";
+        $scope.newPeople.truck_patent = "";
+        $scope.newPeople.rampla_patent = "";
+        getSuppliers();
+      });
+    };
+
+    $scope.deleteSupplier = function(people) {
+      People.deleteById(people)
+      .$promise
+      .then(function() {
+        getSuppliers();
       });
     };
 

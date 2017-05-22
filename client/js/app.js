@@ -62,6 +62,30 @@ angular
                     accion: "employeeInside"
                 }
             })
+            .state('supplier', {
+                url: '/logbook/supplier',
+                templateUrl: 'views/logbook/supplier/view.html',
+                controller: 'RecordController',
+                data: {
+                    accion: "supplier"
+                }
+            })
+            .state('supplierNew', {
+                url: '/logbook/supplier/new',
+                templateUrl: 'views/logbook/supplier/new.html',
+                controller: 'EmployeeController',
+                data: {
+                    accion: "supplierNew"
+                }
+            })
+            .state('supplierInside', {
+                url: '/logbook/supplier/inside',
+                templateUrl: 'views/logbook/supplier/inside.html',
+                controller: 'RecordController',
+                data: {
+                    accion: "supplierInside"
+                }
+            })
             .state('visitNew', {
                 url: '/logbook/visits/new',
                 templateUrl: 'views/logbook/visits/new.html',
@@ -159,6 +183,11 @@ angular
             .state('visitsMaintainers', {
                 url: '/people/visits/maintainers',
                 templateUrl: 'views/people/visits/maintainers.html',
+                controller: 'MaintainersController'
+            })
+            .state('suppliersController', {
+                url: '/people/suppliers/maintainers',
+                templateUrl: 'views/people/suppliers/maintainers.html',
                 controller: 'MaintainersController'
             })
             .state('reports', {

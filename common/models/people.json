@@ -32,6 +32,14 @@
     },
     "card": {
       "type": "number"
+    },
+    "truck_patent": {
+      "type": "string",
+      "required": false
+    },
+    "rampla_patent": {
+      "type": "string",
+      "required": false
     }
   },
   "validations": [],
