@@ -60,7 +60,8 @@ angular.module('app')
       //validation for datetime (input_datetime and output datetime)
        if ($scope.record.is_input){
          $scope.record.comment = $scope.supplier.comment;
-          $scope.record.input_datetime = $scope.supplier.valuationDate;
+         $scope.record.destination = $scope.supplier.destination.name;
+         $scope.record.input_datetime = $scope.supplier.valuationDate;
        } else {
            $scope.record.output_datetime = $scope.supplier.valuationDate;
        }
@@ -68,7 +69,6 @@ angular.module('app')
       $scope.record.is_permitted = $scope.supplier.is_permitted;
       $scope.record.company_code = $scope.supplier.company_code;
       $scope.record.is_permitted = $scope.supplier.is_permitted;
-      $scope.record.destination = $scope.supplier.destination.name;
       $scope.record.company = $scope.supplier.company;
 
       Record.create($scope.record, function(err,model){

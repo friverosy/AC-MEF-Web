@@ -16,11 +16,11 @@
         </div><!-- /.box-header -->
         <div class="box-body" id="asdf">
           <ul class="nav nav-tabs">
-            <li><a href ng-click="eventDateFilter('today', 'E', 'all')">Hoy</a></li>
-            <li><a href ng-click="eventDateFilter('pastWeek', 'E', 'all')">7 días</a></li>
-            <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
-            <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
-            <li><a href ng-click="notFindInputDate('E', 'all')">Salidas sin entradas</a></li>
+            <li><a href ng-click="eventDateFilter('today', 'P', 'all')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek', 'P', 'all')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth', 'P', 'all')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all', 'P', 'all')">Todos</a></li>
+            <li><a href ng-click="notFindInputDate('P', 'all')">Salidas sin entradas</a></li>
             <li class="pull-right"><a href="/#/logbook/suppliers" class="text-muted"><i class="fa fa-refresh"></i></a></li>
             <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false',ignoreColumn: [5,8,9]});" class="fa fa-file-excel-o"></i></a></li>
           </ul>
