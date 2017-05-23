@@ -1,0 +1,114 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	Mantenedor de Proveedores
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+	<li class="active">Proveedores</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Agregar Proveedor</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <form novalidate name="supplierForm">
+                      <div class="form-group" ng-class="{'has-error': supplierForm.rut.$invalid && supplierForm.rut.$dirty}">
+                        <input type="text" class="form-control focus" name="rut"
+                            placeholder="Ingrese rut o pasaporte" autocomplete="off"
+                            ng-model="newPeople.run"
+                            data-toggle="tooltip"
+                            ng-minlength="7"
+                            ng-pattern="regex"
+                            data-placement="bottom"
+                            title="Sin Dígito Verificador.">
+                          <span class="error text-danger" ng-show="supplierForm.rut.$dirty && supplierForm.rut.$error.required">Campo obligatorio!</span>
+                          <span class="error text-danger" ng-show="supplierForm.rut.$dirty && supplierForm.rut.$error.minlength || supplierForm.rut.$error.pattern">Rut/Pasaporte inválido!</span>
+                      </div>
+                      <div class="form-group" ng-class="{'has-error': supplierForm.fullname.$invalid && supplierForm.fullname.$dirty}">
+                        <input type="text" class="form-control focus" name="fullname"
+                            placeholder="Nombre Completo" autocomplete="off"
+                            ng-model="newPeople.fullname">
+                        <span class="error text-danger" ng-show="supplierForm.fullname.$dirty && supplierForm.fullname.$error.required">Campo obligatorio!</span>
+                      </div>
+                       <div class="form-group">
+                        <input type="text" class="form-control focus" name="company"
+                            placeholder="Nombre de Compañia" autocomplete="off"
+                            ng-model="newPeople.company">
+                      </div>
+                      <div class="form-group">
+                       <input type="text" class="form-control focus" name="truck_patent"
+                           placeholder="Patente camión" autocomplete="off"
+                           ng-model="newPeople.truck_patent">
+                     </div>
+                     <div class="form-group">
+                      <input type="text" class="form-control focus" name="rampla_patent"
+                          placeholder="Patente rampla" autocomplete="off"
+                          ng-model="newPeople.rampla_patent">
+                    </div>
+                      <button class="btn btn-success" ng-click="addSupplier()">Agregar</button>
+                      <button class="btn btn-info" ng-click="clearSupplier()">Limpiar</button>
+                    </form>
+                    <hr>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        <div class="col-xs-9">
+            <div class="box" >
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                      <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Rut</th>
+                            <th>Nombre</th>
+                            <th>Compañía</th>
+                            <th>Patente Camión</th>
+                            <th>Patente Rampla</th>
+                            <th>Eliminar</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr dir-paginate="person in suppliers | filter: searchKeyword | itemsPerPage:25">
+                          <td>{{$index + 1}}</td>
+                          <td class="text-green">{{person.run}}</td>
+                          <td><input
+                               class="form-control"
+                               type="text"
+                               ng-model="person.fullname"
+                               ng-change="update(person)" /></td>
+                          <td><input
+                               class="form-control"
+                               type="text"
+                               ng-model="person.company"
+                               ng-change="update(person)" /></td>
+                          <td><input
+                               class="form-control"
+                               type="text"
+                               ng-model="person.truck_patent"
+                               ng-change="update(person)" /></td>
+                          <td><input
+                               class="form-control"
+                               type="text"
+                               ng-model="person.rampla_patent"
+                               ng-change="update(person)" /></td>
+                          <td><a class="glyphicon glyphicon-remove pull-right" ng-click="showDiv=true; deleteSupplier(person)" ng-show="!showDiv"></a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <dir-pagination-controls
+                       max-size="25"
+                       direction-links="true"
+                       boundary-links="true" >
+                    </dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+</section><!-- /.content -->

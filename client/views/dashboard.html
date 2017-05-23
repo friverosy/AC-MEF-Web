@@ -11,12 +11,12 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
 
-    <div class="col-lg-12 col-xs-12">
+    <div class="col-lg-4 col-xs-12">
       <div class="info-box bg-aqua">
         <a href="/#/logbook/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-pie-graph"></i></span></a>
         <div class="info-box-content">
           <span class="info-box-text">En Planta</span>
-          <span class="info-box-number">{{ num_employees + num_contractors + num_visits }}</span>
+          <span class="info-box-number">{{ num_employees + num_contractors + num_visits + num_suppliers }}</span>
           <div class="progress">
             <div class="progress-bar" style="width: 100%"></div>
           </div>
@@ -27,7 +27,7 @@
       </div><!-- /.info-box -->
   	</div><!-- ./col -->
 
-  	<div class="col-lg-3 col-xs-6">
+  	<div class="col-lg-4 col-xs-12">
       <div class="info-box bg-green">
         <a href="/#/logbook/employees/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
         <div class="info-box-content">
@@ -35,33 +35,49 @@
           <span class="info-box-number">{{ num_employees}}</span>
           <!-- The progress section is optional -->
           <div class="progress">
-            <div class="progress-bar" style="width: {{ (num_employees * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+            <div class="progress-bar" style="width: {{ (num_employees * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%"></div>
           </div>
           <span ng-if="num_employees > 0" class="progress-description">
-            {{ (num_employees * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+            {{ (num_employees * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%
           </span>
         </div><!-- /.info-box-content -->
       </div><!-- /.info-box -->
   	</div><!-- ./col -->
 
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-12">
       <div class="info-box bg-yellow">
         <a href="/#/logbook/contractors/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
         <div class="info-box-content">
           <span class="info-box-text">Contratistas</span>
           <span class="info-box-number">{{ num_contractors}}</span>
-          <!-- The progress section is optional -->
           <div class="progress">
-            <div class="progress-bar" style="width: {{ (num_contractors * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+            <div class="progress-bar" style="width: {{ (num_contractors * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%"></div>
           </div>
           <span ng-if="num_contractors > 0" class="progress-description">
             {{ (num_contractors * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+          </span>
+        </div>
+      </div>
+  	</div>
+
+    <div class="col-lg-4 col-xs-12">
+      <div class="info-box bg-yellow">
+        <a href="/#/logbook/suppliers/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
+        <div class="info-box-content">
+          <span class="info-box-text">Proveedores</span>
+          <span class="info-box-number">{{ num_suppliers}}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: {{ (num_suppliers * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%"></div>
+          </div>
+          <span ng-if="num_suppliers > 0" class="progress-description">
+            {{ (num_suppliers * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%
           </span>
         </div><!-- /.info-box-content -->
       </div><!-- /.info-box -->
   	</div><!-- ./col -->
 
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-12">
       <div class="info-box bg-red">
         <a href="/#/logbook/visits/inside" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-ios-people"></i></span></a>
         <div class="info-box-content">
@@ -69,16 +85,16 @@
           <span class="info-box-number">{{ num_visits}}</span>
           <!-- The progress section is optional -->
           <div class="progress">
-            <div class="progress-bar" style="width: {{ (num_visits * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%"></div>
+            <div class="progress-bar" style="width: {{ (num_visits * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%"></div>
           </div>
           <span ng-if="num_visits > 0" class="progress-description">
-            {{ (num_visits * 100) / (num_employees + num_contractors + num_visits) | singleDecimal }}%
+            {{ (num_visits * 100) / (num_employees + num_contractors + num_visits + num_suppliers) | singleDecimal }}%
           </span>
         </div><!-- /.info-box-content -->
       </div><!-- /.info-box -->
   	</div><!-- ./col -->
 
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-lg-4 col-xs-12">
       <div class="info-box bg-gray">
         <a href="/#/logbook/PatentsFiled" class="small-box-footer bg-green"><span class="info-box-icon"><i class="ion ion-model-s"></i></span></a>
         <div class="info-box-content">

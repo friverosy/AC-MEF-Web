@@ -62,25 +62,25 @@ angular
                     accion: "employeeInside"
                 }
             })
-            .state('supplier', {
-                url: '/logbook/supplier',
-                templateUrl: 'views/logbook/supplier/view.html',
+            .state('suppliers', {
+                url: '/logbook/suppliers',
+                templateUrl: 'views/logbook/suppliers/view.html',
                 controller: 'RecordController',
                 data: {
-                    accion: "supplier"
+                    accion: "suppliers"
                 }
             })
             .state('supplierNew', {
-                url: '/logbook/supplier/new',
-                templateUrl: 'views/logbook/supplier/new.html',
-                controller: 'EmployeeController',
+                url: '/logbook/suppliers/new',
+                templateUrl: 'views/logbook/suppliers/new.html',
+                controller: 'SupplierController',
                 data: {
                     accion: "supplierNew"
                 }
             })
             .state('supplierInside', {
-                url: '/logbook/supplier/inside',
-                templateUrl: 'views/logbook/supplier/inside.html',
+                url: '/logbook/suppliers/inside',
+                templateUrl: 'views/logbook/suppliers/inside.html',
                 controller: 'RecordController',
                 data: {
                     accion: "supplierInside"

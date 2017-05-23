@@ -1,0 +1,80 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>Bitácora de Proveedores</h1>
+  <ol class="breadcrumb">
+    <li><a href="/#/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Proveedores</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">{{num_suppliers}} en planta</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body" id="asdf">
+          <ul class="nav nav-tabs">
+            <li><a href ng-click="eventDateFilter('today', 'E', 'all')">Hoy</a></li>
+            <li><a href ng-click="eventDateFilter('pastWeek', 'E', 'all')">7 días</a></li>
+            <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
+            <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
+            <li><a href ng-click="notFindInputDate('E', 'all')">Salidas sin entradas</a></li>
+            <li class="pull-right"><a href="/#/logbook/suppliers" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+            <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false',ignoreColumn: [5,8,9]});" class="fa fa-file-excel-o"></i></a></li>
+          </ul>
+          <table id="example2" class="table table-bordered table-condensed table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Rut</th>
+                <th class="fullname">Nombre</th>
+                <th>Empresa</th>
+                <th class="datetime">Entrada</th>
+                <th class="department">Destino</th>
+                <th>Patente Camión</th>
+                <th>Patente Rampla</th>
+                <th>Salida</th>
+                <th>Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="record in records | filter: searchKeyword | itemsPerPage:25">
+                <td>{{$index+1}}</td>
+                <td class="text-green">
+                  <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                </td>
+                <td ng-if="record.is_permitted == false" class="text-red">
+                  <strong ng-if="record.blacklist" class="text-red">*</strong>
+                  <strong>{{record.run}}</strong>
+                </td>
+                <td><small>{{record.fullname}}</small></td>
+                <td>{{record.company}}</td>
+                <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
+                <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss'}}</td>
+                <td><small>{{record.destination}}</small></td>
+                <td>{{record.truck_patent}}</td>
+                <td>{{record.rampla_patent}}</td>
+                <td ng-if="record.output_datetime == undefined"></td>
+                <td ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'d/M HH:mm:ss'}}</td>
+                <td>
+                  <input
+                    type="text"
+                    ng-model="record.comment"
+                    ng-change="update(record)"
+                    class="form-control">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <dir-pagination-controls
+            max-size="25"
+            direction-links="true"
+            boundary-links="true" >
+          </dir-pagination-controls>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+  </div><!-- /.row -->
+</section><!-- /.content -->

@@ -15,6 +15,7 @@ angular
     $scope.totalRegister_length = 0;
     $scope.totalEmployees_length = 0;
     $scope.totalContractors_length = 0;
+    $scope.totalSuppliers_length = 0;
     $scope.totalVisits_length = 0;
     $scope.totalVehicles_length = 0;
 
@@ -62,6 +63,7 @@ angular
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
+        console.log(results);
         //$scope.num_manualrecords = filterFilter($scope.manualrecords,
         //{reviewed: false}).length;
       })
@@ -145,8 +147,11 @@ angular
       Record.find( {
         filter: {
           where: {
-            is_input: true,
-            input_patent: {neq: null}
+            and: [
+              {is_input: true},
+              {input_patent: {neq: ''}},
+              {input_patent: {neq: null}}
+            ]
           },
           order: ['input_datetime DESC']
         }
@@ -235,6 +240,28 @@ angular
         .then(function(results) {
             $scope.totalContractors_length =  results.length;
             $scope.totalContractors =  results;
+        });
+
+        Record.find({
+            filter: {
+                where: {
+                    and: [
+                        {is_permitted: true},
+                        {profile: "P"},
+                        {input_datetime: {
+                            between: [
+                                from.toISOString(),
+                                until.toISOString()
+                            ]
+                        }}
+                    ]
+                }
+            }
+        })
+        .$promise
+        .then(function(results) {
+            $scope.total_Supplierslength =  results.length;
+            $scope.totalSuppliers =  results;
         });
 
         Record.find({
@@ -390,7 +417,6 @@ angular
           $scope.records = results;
         })
       }
-
     }
 
     function getInside() {
@@ -672,6 +698,35 @@ angular
         });
       };
 
+      //Number of suppliers inside
+      function getNumSuppliers() {
+        Record.find({
+          filter: {
+            where: {
+              and: [
+                {is_input: true},
+                {output_datetime: undefined},
+                {profile: "P"},
+                {is_permitted: true}
+              ]
+            }
+          }
+        })
+        .$promise
+        .then(function(result){
+          //$scope.num_contractors = result;
+          var contador = 0;
+          var num_suppliers = 0;
+          var suppliersFiltered = $filter('unique')(result,'fullname');
+          angular.forEach(suppliersFiltered, function(value, key) {
+            if(suppliersFiltered[contador].output_datetime == undefined && suppliersFiltered[contador].is_input == true)
+                num_suppliers++
+            contador++;
+          });
+          $scope.num_suppliers = num_suppliers;
+        });
+      };
+
     //Get Collections
     switch($state.current.data.accion) {
       case 'inside' :
@@ -713,6 +768,18 @@ angular
         getDestination();
         $scope.eventDateFilter('today','C', 'all');
         break;
+      case 'suppliers' :
+          getVehicleType();
+          getNumSuppliers();
+          getDestination();
+          $scope.eventDateFilter('today','P', 'all');
+          break;
+      case 'supplierInside':
+            getVehicleType();
+            getDestination();
+            getNumSuppliers();
+            $scope.eventDateFilter('today','P', 'inside');
+            break;
       case 'dennieds' :
         getDennieds();
         break;

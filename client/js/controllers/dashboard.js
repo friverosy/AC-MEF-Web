@@ -86,7 +86,36 @@ function($scope,
             num_employees++
           contador++;
         });
-        $scope.num_employees = num_employees
+        $scope.num_employees = num_employees;
+      });
+    };
+
+    // Number of suppliers inside
+    function getNumSuppliers() {
+      Record.find({
+        filter: {
+          where: {
+            and:
+              [
+                {is_input: true},
+                {profile: "P"},
+                {is_permitted: true},
+                {output_datetime: undefined}
+              ]
+          }
+        }
+      })
+      .$promise
+      .then(function(result){
+        var contador = 0;
+        var num_suppliers = 0;
+        var suppliersFiltered = $filter('unique')(result,'fullname');
+        angular.forEach(suppliersFiltered, function(value, key) {
+          if(suppliersFiltered[contador].output_datetime == undefined && suppliersFiltered[contador].is_input == true)
+            num_suppliers++
+          contador++;
+        });
+        $scope.num_suppliers = num_suppliers;
       });
     };
 
@@ -295,6 +324,7 @@ function($scope,
       getNumEmployes();
       getNumVisits();
       getNumContractos();
+      getNumSuppliers();
       getRejected();
       getNumPatentsInside();
       getCompany();
