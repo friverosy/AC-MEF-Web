@@ -21,8 +21,8 @@ module.exports = function(Record) {
   // Remove DELETE functionality from API
   Record.disableRemoteMethod('deleteById', true);
   // Validate unique
-  Record.validatesUniquenessOf('input_datetime', {message: 'ya exis'});
-  Record.validatesUniquenessOf('output_datetime', {message: ''});
+  // Record.validatesUniquenessOf('input_datetime', {message: 'Entry Already exist'});
+  // Record.validatesUniquenessOf('output_datetime', {message: 'Depart Already exist'});
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
