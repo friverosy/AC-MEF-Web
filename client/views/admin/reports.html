@@ -22,7 +22,7 @@
                 </div>
                 <div class="box-body">
                    <form name="reportForm" ng-submit="getReport()">
-                    
+
                         <div class="col-lg-3 col-md-4 col-xs-12">
                             <div class='input-group date' id='datepicker' ng-class="{'has-error': reportForm.month.$invalid && reportForm.month.$dirty}">
                                 <input type="text" class="form-control focus" name="date" ng-model="report.month" placeholder="Seleccione mes" required />
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <span class="has-error control-label" ng-show="
                             reportForm.month.$invalid && reportForm.month.$dirty">
                           Mes es requerido.
@@ -40,13 +40,13 @@
                         <div class="col-lg-3 col-md-4 col-xs-12">
                             <button class="btn btn-primary" ng-disabled="reportForm.$invalid">Buscar</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-   
+
     <div class="row">
         <div class="col-xs-6">
             <div class="box">
@@ -61,6 +61,7 @@
                                 <th>Ingresos</th>
                                 <th>Empleados</th>
                                 <th>Contratistas</th>
+                                <th>Proveedores</th>
                                 <th>Visitas</th>
                                 <th>Vehiculos</th>
                             </tr>
@@ -69,9 +70,10 @@
                             <tr>
                                 <td>
                                     <a data-toggle="tooltip" title="Ver detalle" class="badge bg-blue" ng-click="
-                                      showTotalRegister=true; 
+                                      showTotalRegister=true;
                                       showTotalEmployees=false;
                                       showTotalContractors=false;
+                                      showTotalSuppliers=false;
                                       showTotalVisitors=false;
                                       showTotalVehicles=false;">
                                        {{ totalRegister_length }}
@@ -79,9 +81,10 @@
                                 </td>
                                 <td>
                                     <a data-toggle="tooltip" title="Ver detalle" class="badge bg-green" ng-click="
-                                      showTotalRegister=false; 
+                                      showTotalRegister=false;
                                       showTotalEmployees=true;
                                       showTotalContractors=false;
+                                      showTotalSuppliers=false;
                                       showTotalVisitors=false;
                                       showTotalVehicles=false;
                                       ">
@@ -90,19 +93,32 @@
                                 </td>
                                 <td>
                                     <a data-toggle="tooltip" title="Ver detalle" class="badge bg-orange" ng-click="
-                                      showTotalRegister=false; 
+                                      showTotalRegister=false;
                                       showTotalEmployees=false;
                                       showTotalContractors=true;
+                                      showTotalSuppliers=false;
                                       showTotalVisitors=false;
                                       showTotalVehicles=false;">
                                        {{ totalContractors_length }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-red" ng-click="
-                                      showTotalRegister=false; 
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-orange" ng-click="
+                                      showTotalRegister=false;
                                       showTotalEmployees=false;
                                       showTotalContractors=false;
+                                      showTotalSuppliers=true;
+                                      showTotalVisitors=false;
+                                      showTotalVehicles=false;">
+                                       {{ totalSuppliers_length }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" title="Ver detalle" class="badge bg-red" ng-click="
+                                      showTotalRegister=false;
+                                      showTotalEmployees=false;
+                                      showTotalContractors=false;
+                                      showTotalSuppliers=false;
                                       showTotalVisitors=true;
                                       showTotalVehicles=false;">
                                        {{ totalVisits_length }}
@@ -110,9 +126,10 @@
                                 </td>
                                 <td>
                                     <a data-toggle="tooltip" title="Ver detalle" class="badge bg-gray" ng-click="
-                                      showTotalRegister=false; 
+                                      showTotalRegister=false;
                                       showTotalEmployees=false;
                                       showTotalContractors=false;
+                                      showTotalSuppliers=false;
                                       showTotalVisitors=false;
                                       showTotalVehicles=true;">
                                        {{ totalVehicles_length }}
@@ -125,7 +142,7 @@
             </div>
         </div>
     </div><!-- /.row -->
-    
+
     <div class="row" ng-show="showTotalRegister">
       <div class="col-xs-12">
         <div class="box">
@@ -162,7 +179,7 @@
                   <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
                   <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -175,7 +192,7 @@
         </div><!-- /.box -->
       </div>
     </div>
-    
+
     <div class="row" ng-show="showTotalEmployees">
       <div class="col-xs-12">
         <div class="box">
@@ -212,7 +229,7 @@
                   <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
                   <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -225,7 +242,7 @@
         </div><!-- /.box -->
     </div>
     </div>
-    
+
     <div class="row" ng-show="showTotalContractors">
       <div class="col-xs-12">
         <div class="box">
@@ -262,7 +279,7 @@
                   <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
                   <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -275,7 +292,57 @@
         </div><!-- /.box -->
     </div>
     </div>
-    
+
+    <div class="row" ng-show="showTotalSuppliers">
+      <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detalle de proveedores</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <!-- /.box-tools -->
+            </div>
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Rut</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+                    <th>Destino</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="record in totalProveiders | filter: searchKeyword | itemsPerPage:25">
+                  <td>{{ $index + 1 }}</td>
+                  <td class="text-green">
+                    <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
+                  </td>
+                  <td>{{record.fullname}}</td>
+                  <td>{{record.company}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
+                  <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls
+               max-size="25"
+               direction-links="true"
+               boundary-links="true" >
+            </dir-pagination-controls>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+    </div>
+
     <div class="row" ng-show="showTotalVisitors">
       <div class="col-xs-12">
         <div class="box">
@@ -312,7 +379,7 @@
                   <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
                   <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -325,7 +392,7 @@
         </div><!-- /.box -->
     </div>
     </div>
-    
+
     <div class="row" ng-show="showTotalVehicles">
       <div class="col-xs-12">
         <div class="box">
@@ -362,7 +429,7 @@
                   <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
                   <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td> 
+                  <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -375,14 +442,14 @@
         </div><!-- /.box -->
     </div>
     </div>
-    
+
 </section><!-- /.content -->
 
 <script type="text/javascript">
   $(function() {
     $('#datepicker').datepicker({
       format: "mm-yyyy",
-      viewMode: "months", 
+      viewMode: "months",
       minViewMode: "months"
     });
   });
