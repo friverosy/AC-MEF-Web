@@ -52,7 +52,7 @@ angular
       .$promise
       .then(function(results) {
         $scope.suppliers = results;
-        console.log(results);
+        //console.log(results);
       });
     }
 
@@ -432,7 +432,7 @@ angular
     $scope.addSupplier = function() {
       $scope.newPeople.profile = "P";
       $scope.newPeople.is_permitted = true;
-      console.log("inserting",$scope.newPeople);
+      //console.log("inserting",$scope.newPeople);
       People.create($scope.newPeople, function(err, model){
         $scope.newPeople.fullname = "";
         $scope.newPeople.run = "";

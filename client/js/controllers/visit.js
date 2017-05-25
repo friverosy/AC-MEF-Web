@@ -19,7 +19,7 @@ angular.module('app')
     $scope.employee.valuationDatePickerIsOpen = false;
 
     $scope.employee.addEmployee = function() {
-      console.log($scope.employee.people_run);
+      //console.log($scope.employee.people_run);
 
     	if (typeof $scope.employee.fullname == "undefined" || $scope.employee.fullname == "") {
     		alert("Debe ingresar el nombre completo de la visita");

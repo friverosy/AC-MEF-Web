@@ -15,19 +15,11 @@ angular
       .$promise
       .then(function(results) {
           $scope.Blacklist = results;
+          $scope.num_blacklist = result.lenght;
       });
     }
 
-    function getNumBlacklist() {
-      Blacklist.count()
-      .$promise
-      .then(function(result){
-        $scope.num_blacklist = result;
-      });
-    };
-
     //Count
-    getNumBlacklist();
     getBlacklist();
 
     $scope.addBlacklist = function() {
@@ -47,7 +39,6 @@ angular
         .$promise
         .then(function() {
           getBlacklist();
-          getNumBlacklist();
         });
     };
 

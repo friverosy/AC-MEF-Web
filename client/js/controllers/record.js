@@ -30,6 +30,10 @@ angular
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
+    $scope.exportData = function () {
+      XLSX.writeFile(XLSX.read($scope.recordsFiltered), 'out.xlsx');
+    };
+
     function getParkings() {
       Parking.find()
       .$promise
@@ -63,7 +67,7 @@ angular
       .$promise
       .then(function(results) {
         $scope.manualrecords = results;
-        console.log(results);
+        //console.log(results);
         //$scope.num_manualrecords = filterFilter($scope.manualrecords,
         //{reviewed: false}).length;
       })
@@ -96,8 +100,8 @@ angular
         var from = new Date(year,month,01);
         var until = new Date(year,month,31);
 
-        console.log("from ", from.toISOString());
-        console.log("until", until.toISOString());
+        //console.log("from ", from.toISOString());
+        //console.log("until", until.toISOString());
         Record.find({
             filter: {
                 where: {
@@ -116,7 +120,7 @@ angular
         .$promise
         .then(function(results) {
             $scope.records = results;
-            console.log($scope.records);
+            //console.log($scope.records);
         })
     }
 
@@ -135,7 +139,7 @@ angular
     function getRecords4Patents() {
       Record.find({
         fields: {input_patent: true},
-        filter: { where: { input_patent: {neq: null} }}
+        filter: {where: {input_patent: {nin: [null, '']}}}
       })
       .$promise
       .then(function(results) {
@@ -149,8 +153,13 @@ angular
           where: {
             and: [
               {is_input: true},
-              {input_patent: {neq: ''}},
-              {input_patent: {neq: null}}
+              {output_datetime: undefined},
+              {is_permitted: true},
+              {or: [
+                { input_patent: {nin: [null, '']} },
+                { truck_patent: {nin: [null, '']} },
+                { rampla_patent: {nin: [null, '']} }
+              ]}
             ]
           },
           order: ['input_datetime DESC']
@@ -167,15 +176,15 @@ angular
     }
 
     function Report(date) {
-        console.log(date);
+        //console.log(date);
         var array = date.split("-");
         var month = array[0]-1;
         var year = array[1];
         var from = new Date(year,month,01);
         var until = new Date(year,month,31);
 
-        console.log("from ", from.toISOString());
-        console.log("until", until.toISOString());
+        //console.log("from ", from.toISOString());
+        //console.log("until", until.toISOString());
 
         Record.find({
             filter: {
@@ -304,7 +313,7 @@ angular
         })
         .$promise
         .then(function(results) {
-            console.log("total", results.length);
+            //console.log("total", results.length);
             $scope.totalVehicles_length =  results.length;
             $scope.totalVehicles =  results;
         });
@@ -425,7 +434,7 @@ angular
           where: {
             and: [
               {is_input: true},
-              {input_datetime: { neq: null }},
+              {output_datetime: undefined},
               {is_permitted: true }
             ]
           },
@@ -436,59 +445,59 @@ angular
         //$scope.records = results;
         $scope.recordsFiltered =  $filter('unique')(results,'run');
       });
-    }
+    };
 
     //Dennied view
     //Dennieds tabs
-   $scope.eventDateFilterDennied = function(column) {
-    getDennieds();
-      if(column === 'today') {
-        $scope.dateRange = '';
-        $scope.filterByDate = function(input){
-          return function(item){
-            var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() >= new Date(ano+'/'+mes+'/'+dia);
-          }
-        }
-      } else if (column === 'pastWeek') {
-        //curr_date - 7 dias
-        $scope.dateRange = '';
-        $scope.filterByDate = function(input){
-          return function(item){
-            var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() >= Date.now()-ONE_WEEK;
-          }
-        }
-      } else if (column === 'pastMonth') {
-        //curr_month - 1
-        $scope.filterByDate = function(input){
-          return function(item){
-            var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() >= Date.now()-ONE_MONTH;
-          }
-        }
-      } else {
-        $scope.filterByDate = function(input){
-          return function(item){
-            var INPUT = new Date(item.input_datetime)
-            return INPUT.getTime() <= Date.now();
-          }
-        }
-      }
-    }
+  //  $scope.eventDateFilterDennied = function(column) {
+  //   getDennieds();
+  //     if(column === 'today') {
+  //       $scope.dateRange = '';
+  //       $scope.filterByDate = function(input){
+  //         return function(item){
+  //           var INPUT = new Date(item.input_datetime)
+  //           return INPUT.getTime() >= new Date(ano+'/'+mes+'/'+dia);
+  //         }
+  //       }
+  //     } else if (column === 'pastWeek') {
+  //       //curr_date - 7 dias
+  //       $scope.dateRange = '';
+  //       $scope.filterByDate = function(input){
+  //         return function(item){
+  //           var INPUT = new Date(item.input_datetime)
+  //           return INPUT.getTime() >= Date.now()-ONE_WEEK;
+  //         }
+  //       }
+  //     } else if (column === 'pastMonth') {
+  //       //curr_month - 1
+  //       $scope.filterByDate = function(input){
+  //         return function(item){
+  //           var INPUT = new Date(item.input_datetime)
+  //           return INPUT.getTime() >= Date.now()-ONE_MONTH;
+  //         }
+  //       }
+  //     } else {
+  //       $scope.filterByDate = function(input){
+  //         return function(item){
+  //           var INPUT = new Date(item.input_datetime)
+  //           return INPUT.getTime() <= Date.now();
+  //         }
+  //       }
+  //     }
+  //   }
     //End: Dennieds tabs
 
     //Dennied to Blacklist
-    $scope.denniedToBlacklist = function(record) {
-      //save flag in record
-      record.to_blacklist = true;
-      record.$upsert();
-      //save in blacklist
-       $scope.blacklist.run = record.run;
-       Blacklist.create($scope.blacklist, function(err, model){
-        });
-      getDennieds();
-    }
+    // $scope.denniedToBlacklist = function(record) {
+    //   //save flag in record
+    //   record.to_blacklist = true;
+    //   record.$upsert();
+    //   //save in blacklist
+    //    $scope.blacklist.run = record.run;
+    //    Blacklist.create($scope.blacklist, function(err, model){
+    //     });
+    //   getDennieds();
+    // }
     //End: Dennied to Blacklist
     //End: Dennied view
 
@@ -612,15 +621,14 @@ angular
     }
 
     //Numbers in Dashboard
-    //Number of employees inside
-    function getNumEmployes() {
+    function getCounter(profile) {
       Record.find({
         filter: {
           where: {
             and:
               [
+                {profile: profile},
                 {is_input: true},
-                {profile: "E"},
                 {is_permitted: true},
                 {output_datetime: undefined}
               ]
@@ -629,103 +637,34 @@ angular
       })
       .$promise
       .then(function(result){
-        var contador = 0;
-        var num_employees = 0;
-        var employeeFiltered = $filter('unique')(result,'fullname');
-        angular.forEach(employeeFiltered, function(value, key) {
-          if(employeeFiltered[contador].output_datetime == undefined && employeeFiltered[contador].is_input == true)
-            num_employees++
-          contador++;
+        var index = 0;
+        var people = 0;
+
+        if (profile == 'V') var peopleFiltered = $filter('unique')(result,'run');
+        else var peopleFiltered = $filter('unique')(result,'fullname');
+
+        angular.forEach(peopleFiltered, function(value, key) {
+          if(peopleFiltered[index].output_datetime == undefined && peopleFiltered[index].is_input == true)
+            people++
+          index++;
         });
-        $scope.num_employees = num_employees
+        switch(profile) {
+          case 'E':
+            $scope.num_employees = people;
+            break;
+          case 'C':
+            $scope.num_contractors = people;
+            break;
+          case 'P':
+            $scope.num_suppliers = people;
+            break;
+          case 'V':
+            $scope.num_visits = people;
+            break;
+        };
       });
-    };
+    }
 
-    //Number of visits inside
-    function getNumVisits() {
-      //Filtered by run (not fullname)
-      Record.find({
-        filter: {
-          where: {
-            and:
-              [
-                {is_input: true},
-                {profile: "V"},
-                {output_datetime: undefined}
-              ]
-          }
-        }
-      })
-      .$promise
-      .then(function(result){
-        var contador = 0;
-        var num_visits = 0;
-        var visitFiltered = $filter('unique')(result,'run');
-        angular.forEach(visitFiltered, function(value, key) {
-          if(visitFiltered[contador].output_datetime == undefined && visitFiltered[contador].is_input == true)
-            num_visits++
-          contador++;
-        });
-        $scope.num_visits = num_visits;
-      })};
-
-      //Number of contractors inside
-      function getNumContractors() {
-        Record.find({
-          filter: {
-            where: {
-              and: [
-                {is_input: true},
-                {output_datetime: undefined},
-                {profile: "C"},
-                {is_permitted: true}
-              ]
-            }
-          }
-        })
-        .$promise
-        .then(function(result){
-          //$scope.num_contractors = result;
-          var contador = 0;
-          var num_contractors = 0;
-          var contractorFiltered = $filter('unique')(result,'fullname');
-          angular.forEach(contractorFiltered, function(value, key) {
-            if(contractorFiltered[contador].output_datetime == undefined && contractorFiltered[contador].is_input == true)
-                num_contractors++
-            contador++;
-          });
-          $scope.num_contractors = num_contractors;
-        });
-      };
-
-      //Number of suppliers inside
-      function getNumSuppliers() {
-        Record.find({
-          filter: {
-            where: {
-              and: [
-                {is_input: true},
-                {output_datetime: undefined},
-                {profile: "P"},
-                {is_permitted: true}
-              ]
-            }
-          }
-        })
-        .$promise
-        .then(function(result){
-          //$scope.num_contractors = result;
-          var contador = 0;
-          var num_suppliers = 0;
-          var suppliersFiltered = $filter('unique')(result,'fullname');
-          angular.forEach(suppliersFiltered, function(value, key) {
-            if(suppliersFiltered[contador].output_datetime == undefined && suppliersFiltered[contador].is_input == true)
-                num_suppliers++
-            contador++;
-          });
-          $scope.num_suppliers = num_suppliers;
-        });
-      };
 
     //Get Collections
     switch($state.current.data.accion) {
@@ -734,52 +673,52 @@ angular
         break;
       case 'employees' :
         getVehicleType();
-        getNumEmployes();
+        getCounter('E');
         $scope.eventDateFilter('today','E', 'all');
         break;
       case 'employeeInside':
         getVehicleType();
-        getNumEmployes();
+        getCounter('E');
         $scope.eventDateFilter('today','E', 'inside');
         break;
       case 'visitInside':
         getVehicleType();
         getDestination();
-        getNumVisits();
+        getCounter('V');
         getParkings();
         $scope.eventDateFilter('today','V', 'inside');
         break;
       case 'contractorInside':
         getVehicleType();
         getDestination();
-        getNumContractors();
+        getCounter('C');
         $scope.eventDateFilter('today','C', 'inside');
         break;
       case 'visits' :
         getVehicleType();
         getDestination();
-        getNumVisits();
+        getCounter('V');
         getParkings();
         $scope.eventDateFilter('today','V', 'all');
         break;
       case 'contractors' :
         getVehicleType();
-        getNumContractors();
+        getCounter('C');
         getDestination();
         $scope.eventDateFilter('today','C', 'all');
         break;
       case 'suppliers' :
-          getVehicleType();
-          getNumSuppliers();
-          getDestination();
-          $scope.eventDateFilter('today','P', 'all');
-          break;
+        getVehicleType();
+        getCounter('P');
+        getDestination();
+        $scope.eventDateFilter('today','P', 'all');
+        break;
       case 'supplierInside':
-            getVehicleType();
-            getDestination();
-            getNumSuppliers();
-            $scope.eventDateFilter('today','P', 'inside');
-            break;
+        getVehicleType();
+        getDestination();
+        getCounter('S');
+        $scope.eventDateFilter('today','P', 'inside');
+        break;
       case 'dennieds' :
         getDennieds();
         break;

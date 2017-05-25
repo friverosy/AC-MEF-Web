@@ -27,6 +27,8 @@
                     <th>Departamento</th>
                     <th>Entrada</th>
                     <th>Patente de entrada</th>
+                    <th>Patente camión</th>
+                    <th>Patente rampla</th>
                     <th>Tipo de Vehículo</th>
                     <th>Estacionamiento</th>
                     <th>Perfil</th>
@@ -41,10 +43,13 @@
                   </td>
                   <td>{{record.fullname}}</td>
                   <td>{{record.company}}</td>
-                  <td ng-if="record.place == 'null'"></td>
-                  <td ng-if="record.place != 'null'">{{record.place}}</td>
+                  <td ng-if="record.place == 'null' && record.destination == 'null'"></td>
+                  <td ng-if="record.place != 'null' && record.profile == 'E'">{{record.place}}</td>
+                  <td ng-if="record.destination != 'null' && (record.profile == 'V' || record.profile == 'C' || record.profile == 'P')">{{record.destination}}</td>
                   <td>{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
                   <td>{{record.input_patent}}</td>
+                  <td>{{record.truck_patent}}</td>
+                  <td>{{record.rampla_patent}}</td>
                   <td>
                     <select
                       ng-if="record.input_patent != undefined"
