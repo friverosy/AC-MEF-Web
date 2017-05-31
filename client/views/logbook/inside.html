@@ -16,19 +16,31 @@
         <div class="box">
           <div class="box-header">
             <div class="btn-group">
-              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Todos <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href ng-click="eventDateFilter('all', 'E', 'inside')">Empleados</a></li>
-                <li><a href ng-click="eventDateFilter('all', 'C', 'inside')">Contratistas</a></li>
-                <li><a href ng-click="eventDateFilter('all', 'P', 'inside')">Proveedores</a></li>
-                <li><a href ng-click="eventDateFilter('all', 'V', 'inside')">Visitas</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href ng-click="eventDateFilter('all', '', 'inside')">Todos</a></li>
-              </ul>
-            </div>
-          </div><!-- /.box-header -->
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Todos <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href ng-click="eventDateFilter('all', 'E', 'inside')">Empleados</a></li>
+                  <li><a href ng-click="eventDateFilter('all', 'C', 'inside')">Contratistas</a></li>
+                  <li><a href ng-click="eventDateFilter('all', 'P', 'inside')">Proveedores</a></li>
+                  <li><a href ng-click="eventDateFilter('all', 'V', 'inside')">Visitas</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href ng-click="eventDateFilter('all', '', 'inside')">Todos</a></li>
+                </ul>
+              </div>
+              <div class="box-tools pull-right">
+                  <button
+                    type="button"
+                    class="btn btn-box-tool"
+                    ng-click="exportData()"
+                    data-toggle="tooltip"
+                    title=""
+                    data-widget="chat-pane-toggle"
+                    data-original-title="Exportar a Excel">
+                      <i class="fa fa-file-excel-o"></i>
+                  </button>
+              </div>
+          </div>
           <div class="box-body">
             <table class="table table-bordered table-hover">
               <thead>

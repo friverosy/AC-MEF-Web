@@ -12,14 +12,15 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" ng-click="exportData()"><i class="fa fa-file-excel-o"></i></button>
+        </div>
         <div class="box-body">
           <ul class="nav nav-tabs">
             <li><a href ng-click="eventDateFilter('today', 'V', 'inside')">Hoy</a></li>
             <li><a href ng-click="eventDateFilter('pastWeek', 'V', 'inside')">7 días</a></li>
             <li><a href ng-click="eventDateFilter('pastMonth', 'V', 'inside')">30 días</a></li>
             <li><a href ng-click="eventDateFilter('all', 'V', 'inside')">Todos</a></li>
-            <!--<li><a href ng-click="notFindInputDate('V', 'inside')">sin entrada Registrada</a></li>-->
-            <li class="pull-right"><a href="/#/visits" class="text-muted"><i class="fa fa-refresh"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
             <thead>

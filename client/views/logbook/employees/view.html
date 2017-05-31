@@ -13,7 +13,19 @@
       <div class="box">
         <div class="box-header">
           <h3 class="box-title">{{num_employees}} en planta</h3>
-        </div><!-- /.box-header -->
+            <div class="box-tools pull-right">
+                <button
+                  type="button"
+                  class="btn btn-box-tool"
+                  ng-click="exportEmployeesData()"
+                  data-toggle="tooltip"
+                  title=""
+                  data-widget="chat-pane-toggle"
+                  data-original-title="Exportar a Excel">
+                    <i class="fa fa-file-excel-o"></i>
+                </button>
+            </div>
+        </div>
         <div class="box-body" id="asdf">
           <ul class="nav nav-tabs">
             <li><a href ng-click="eventDateFilter('today', 'E', 'all')">Hoy</a></li>
@@ -21,8 +33,6 @@
             <li><a href ng-click="eventDateFilter('pastMonth', 'E', 'all')">30 días</a></li>
             <li><a href ng-click="eventDateFilter('all', 'E', 'all')">Todos</a></li>
             <li><a href ng-click="notFindInputDate('E', 'all')">Salidas sin entradas</a></li>
-            <li class="pull-right"><a href="/#/logbook/employees" class="text-muted"><i class="fa fa-refresh"></i></a></li>
-            <li class="pull-right"><a class="text-muted"><i onClick ="$('#example2').tableExport({type:'excel',escape:'false',ignoreColumn: [5,8,9]});" class="fa fa-file-excel-o"></i></a></li>
           </ul>
           <table id="example2" class="table table-bordered table-condensed table-striped">
             <thead>

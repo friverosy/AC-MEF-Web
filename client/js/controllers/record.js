@@ -30,8 +30,53 @@ angular
     ONE_MONTH = ONE_WEEK * 4;
     FILTER = '';
 
+    // Export to excel
     $scope.exportData = function () {
-      XLSX.writeFile(XLSX.read($scope.recordsFiltered), 'out.xlsx');
+      alasql.fn.to_date = function(date){
+        if (date == 'undefined') {
+          return '';
+        }
+        var datetime = moment(date);
+        datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
+        return datetime;
+      };
+      alasql('SELECT run as Rut, fullname as Nombre, to_date(input_datetime) as Entrada, input_patent as Patente, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.recordsFiltered]);
+    };
+
+    $scope.exportEmployeesData = function () {
+      alasql.fn.to_date = function(date){
+        if (date == 'undefined') {
+          return '';
+        }
+        var datetime = moment(date);
+        datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
+        return datetime;
+      };
+      alasql('SELECT run as Rut, fullname as Nombre, place as Departamento, to_date(input_datetime) as Entrada, input_patent as Patente, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.records]);
+    };
+
+    $scope.exportSuppliersData = function () {
+      alasql.fn.to_date = function(date){
+        if (date == 'undefined') {
+          return '';
+        }
+        var datetime = moment(date);
+        datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
+        return datetime;
+      };
+      alasql('SELECT run as Rut, fullname as Nombre, destination as Destino, to_date(input_datetime) as Entrada, truck_patent as Camion, rampla_patent as Rampla, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.recordsFiltered]);
+    };
+
+    $scope.exportVisitsData = function () {
+      alasql.fn.to_date = function(date){
+        if (date == 'undefined') {
+          return '';
+        }
+        var datetime = moment(date);
+        datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
+        return datetime;
+      };
+      alasql('SELECT run as Rut, fullname as Nombre, destination as Destino, to_date(input_datetime) as Entrada, truck_patent as Camion, rampla_patent as Rampla, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.records]);
     };
 
     function getParkings() {
