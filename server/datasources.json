@@ -10,22 +10,5 @@
     "name": "mongoDS",
     "connector": "mongodb",
     "allowExtendedOperators": true
-  },
-  "emailDs": {
-    "name": "emailDs",
-    "defaultForType": "mail",
-    "connector": "mail",
-    "transports": [
-      {
-        "type": "SMTP",
-        "host": "smtp.gmail.com",
-        "secure": true,
-        "port": 465,
-        "auth": {
-          "user": "",
-          "pass": ""
-        }
-      }
-    ]
   }
 }

@@ -56,9 +56,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "Email": {
-    "dataSource": "emailDs"
-  },
   "user": {
     "dataSource": "mongoDS",
     "public": false

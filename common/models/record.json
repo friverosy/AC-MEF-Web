@@ -6,9 +6,6 @@
   "options": {
     "validateUpsert": true
   },
-  "Email": {
-    "dataSource": "emailDs"
-  },
   "properties": {
     "authorized_by": {
       "type": "string"

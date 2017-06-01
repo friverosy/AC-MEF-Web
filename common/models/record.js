@@ -26,6 +26,7 @@ module.exports = function(Record) {
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
+      console.log(ctx.instance);
       ctx.instance.reviewed = true;
       // notification(ctx.instance.is_permitted,
       //   ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);

@@ -74,8 +74,7 @@ function($scope,
               [
                 {profile: profile},
                 {is_input: true},
-                {is_permitted: true},
-                {output_datetime: undefined}
+                {is_permitted: true}
               ]
           }
         }
@@ -88,23 +87,18 @@ function($scope,
         if (profile == 'V') var peopleFiltered = $filter('unique')(result,'run');
         else var peopleFiltered = $filter('unique')(result,'fullname');
 
-        angular.forEach(peopleFiltered, function(value, key) {
-          if(peopleFiltered[index].output_datetime == undefined && peopleFiltered[index].is_input == true)
-            people++
-          index++;
-        });
         switch(profile) {
           case 'E':
-            $scope.num_employees = people;
+            $scope.num_employees = peopleFiltered.length;
             break;
           case 'C':
-            $scope.num_contractors = people;
+            $scope.num_contractors = peopleFiltered.length;
             break;
           case 'P':
-            $scope.num_suppliers = people;
+            $scope.num_suppliers = peopleFiltered.length;
             break;
           case 'V':
-            $scope.num_visits = people;
+            $scope.num_visits = peopleFiltered.length;
             break;
         };
       });
@@ -115,7 +109,6 @@ function($scope,
         where: {
           and: [
             {is_input: true},
-            {output_datetime: undefined},
             {is_permitted: true},
             {or: [
               { input_patent: {nin: [null, '']} },
@@ -130,8 +123,6 @@ function($scope,
         $scope.num_patentsInside = result;
       });
     };
-
-
 
     //For dennied number in navbar.
     // function getRejected() {

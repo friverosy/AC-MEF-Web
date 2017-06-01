@@ -198,7 +198,6 @@ angular
           where: {
             and: [
               {is_input: true},
-              {output_datetime: undefined},
               {is_permitted: true},
               {or: [
                 { input_patent: {nin: [null, '']} },
@@ -443,8 +442,7 @@ angular
                 {profile: profile},
                 {is_permitted: true},
                 {is_input: true},
-                {input_datetime: {gte: date}},
-                {output_datetime: undefined}
+                {input_datetime: {gte: date}}
               ]
             },
             order: 'input_datetime DESC'
@@ -479,7 +477,6 @@ angular
           where: {
             and: [
               {is_input: true},
-              {output_datetime: undefined},
               {is_permitted: true }
             ]
           },
@@ -674,8 +671,7 @@ angular
               [
                 {profile: profile},
                 {is_input: true},
-                {is_permitted: true},
-                {output_datetime: undefined}
+                {is_permitted: true}
               ]
           }
         }
