@@ -39,6 +39,9 @@ angular.module('app')
       } else if (!$scope.employee.is_input && ((($scope.employee.output_patent == undefined || $scope.employee.output_patent == "") && $scope.employee.checkboxCar))) {
         alert("Debe ingresar la patente de salida");
         return;
+      } else if ($scope.employee.valuationDate == undefined) {
+        alert("Debe ingresar fecha de registro");
+        return;
       }
       if (typeof $scope.employee.is_input && ($scope.employee.selectedOptionPlaces.name == "undefined" || $scope.employee.selectedOptionPlaces.name == "")) {
         alert("Debe seleccionar el el destino");
@@ -71,7 +74,6 @@ angular.module('app')
         $scope.record.type = "MR";
         $scope.record.profile = "V";
         $scope.record.reviewed = false;
-
         $scope.record.company = $scope.employee.company;
         $scope.record.authorized_by = $scope.employee.authorized_by;
         $scope.record.bus = false;
