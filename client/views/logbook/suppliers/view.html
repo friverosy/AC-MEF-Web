@@ -55,10 +55,6 @@
                 <td class="text-green">
                   <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
                 </td>
-                <td ng-if="record.is_permitted == false" class="text-red">
-                  <strong ng-if="record.blacklist" class="text-red">*</strong>
-                  <strong>{{record.run}}</strong>
-                </td>
                 <td><small>{{record.fullname}}</small></td>
                 <td>{{record.company}}</td>
                 <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
