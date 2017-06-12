@@ -6,7 +6,7 @@ angular
     //For blacklist
     $scope.blacklist = {};
     $scope.verificador_noencontrado = false;
-    $scope.registerType = {};
+    $scope.registerType = '';
     $scope.filterType = function(type){
       $scope.registerType = type;
     }
