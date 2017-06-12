@@ -58,8 +58,8 @@
                             </select>
                           </td>
                           <td ng-if="record.input_datetime == undefined" class="text-red">No registrado</td>
-                          <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss'}}</td>
-                          <td>{{record.output_datetime | date:'dd/MM HH:mm:ss'}}</td>
+                          <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'dd/MM HH:mm:ss.sss'}}</td>
+                          <td>{{record.output_datetime | date:'dd/MM HH:mm:ss.sss'}}</td>
                           <!-- <td><input type="text" class="patent" ng-if="record.input_datetime != undefined" ng-model="record.input_patent" typeahead="records.input_patent for records in recordsForPatents | filter:$viewValue"  typeahead-on-select="updateInputPatent(record, $item.input_patent)" ng-change="update(record)" /> -->
                           <td><input type="text" class="patent" ng-if="record.input_datetime != undefined" ng-model="record.input_patent" ng-change="update(record)" />
                           <td>
