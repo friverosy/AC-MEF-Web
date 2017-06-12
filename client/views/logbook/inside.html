@@ -17,7 +17,7 @@
           <div class="box-header">
             <div class="btn-group">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Todos <span class="caret"></span>
+                  Todos los perfiles <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                   <li><a href ng-click="eventDateFilter('all', 'E', 'inside')">Empleados</a></li>
@@ -27,7 +27,18 @@
                   <li role="separator" class="divider"></li>
                   <li><a href ng-click="eventDateFilter('all', '', 'inside')">Todos</a></li>
                 </ul>
+
               </div>
+              <div class="btn-group">
+                  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tipo de registro <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href ng-click="filterType('MR')">Registros Manuales</a></li>
+                    <li><a href ng-click="filterType('PDA')">Registros PDA</a></li>
+                  </ul>
+
+                </div>
               <div class="box-tools pull-right">
                   <button
                     type="button"
@@ -57,7 +68,7 @@
                   </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="record in recordsFiltered | filter: searchKeyword | itemsPerPage:25">
+                <tr dir-paginate="record in recordsFiltered | filter: searchKeyword | filter: {type: registerType} | itemsPerPage:25">
                   <td>{{ $index + 1 }}</td>
                   <td class="text-green">
                     <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>

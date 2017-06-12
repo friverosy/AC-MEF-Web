@@ -6,6 +6,10 @@ angular
     //For blacklist
     $scope.blacklist = {};
     $scope.verificador_noencontrado = false;
+    $scope.registerType = {};
+    $scope.filterType = function(type){
+      $scope.registerType = type;
+    }
 
     //Manual Outputs
     $scope.manual_outputs = [];
