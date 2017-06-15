@@ -27,12 +27,13 @@
                 <tr>
                   <th>#</th>
                   <th>Rut</th>
-                  <th class="fullname">Nombre</th>
+                  <th>Nombre</th>
                   <th>Empresa</th>
-                  <th class="datetime">Entrada</th>
-                  <th class="department">Destino</th>
-                  <th>Patente Camión</th>
-                  <th>Patente Rampla</th>
+                  <th>Entrada</th>
+                  <th>Destino</th>
+                  <th>Patente</th>
+                  <th>Rampla</th>
+                  <th>Tipo</th>
                   <th>Comentario</th>
                 </tr>
               </tr>
@@ -54,6 +55,14 @@
                 <td><small>{{record.destination}}</small></td>
                 <td>{{record.truck_patent}}</td>
                 <td>{{record.rampla_patent}}</td>
+                <td>
+                    <select
+                        ng-if="record.truck_patent != undefined"
+                        ng-model="record.input_patent_type"
+                        ng-options="type.id as type.name for type in vehicleTypes"
+                        ng-change="update(record)"
+                    ></select>
+                </td>
                 <td>
                   <input
                     type="text"
