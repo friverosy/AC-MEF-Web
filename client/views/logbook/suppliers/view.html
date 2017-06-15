@@ -71,8 +71,9 @@
                         ng-change="update(record)"
                     ></select>
                 </td>
-                <td ng-if="record.output_datetime == undefined"></td>
-                <td ng-if="record.output_datetime != undefined">{{record.output_datetime | date:'d/M HH:mm:ss.sss'}}</td>
+                <td ng-if="record.is_input == false && record.output_datetime != undefined">{{record.output_datetime | date:'dd/MM HH:mm:ss.sss'}}</td>
+                <td ng-if="record.is_input == true && record.output_datetime == undefined"></td>
+                <td ng-if="record.is_input == false && record.output_datetime == undefined">-</td>
                 <td>
                   <input
                     type="text"

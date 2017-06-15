@@ -26,10 +26,8 @@ module.exports = function(Record) {
 
   Record.observe('before save', function(ctx, next) {
     if (ctx.instance) {
-      console.log(ctx.instance);
+      //console.log(ctx.instance);
       ctx.instance.reviewed = true;
-      // notification(ctx.instance.is_permitted,
-      //   ctx.instance.run, ctx.instance.fullname, ctx.instance.blacklist);
 
       // Update last input as output, add output_datetime send from android.
       if (!ctx.instance.is_input) {
@@ -59,7 +57,7 @@ module.exports = function(Record) {
       },
       function (err, recordFinded) {
         if (err) { reject(err); }
-        if (recordFinded !== null) {
+        if (recordFinded.length > 0) {
           resolve();
         } else {
           reject();
@@ -72,27 +70,47 @@ module.exports = function(Record) {
     return new Promise(function (resolve, reject) {
       Record.find( {
         where: {
-          run: ctx.run
+          and: [{
+            run: ctx.run,
+            is_input: true
+          }]
         },
-        order: 'id DESC',
-        limit: 1
+        order: 'id ASC'
       },
-      function (err, recordFinded) {
+      function (err, data) {
         if (err) { reject(err); }
-        if (recordFinded !== null) {
-          try {
-            if (recordFinded[0].is_input === false) {
-              resolve(0); // Double output
+        if (data.length > 0) {
+          for (var record in data){
+            if (record == data.length-1) {
+              saveOutput(data[record].id, ctx);
             } else {
-              resolve(recordFinded[0].id, ctx);
+              var dataDate = new Date(data[record].input_datetime);
+              var registerDate = new Date(ctx.output_datetime);
+              var dataDay = dataDate.getDate();
+              var registerDay = registerDate.getDate();
+              if (dataDay == registerDay) {
+                  setOutput(data[record].id);
+              }
             }
-          } catch (e) { // First input (property 'is_input' is undefined)
-            resolve(0);
           }
+          resolve();
         } else {
           reject();
         }
       });}
+    );
+  }
+
+  function setOutput(id) {
+    Record.updateAll(
+      { id: id },
+      { is_input: false },
+      function(err) {
+        if (err) { console.error(err); }
+        else {
+          console.log(id, "Actualizado");
+        }
+      }
     );
   }
 
