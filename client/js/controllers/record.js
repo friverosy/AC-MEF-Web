@@ -37,7 +37,7 @@ angular
     // Export to excel
     $scope.exportData = function () {
       alasql.fn.to_date = function(date){
-        if (date == 'undefined') {
+        if (date == undefined) {
           return '';
         }
         var datetime = moment(date);
@@ -49,7 +49,7 @@ angular
 
     $scope.exportEmployeesData = function () {
       alasql.fn.to_date = function(date){
-        if (date == 'undefined') {
+        if (date == undefined) {
           return '';
         }
         var datetime = moment(date);
@@ -61,19 +61,19 @@ angular
 
     $scope.exportSuppliersData = function () {
       alasql.fn.to_date = function(date){
-        if (date == 'undefined') {
+        if (date == undefined) {
           return '';
         }
         var datetime = moment(date);
         datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
         return datetime;
       };
-      alasql('SELECT run as Rut, fullname as Nombre, destination as Destino, to_date(input_datetime) as Entrada, truck_patent as Camion, rampla_patent as Rampla, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.recordsFiltered]);
+      alasql('SELECT run as Rut, fullname as Nombre, destination as Destino, to_date(input_datetime) as Entrada, truck_patent as Camion, rampla_patent as Rampla, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.records]);
     };
 
     $scope.exportVisitsData = function () {
       alasql.fn.to_date = function(date){
-        if (date == 'undefined') {
+        if (date == undefined) {
           return '';
         }
         var datetime = moment(date);
