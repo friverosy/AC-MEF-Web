@@ -60,7 +60,13 @@
                 <td>{{record.company}}</td>
                 <td ng-if="record.input_datetime == undefined" class="text-red"><small>No registrado</small></td>
                 <td ng-if="record.input_datetime != undefined">{{record.input_datetime | date:'d/M HH:mm:ss.sss'}}</td>
-                <td><small>{{record.destination}}</small></td>
+                <td>
+                  <select
+                    ng-model="record.destination"
+                    ng-options="destination.name as destination.name for destination in destinations"
+                    ng-change="update(record)"
+                  ></select>
+                </td>
                 <td>{{record.truck_patent}}</td>
                 <td>{{record.rampla_patent}}</td>
                 <td>
