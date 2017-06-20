@@ -30,12 +30,12 @@ module.exports = function(Record) {
       ctx.instance.reviewed = true;
 
       // Update last input as output, add output_datetime send from android.
-      if (!ctx.instance.is_input) {
-        findLastInput(ctx.instance)
+      if (ctx.instance.is_input) {
+        findLastOutput(ctx.instance)
         .then(id => saveOutput(id, ctx.instance))
         .catch(err => catcher(err, ctx.instance));
       } else {
-        findLastOutput(ctx.instance)
+        findLastInput(ctx.instance)
         .then(id => saveOutput(id, ctx.instance))
         .catch(err => catcher(err, ctx.instance));
       }
@@ -253,6 +253,24 @@ module.exports = function(Record) {
             );
         }
       }
+
+
+      // find duplicate register.
+      Record.find({
+        where: {
+          and: [
+            {run: ctx.instance.run},
+            {input_datetime: ctx.instance.input_datetime}
+          ]
+        }
+      }, function(err, data) {
+        console.log(data);
+        if (data.length > 1) {
+          console.log(data.id, "duplicado");
+          deleteRecord(data[1].id);
+        }
+      });
+
 
       if (ctx.instance.input_datetime === undefined &&
         ctx.instance.is_input === false &&
