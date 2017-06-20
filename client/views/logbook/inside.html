@@ -36,6 +36,7 @@
                   <ul class="dropdown-menu">
                     <li><a href ng-click="filterType('MR')">Registros Manuales</a></li>
                     <li><a href ng-click="filterType('PDA')">Registros PDA</a></li>
+                    <li><a href ng-click="filterType('PDAMR')">Registros Manuales desde PDA</a></li>
                   </ul>
 
                 </div>
@@ -88,6 +89,7 @@
                   <td>
                     <!-- Visits labels -->
                     <span ng-if="(record.type == 'PDA')" class="label label-info label-mini">PDA {{record.PDA}}</span>
+                    <span ng-if="(record.type == 'PDAMR')" class="label label-info label-mini">Manual PDA {{record.PDA}}</span>
           					<span ng-if="(record.type == 'MR' || record.type == 'PEN' || record.type == 'CT')" class="label label-warning label-mini">Manual</span>
                  </td>
                  <td><a class="fa fa-exchange" href ng-click="showDiv=true; addOutput(record)" ng-show="!showDiv"></a></td>
