@@ -264,9 +264,7 @@ module.exports = function(Record) {
           ]
         }
       }, function(err, data) {
-        console.log(data);
         if (data.length > 1) {
-          console.log(data.id, "duplicado");
           deleteRecord(data[1].id);
         }
       });

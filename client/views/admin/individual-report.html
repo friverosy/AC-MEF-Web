@@ -76,8 +76,16 @@
             <div class="box-header with-border">
               <h3 class="box-title">Detalle de ingresos</h3>
               <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool"><i class="fa fa-file-excel-o"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                <button
+                  type="button"
+                  class="btn btn-box-tool"
+                  ng-click="exportEmployeesData()"
+                  data-toggle="tooltip"
+                  title=""
+                  data-widget="chat-pane-toggle"
+                  data-original-title="Exportar a Excel">
+                    <i class="fa fa-file-excel-o"></i>
+                </button>
               </div>
               <!-- /.box-tools -->
             </div>
