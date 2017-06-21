@@ -527,6 +527,20 @@ angular
         .$promise
         .then(function(results) {
           $scope.recordsFiltered =  $filter('unique')(results,'run');
+          switch(profile) {
+            case 'E':
+              $scope.num_employees = $scope.recordsFiltered.length;
+              break;
+            case 'C':
+              $scope.num_contractors = $scope.recordsFiltered.length;
+              break;
+            case 'P':
+              $scope.num_suppliers = $scope.recordsFiltered.length;
+              break;
+            case 'V':
+              $scope.num_visits = $scope.recordsFiltered.length;
+              break;
+          };
         });
       } else {
         Record.find({
@@ -739,48 +753,39 @@ angular
     }
 
     //Numbers in Dashboard
-    function getCounter(profile) {
-      Record.find({
-        filter: {
-          where: {
-            and:
-              [
-                {profile: profile},
-                {is_input: true},
-                {is_permitted: true}
-              ]
-          }
-        }
-      })
-      .$promise
-      .then(function(result){
-        var index = 0;
-        var people = 0;
-
-        if (profile == 'V') var peopleFiltered = $filter('unique')(result,'run');
-        else var peopleFiltered = $filter('unique')(result,'fullname');
-
-        angular.forEach(peopleFiltered, function(value, key) {
-          if(peopleFiltered[index].output_datetime == undefined && peopleFiltered[index].is_input == true)
-            people++
-          index++;
-        });
-        switch(profile) {
-          case 'E':
-            $scope.num_employees = people;
-            break;
-          case 'C':
-            $scope.num_contractors = people;
-            break;
-          case 'P':
-            $scope.num_suppliers = people;
-            break;
-          case 'V':
-            $scope.num_visits = people;
-            break;
-        };
-      });
-    }
+    // function getCounter(profile) {
+    //   Record.find({
+    //     filter: {
+    //       where: {
+    //         and:
+    //           [
+    //             {profile: profile},
+    //             {is_input: true},
+    //             {is_permitted: true},
+    //             {output_datetime: undefined}
+    //           ]
+    //       }
+    //     }
+    //   })
+    //   .$promise
+    //   .then(function(result){
+    //     var peopleFiltered = $filter('unique')(result,'run');
+    //     switch(profile) {
+    //       case 'E':
+    //         $scope.num_employees = peopleFiltered.length;
+    //         break;
+    //       case 'C':
+    //         $scope.num_contractors = peopleFiltered.length;
+    //         break;
+    //       case 'P':
+    //         $scope.num_suppliers = peopleFiltered.length;
+    //         break;
+    //       case 'V':
+    //         $scope.num_visits = peopleFiltered.length;
+    //         break;
+    //     };
+    //   });
+    // }
 
 
     //Get Collections
@@ -790,50 +795,50 @@ angular
         break;
       case 'employees' :
         getVehicleType();
-        getCounter('E');
+        // getCounter('E');
         $scope.eventDateFilter('today','E', 'all');
         break;
       case 'employeeInside':
         getVehicleType();
-        getCounter('E');
+        // getCounter('E');
         $scope.eventDateFilter('today','E', 'inside');
         break;
       case 'visitInside':
         getVehicleType();
         getDestination();
-        getCounter('V');
+        // getCounter('V');
         getParkings();
         $scope.eventDateFilter('today','V', 'inside');
         break;
       case 'contractorInside':
         getVehicleType();
         getDestination();
-        getCounter('C');
+        // getCounter('C');
         $scope.eventDateFilter('today','C', 'inside');
         break;
       case 'visits' :
         getVehicleType();
         getDestination();
-        getCounter('V');
+        // getCounter('V');
         getParkings();
         $scope.eventDateFilter('today','V', 'all');
         break;
       case 'contractors' :
         getVehicleType();
-        getCounter('C');
+        // getCounter('C');
         getDestination();
         $scope.eventDateFilter('today','C', 'all');
         break;
       case 'suppliers' :
         getVehicleType();
-        getCounter('P');
+        // getCounter('P');
         getDestination();
         $scope.eventDateFilter('today','P', 'all');
         break;
       case 'supplierInside':
         getVehicleType();
         getDestination();
-        getCounter('S');
+        // getCounter('S');
         $scope.eventDateFilter('today','P', 'inside');
         break;
       case 'dennieds' :

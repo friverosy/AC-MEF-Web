@@ -67,6 +67,13 @@ function($scope,
 
     //Numbers in Dashboard
     function getCounter(profile) {
+      //For Dates.
+      var f = new Date();
+      var ano = f.getFullYear();
+      var mes = f.getMonth() + 1;
+      var dia = f.getDate();
+      var today = new Date(ano + '/' + mes + '/' + dia);
+      var date = today.toISOString();
       Record.find({
         filter: {
           where: {
@@ -74,19 +81,15 @@ function($scope,
               [
                 {profile: profile},
                 {is_input: true},
-                {is_permitted: true}
+                {is_permitted: true},
+                {input_datetime: {gte: date}}
               ]
           }
         }
       })
       .$promise
       .then(function(result){
-        var index = 0;
-        var people = 0;
-
-        if (profile == 'V') var peopleFiltered = $filter('unique')(result,'run');
-        else var peopleFiltered = $filter('unique')(result,'fullname');
-
+        var peopleFiltered = $filter('unique')(result,'run');
         switch(profile) {
           case 'E':
             $scope.num_employees = peopleFiltered.length;
