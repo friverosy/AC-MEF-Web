@@ -108,15 +108,22 @@ function($scope,
     }
 
     function getNumPatentsInside() {
+      var f = new Date();
+      var ano = f.getFullYear();
+      var mes = f.getMonth() + 1;
+      var dia = f.getDate();
+      var today = new Date(ano + '/' + mes + '/' + dia);
+      var date = today.toISOString();
       Record.count({
         where: {
           and: [
             {is_input: true},
             {is_permitted: true},
+            {input_datetime: {gte: date}},
             {or: [
               { input_patent: {nin: [null, '']} },
               { truck_patent: {nin: [null, '']} },
-              { rampla_patent: {nin: [null, '']} }
+              { rampla_patent: {nin: [null, '']} },
             ]}
           ]
         }
