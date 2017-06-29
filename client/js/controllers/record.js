@@ -92,7 +92,7 @@ angular
         datetime = datetime.tz('America/Santiago').format('MMM Do YY h:mm:ss a');
         return datetime;
       };
-      alasql('SELECT run as Rut, fullname as Nombre, to_date(input_datetime) as Entrada, input_patent as Patente, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.totalRegister]);
+      alasql('SELECT run as Rut, fullname as Nombre, to_date(input_datetime) as Entrada, place as Departamento, destination as Destino, input_patent as Patente, to_date(output_datetime) as Salida, comment as Comentario INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.totalRegister]);
     };
 
     $scope.exportEmployeesReport = function () {
