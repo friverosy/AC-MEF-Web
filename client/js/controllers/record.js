@@ -396,7 +396,7 @@ angular
         })
         .$promise
         .then(function(results) {
-            $scope.total_Supplierslength =  results.length;
+            $scope.totalSuppliers_length =  results.length;
             $scope.totalSuppliers =  results;
         });
 
