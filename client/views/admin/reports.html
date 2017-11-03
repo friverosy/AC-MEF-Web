@@ -350,7 +350,7 @@
                   </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="record in totalProveiders | filter: searchKeyword | itemsPerPage:25">
+                <tr dir-paginate="record in totalSuppliers | filter: searchKeyword | itemsPerPage:25">
                   <td>{{ $index + 1 }}</td>
                   <td class="text-green">
                     <strong>{{record.run}}<sup ng-if="record.blacklist" class="text-red">*</sup></strong>
@@ -365,11 +365,7 @@
                 </tr>
               </tbody>
             </table>
-            <dir-pagination-controls
-               max-size="25"
-               direction-links="true"
-               boundary-links="true" >
-            </dir-pagination-controls>
+            <dir-pagination-controls></dir-pagination-controls>
           </div><!-- /.box-body -->
         </div><!-- /.box -->
     </div>
