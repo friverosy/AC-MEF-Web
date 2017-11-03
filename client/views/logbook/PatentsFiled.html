@@ -69,6 +69,11 @@
                     ></select>
                   </td>
                   <td>
+                    <select ng-if="record.input_patent != undefined" ng-model="record.input_patent_type" ng-options="type.id as type.name for type in vehicleTypes"
+                      ng-change="update(record)">
+                    </select>
+                  </td>
+                  <td>
           					<span ng-if="record.profile == 'V'" class="label label-warning label-mini">Visita</span>
           					<span ng-if="record.profile == 'E'" class="label label-success label-mini">Empleado</span>
                     <span ng-if="record.profile == 'C'" class="label label-warning label-mini">Contratista</span>

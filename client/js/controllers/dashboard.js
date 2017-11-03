@@ -114,23 +114,26 @@ function($scope,
       var dia = f.getDate();
       var today = new Date(ano + '/' + mes + '/' + dia);
       var date = today.toISOString();
-      Record.count({
-        where: {
-          and: [
-            {is_input: true},
-            {is_permitted: true},
-            {input_datetime: {gte: date}},
-            {or: [
-              { input_patent: {nin: [null, '']} },
-              { truck_patent: {nin: [null, '']} },
-              { rampla_patent: {nin: [null, '']} },
-            ]}
-          ]
+      Record.find({
+        filter: {
+          where: {
+            and: [
+              {is_input: true},
+              {is_permitted: true},
+              {input_datetime: {gte: date}},
+              {or: [
+                { input_patent: { nin: [null, '']} },
+                { truck_patent: { nin: [null, '']} },
+                { rampla_patent: { nin: [null, '']} },
+              ]}
+            ]
+          }
         }
       })
       .$promise
       .then(function(result){
-        $scope.num_patentsInside = result;
+        var num = $filter('unique')(result, 'input_patent');
+        $scope.num_patentsInside = num.length;
       });
     };
 
