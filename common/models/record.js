@@ -81,6 +81,8 @@ module.exports = function(Record) {
         if (err) { reject(err); }
         if (data.length > 0) {
           for (var record in data){
+            // console.log('record', record);
+            // console.log('data', data.length - 1);
             if (record == data.length-1) {
               saveOutput(data[record].id, ctx);
             } else {
@@ -95,7 +97,8 @@ module.exports = function(Record) {
           }
           resolve();
         } else {
-          reject();
+          // console.log('entrada no encontrada');
+          resolve(0);
         }
       });}
     );
@@ -108,7 +111,7 @@ module.exports = function(Record) {
       function(err) {
         if (err) { console.error(err); }
         else {
-          console.log(id, "Actualizado");
+          // console.log(id, "Actualizado");
         }
       }
     );
@@ -116,24 +119,29 @@ module.exports = function(Record) {
 
   function saveOutput(id, ctx){
     return new Promise(function (resolve, reject) {
-      if (id !== 0 && id !== undefined) {
+      // console.log('identificador', id);
+      if (id === 0) {
+        // Double output.
+        // console.log('doble salida');
+        reject(0);
+      } else if (id === 1) {
+        // Double input.
+        // console.log('doble entrada');
+        reject(1);
+      } if (id !== undefined) {
+        // console.log('entra aca');
         Record.updateAll(
           { id: id },
           { output_datetime: ctx.output_datetime, is_input: false },
-          function(err) {
+          function (err) {
             if (err) { reject(err); }
             else {
               resolve();
             }
           }
-        );
-      } else if (id === 0) {
-        // Double output.
-        reject(0);
-      } else if (id === 1) {
-        // Double input.
-        reject(1);
+        ); 
       } else {
+        // console.log('normal')
         resolve(); // Do nothing
       }
     });
@@ -147,6 +155,7 @@ module.exports = function(Record) {
       // DO = Double input
       ctx.status = 'DI';
     }
+    // console.log('modificado a', ctx.status);
   }
 
   function onBlacklist(ctx) {
@@ -184,6 +193,7 @@ module.exports = function(Record) {
   }
 
   function deleteRecord(id){
+    // console.log('borrando', id);
     Record.destroyById(id, function(err){
       if (err) {
         console.log(err);
@@ -265,7 +275,10 @@ module.exports = function(Record) {
         }
       }, function(err, data) {
         if (data.length > 1) {
-          deleteRecord(data[1].id);
+          // TODO: si es salida sin entrada no borrar
+          if (ctx.instance.status !== 'DO') {
+            deleteRecord(data[data.length - 1].id);
+          }
         }
       });
 
@@ -278,7 +291,8 @@ module.exports = function(Record) {
         } else if (ctx.instance.status === 'DI') {
           // do nothing
         } else {
-          deleteRecord(ctx.instance.id);
+          // console.log('borrando', ctx.instance);
+          // deleteRecord(ctx.instance.id);
         }
       } else {
         onBlacklist(ctx.instance)
